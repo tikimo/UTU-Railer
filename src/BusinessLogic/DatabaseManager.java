@@ -31,6 +31,7 @@ public class DatabaseManager {
                     "email      VARCHAR (30)    PRIMARY KEY NOT NULL " +
                     "passwd     VARCHAR (20)    NOT NULL )");
             statement.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
