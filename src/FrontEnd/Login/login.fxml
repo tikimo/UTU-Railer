@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="FrontEnd.Login.LoginController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FrontEnd.Login.LoginController">
+   <children>
+      <Label layoutX="15.0" layoutY="16.0" text="Authenticate with your UTU-Railer credentials">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="15.0" layoutY="83.0" text="Sign in" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="70.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="createAccountLink" layoutX="25.0" layoutY="90.0" onMouseClicked="#showAccountCreationDialog" text="Create account" textFill="#0c3dee" underline="true" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="70.0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Line endX="90.0" layoutX="300.0" layoutY="200.0" opacity="0.5" rotate="90.0" AnchorPane.bottomAnchor="240.0" AnchorPane.leftAnchor="250.0" />
+      <Line endX="90.0" layoutX="200.0" layoutY="300.0" opacity="0.5" rotate="90.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="250.0" />
+      <Label layoutX="286.0" layoutY="220.0" text="OR" textAlignment="CENTER" textFill="#8a8989" AnchorPane.leftAnchor="282.0" AnchorPane.topAnchor="216.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <GridPane layoutX="323.0" layoutY="107.0" prefHeight="264.0" prefWidth="266.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="firstNameField" disable="true" promptText="First name" />
+            <TextField fx:id="lastNameField" disable="true" layoutX="10.0" layoutY="31.0" promptText="Last name" GridPane.rowIndex="1" />
+            <TextField fx:id="emailField" disable="true" layoutX="10.0" layoutY="31.0" promptText="email" GridPane.rowIndex="2" />
+            <PasswordField fx:id="passwordField" disable="true" promptText="Password" GridPane.rowIndex="3" />
+         </children>
+      </GridPane>
+   </children>
 </AnchorPane>
