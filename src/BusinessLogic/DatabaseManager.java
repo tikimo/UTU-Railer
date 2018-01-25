@@ -39,7 +39,9 @@ public class DatabaseManager {
 
     public void addNewUser(String Fname, String Lname, String email, String passwd) throws SQLException {
         Statement statement = conn.createStatement();
-        statement.executeUpdate("INSERT INTO users");
+        statement.executeUpdate("INSERT INTO users VALUES (" +
+                Fname +","+ Lname + "," + email + "," + passwd
+                + ")");
         conn.close();
     }
 }
