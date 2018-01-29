@@ -52,4 +52,25 @@ public class DatabaseManager {
         }
         return false;
     }
+
+    /**
+     * Returns first and last name if passwords matched, else returns null.
+     * @param email plaintext email from UI field
+     * @param cryptPass SHA256 password from ui
+     * @return
+     */
+    public String authenticate(String email, String cryptPass) {
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT Fname, Lname FROM "+dbname+" WHERE email='"+email+"'AND passwd='"+cryptPass+"'" );
+            if (rs.next()) {
+                return rs.getString(0) + " " + rs.getString(1);
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
