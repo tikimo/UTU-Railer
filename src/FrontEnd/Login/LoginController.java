@@ -1,5 +1,6 @@
 package FrontEnd.Login;
 
+import BusinessLogic.DatabaseManager;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,6 +19,7 @@ public class LoginController {
     public PasswordField passwordFieldLogin;
     public Button signInButton;
     public Button createAccountButton;
+    private DatabaseManager dbmanager = new DatabaseManager("users");
 
     public void showAccountCreationDialog(MouseEvent mouseEvent) {
         firstNameField.setDisable(false);
@@ -30,7 +32,18 @@ public class LoginController {
         createAccountLink.setTextFill(Color.BLACK);
     }
 
-    public void signIn(ActionEvent actionEvent) {
+    /**
+     * Sign in logic.
+     */
+    public void signIn() {
+        String email = emailFieldLogin.getText();
+        String password = passwordFieldLogin.getText();
+
+        if (dbmanager.userExists(email)) {
+
+        } else {
+            System.err.println("User does not exist!");
+        }
     }
 
     public void createAccount(ActionEvent actionEvent) {
