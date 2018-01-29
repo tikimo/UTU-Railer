@@ -55,6 +55,21 @@ public class LoginController {
         }
     }
 
+    public void createAccount() throws SQLException {
+        // Crypter to secure-save password
+        MessageDigest mdgst = null;
+        try {
+            mdgst = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        assert mdgst != null;
+        mdgst.update(passwordField.getText().getBytes());
+        String cryptPass = new String(mdgst.digest());
+
+        dbmanager.addNewUser(firstNameField.getText(), lastNameField.getText(), emailField.getText(), cryptPass);
+    }
+
     /**
      * Turns the textfield to encrypted password before sending it to database.
      * Assumes database only has encrypted passwords stored. Plaintext
@@ -78,20 +93,5 @@ public class LoginController {
         String CryptPass = new String(mdgst.digest());
 
         return dbmanager.authenticate(email, CryptPass); // rs.next() returns true if row exists
-    }
-
-    public void createAccount() throws SQLException {
-        // Crypter to secure-save password
-        MessageDigest mdgst = null;
-        try {
-            mdgst = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        assert mdgst != null;
-        mdgst.update(passwordField.getText().getBytes());
-        String cryptPass = new String(mdgst.digest());
-
-        dbmanager.addNewUser(firstNameField.getText(), lastNameField.getText(), emailField.getText(), cryptPass);
     }
 }
