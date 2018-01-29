@@ -35,6 +35,23 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Returns first and last name if passwords matched, else returns null.
+     * @param email plaintext email from UI field
+     * @param cryptPass SHA256 password from ui
+     * @return
+     */
+    public boolean authenticate(String email, String cryptPass) {
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT email FROM "+dbname+" WHERE email='"+email+"'AND passwd='"+cryptPass+"'" );
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public void addNewUser(String Fname, String Lname, String email, String passwd) throws SQLException {
         Statement statement = conn.createStatement();
         statement.executeUpdate("INSERT INTO users VALUES ('" + Fname + "','" + Lname + "','" + email + "','" + passwd + "') ");
@@ -54,19 +71,18 @@ public class DatabaseManager {
     }
 
     /**
-     * Returns first and last name if passwords matched, else returns null.
-     * @param email plaintext email from UI field
-     * @param cryptPass SHA256 password from ui
+     * Assume user exists and has both names in database.
+     * @param email
      * @return
      */
-    public boolean authenticate(String email, String cryptPass) {
+    public String getUserName (String email) {
         try {
             Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT email FROM "+dbname+" WHERE email='"+email+"'AND passwd='"+cryptPass+"'" );
-            return rs.next();
+            ResultSet resultSet = statement.executeQuery("SELECT Fname, Lname FROM "+dbname+" WHERE email='"+email+"'");
+            return resultSet.getString(0) +" "+ resultSet.getString(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 }
