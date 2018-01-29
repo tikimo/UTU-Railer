@@ -42,8 +42,10 @@ public class LoginController {
         String email = emailFieldLogin.getText();
         String password = passwordFieldLogin.getText();
 
-        if (dbmanager.userExists(email)) {
-            if (authenticationSucceeded(email, password)) {
+        if (dbmanager.userExists(email)) {  // check if user exists
+            if (authenticationSucceeded(email, password)) { // check if users' name was returned
+                // Here authentication has succeeded. Login window will close and portal will launch.
+
 
             }
 
@@ -74,7 +76,7 @@ public class LoginController {
         mdgst.update(PlaintextPass.getBytes());
         String CryptPass = new String(mdgst.digest());
 
-        return dbmanager.authenticate(email, CryptPass);
+        return dbmanager.authenticate(email, CryptPass); // rs.next() returns true if row exists
     }
 
     public void createAccount(ActionEvent actionEvent) {
