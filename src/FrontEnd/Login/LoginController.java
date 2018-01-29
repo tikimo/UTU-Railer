@@ -2,13 +2,18 @@ package FrontEnd.Login;
 
 import BusinessLogic.DatabaseManager;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -46,8 +51,7 @@ public class LoginController {
         if (dbmanager.userExists(email)) {  // check if user exists
             if (authenticationSucceeded(email, password)) { // check if users' name was returned
                 // Here authentication has succeeded. Login window will close and portal will launch.
-
-
+                launchPortal(email);
             }
 
         } else {
@@ -68,6 +72,7 @@ public class LoginController {
         String cryptPass = new String(mdgst.digest());
 
         dbmanager.addNewUser(firstNameField.getText(), lastNameField.getText(), emailField.getText(), cryptPass);
+        System.err.println("New user added. You can login now.");
     }
 
     /**
@@ -93,5 +98,21 @@ public class LoginController {
         String CryptPass = new String(mdgst.digest());
 
         return dbmanager.authenticate(email, CryptPass); // rs.next() returns true if row exists
+    }
+
+    private void launchPortal(String email) {
+        String name = dbmanager.getUserName(email);
+
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("Portal/portal.fxml"));
+        } catch (IOException e) { e.printStackTrace(); }
+
+        Stage Portal = new Stage();
+        Portal.setTitle("UTU-Railer Portal: " + name);
+        Portal.setScene(new Scene(root, 1200, 800));
+        Portal.setResizable(false);
+        Portal.show();
+
     }
 }
