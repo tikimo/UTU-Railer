@@ -59,18 +59,14 @@ public class DatabaseManager {
      * @param cryptPass SHA256 password from ui
      * @return
      */
-    public String authenticate(String email, String cryptPass) {
+    public boolean authenticate(String email, String cryptPass) {
         try {
             Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT Fname, Lname FROM "+dbname+" WHERE email='"+email+"'AND passwd='"+cryptPass+"'" );
-            if (rs.next()) {
-                return rs.getString(0) + " " + rs.getString(1);
-            } else {
-                return null;
-            }
+            ResultSet rs = statement.executeQuery("SELECT email FROM "+dbname+" WHERE email='"+email+"'AND passwd='"+cryptPass+"'" );
+            return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 }
