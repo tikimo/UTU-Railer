@@ -1,9 +1,6 @@
 package BusinessLogic;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DatabaseManager {
     private Connection conn = null;
@@ -20,15 +17,16 @@ public class DatabaseManager {
         }
         System.err.println("Database connection successfull");
         createTable();
+        System.err.println("Table created successfully");
     }
 
     private void createTable() {
         try {
             Statement statement = conn.createStatement();
             statement.executeUpdate("CREATE TABLE users" +
-                    "(Fname     TEXT    NOT NULL " +
-                    "Lname      TEXT    NOT NULL " +
-                    "email      VARCHAR (30)    PRIMARY KEY NOT NULL " +
+                    "(Fname     TEXT    NOT NULL ," +
+                    "Lname      TEXT    NOT NULL ," +
+                    "email      VARCHAR (30)    PRIMARY KEY NOT NULL ," +
                     "passwd     VARCHAR (20)    NOT NULL )");
             statement.close();
 
@@ -39,9 +37,19 @@ public class DatabaseManager {
 
     public void addNewUser(String Fname, String Lname, String email, String passwd) throws SQLException {
         Statement statement = conn.createStatement();
-        statement.executeUpdate("INSERT INTO users VALUES (" +
-                Fname +","+ Lname + "," + email + "," + passwd
-                + ")");
+        statement.executeUpdate("INSERT INTO users VALUES ('" + Fname + "','" + Lname + "','" + email + "','" + passwd + "') ");
         conn.close();
+    }
+
+    public boolean userExists(String email) {
+        Statement statement;
+        try {
+            statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            ResultSet rs = statement.executeQuery("SELECT email FROM "+dbname+ "where email='" + email + "'");
+            return rs.next();   // returns true if email (key value) exists.
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
