@@ -1,5 +1,7 @@
 package BusinessLogic;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 
 public class DatabaseManager {
@@ -53,8 +55,20 @@ public class DatabaseManager {
     }
 
     public void addNewUser(String Fname, String Lname, String email, String passwd) throws SQLException {
+        // Crypter
+        MessageDigest mdgst = null;
+        try {
+            mdgst = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        assert mdgst != null;
+        mdgst.update(passwd.getBytes());
+        String cryptPass = new String(mdgst.digest());
+
+        // Statement
         Statement statement = conn.createStatement();
-        statement.executeUpdate("INSERT INTO users VALUES ('" + Fname + "','" + Lname + "','" + email + "','" + passwd + "') ");
+        statement.executeUpdate("INSERT INTO users VALUES ('" + Fname + "','" + Lname + "','" + email + "','" + cryptPass + "') ");
         conn.close();
     }
 
