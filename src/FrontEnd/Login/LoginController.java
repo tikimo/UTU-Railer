@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 public class LoginController {
     public Label createAccountLink;
@@ -79,6 +80,18 @@ public class LoginController {
         return dbmanager.authenticate(email, CryptPass); // rs.next() returns true if row exists
     }
 
-    public void createAccount(ActionEvent actionEvent) {
+    public void createAccount() throws SQLException {
+        // Crypter to secure-save password
+        MessageDigest mdgst = null;
+        try {
+            mdgst = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        assert mdgst != null;
+        mdgst.update(passwordField.getText().getBytes());
+        String cryptPass = new String(mdgst.digest());
+
+        dbmanager.addNewUser(firstNameField.getText(), lastNameField.getText(), emailField.getText(), cryptPass);
     }
 }
