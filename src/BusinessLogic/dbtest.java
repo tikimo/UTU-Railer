@@ -4,13 +4,14 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class dbtest extends Application {
-    private DatabaseManager dbm;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        dbm = new DatabaseManager("users");
+    public void start(Stage primaryStage) {
+        DatabaseManager dbm = new DatabaseManager("users");
         dbm.addNewUser("Maija", "Meikäläinen", "maikkiiiis@utu.fi", "supersalainen");
         System.out.println(dbm.getUserName("maikkis@utu.fi"));
 
+        System.out.println(dbm.authenticate("maikkis@utu.fi", "huippusalainen"));
+        System.out.println(dbm.authenticate("maikkis@utu.fi", "supersalainen"));
     }
 }
