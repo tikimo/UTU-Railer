@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class DatabaseManager {
     private Connection conn = null;
-    private String dbname = null;
+    private String dbname;
 
     public DatabaseManager(String dbname) {
         this.dbname = dbname;
@@ -15,23 +15,27 @@ public class DatabaseManager {
             e.printStackTrace();
             System.err.println("Database connection error");
         }
-        System.err.println("Database connection successfull");
-        createTable();
-        System.err.println("Table created successfully");
+        System.err.println("Database connection successful");
+        createTable("users");
     }
 
-    private void createTable() {
+    private void createTable(String tableName) {
         try {
             Statement statement = conn.createStatement();
-            statement.executeUpdate("CREATE TABLE users" +
+            statement.executeUpdate("CREATE TABLE " + tableName +
                     "(Fname     TEXT    NOT NULL ," +
                     "Lname      TEXT    NOT NULL ," +
                     "email      VARCHAR (30)    PRIMARY KEY NOT NULL ," +
                     "passwd     VARCHAR (20)    NOT NULL )");
             statement.close();
+            System.err.println("Table '"+tableName+"' created successfully");
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (e.toString().contains("already exists")) {
+                System.err.println("[WARNING] SQL error, table "+tableName+" already exists. Moving on...");
+            } else {
+                e.printStackTrace();
+            }
         }
     }
 
