@@ -16,23 +16,25 @@ public class DatabaseManager {
             System.err.println("Database connection error");
         }
         System.err.println("Database connection successful");
-        createTable("users");
+        createTable();
     }
 
-    private void createTable(String tableName) {
+    private void createTable() {
         try {
             Statement statement = conn.createStatement();
-            statement.executeUpdate("CREATE TABLE " + tableName +
+            statement.executeUpdate("CREATE TABLE " + "users" +
                     "(Fname     TEXT    NOT NULL ," +
                     "Lname      TEXT    NOT NULL ," +
                     "email      VARCHAR (30)    PRIMARY KEY NOT NULL ," +
-                    "passwd     VARCHAR (20)    NOT NULL )");
+                    "passwd     TEXT    NOT NULL )");
             statement.close();
-            System.err.println("Table '"+tableName+"' created successfully");
+            System.err.println("Table '"+ "users" +"' created successfully");
 
         } catch (SQLException e) {
-            if (e.toString().contains("already exists")) {
-                System.err.println("[WARNING] SQL error, table "+tableName+" already exists. Moving on...");
+            if (e.toString().contains("is locked")) {
+                System.err.println("[ERROR] Database file is locked. Will try to recover...");
+            } else if (e.toString().contains("already exists")) {
+                System.err.println("[WARNING] SQL error, table " + "users" + " already exists. Moving on...");
             } else {
                 e.printStackTrace();
             }
@@ -56,14 +58,22 @@ public class DatabaseManager {
         return false;
     }
 
-    public void addNewUser(String Fname, String Lname, String email, String passwd) throws SQLException {
+    public void addNewUser(String Fname, String Lname, String email, String passwd)  {
 
 
         // Statement
-        Statement statement = conn.createStatement();
-        statement.executeUpdate("INSERT INTO users VALUES ('" + Fname + "','" + Lname + "','" + email + "','" + passwd + "') ");
-        conn.close();
-        System.err.println("User added successfully");
+        try {
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("INSERT INTO users (Fname, Lname, email, passwd)" +
+                    "VALUES ('" + Fname + "','" + Lname + "','" + email + "','" + passwd + "') ");
+            System.err.println("User added successfully");
+        } catch (SQLException e) {
+            if (e.toString().contains("constraint failed")) {
+                System.err.println("[WARNING] User already exists! Moving on...");
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
 
     public boolean userExists(String email) {
@@ -87,7 +97,7 @@ public class DatabaseManager {
         try {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT Fname, Lname FROM "+dbname+" WHERE email='"+email+"'");
-            return resultSet.getString(0) +" "+ resultSet.getString(1);
+            return resultSet.getString(1) +" "+ resultSet.getString(2);
         } catch (SQLException e) {
             e.printStackTrace();
         }
