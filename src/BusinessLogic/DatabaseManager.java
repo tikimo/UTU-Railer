@@ -63,6 +63,7 @@ public class DatabaseManager {
         Statement statement = conn.createStatement();
         statement.executeUpdate("INSERT INTO users VALUES ('" + Fname + "','" + Lname + "','" + email + "','" + passwd + "') ");
         conn.close();
+        System.err.println("User added successfully");
     }
 
     public boolean userExists(String email) {
