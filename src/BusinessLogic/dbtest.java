@@ -9,5 +9,8 @@ public class dbtest extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         dbm = new DatabaseManager("users");
+        dbm.addNewUser("Maija", "Meikäläinen", "maikkiiiis@utu.fi", "supersalainen");
+        System.out.println(dbm.getUserName("maikkis@utu.fi"));
+
     }
 }
