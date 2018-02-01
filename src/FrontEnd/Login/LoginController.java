@@ -59,7 +59,7 @@ public class LoginController {
         }
     }
 
-    public void createAccount() throws SQLException {
+    public void createAccount() {
         // Crypter to secure-save password
         MessageDigest mdgst = null;
         try {

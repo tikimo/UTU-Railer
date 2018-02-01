@@ -7,15 +7,15 @@ public class DatabaseManager {
     private String dbname;
 
     public DatabaseManager(String dbname) {
-        this.dbname = dbname;
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:"+dbname+".db");
+            System.err.println("Database connection successful");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             System.err.println("Database connection error");
         }
-        System.err.println("Database connection successful");
+        this.dbname = dbname;
         createTable();
     }
 

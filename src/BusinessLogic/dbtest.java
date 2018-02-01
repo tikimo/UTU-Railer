@@ -8,10 +8,9 @@ public class dbtest extends Application {
     @Override
     public void start(Stage primaryStage) {
         DatabaseManager dbm = new DatabaseManager("users");
-        dbm.addNewUser("Maija", "Meikäläinen", "maikkiiiis@utu.fi", "supersalainen");
-        System.out.println(dbm.getUserName("maikkis@utu.fi"));
+        dbm.addNewUser("Asad", "Ijaz", "asaija@utu.fi", "asadin salasana");
+        System.out.println(dbm.getUserName("asaija@utu.fi"));
 
-        System.out.println(dbm.authenticate("maikkis@utu.fi", "huippusalainen"));
-        System.out.println(dbm.authenticate("maikkis@utu.fi", "supersalainen"));
+        System.out.println(dbm.authenticate("asaija@utu.fi","asadin salasana ei ole tämä"));
     }
 }
