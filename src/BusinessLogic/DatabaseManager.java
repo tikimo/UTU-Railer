@@ -79,8 +79,8 @@ public class DatabaseManager {
     public boolean userExists(String email) {
         Statement statement;
         try {
-            statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet rs = statement.executeQuery("SELECT email FROM "+dbname+ "where email='" + email + "'");
+            statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT email FROM "+dbname+ " WHERE email='" + email + "'");
             return rs.next();   // returns true if email (key value) exists.
         } catch (SQLException e) {
             e.printStackTrace();
