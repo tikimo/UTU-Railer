@@ -1,6 +1,9 @@
 package FrontEnd.Login;
 
 import BusinessLogic.DatabaseManager;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -9,9 +12,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.MotionBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -51,6 +57,7 @@ public class LoginController {
         if (dbmanager.userExists(email)) {  // check if user exists
             if (authenticationSucceeded(email, password)) { // check if users' name was returned
                 // Here authentication has succeeded. Login window will close and portal will launch.
+                System.err.println("Authentication succeeded");
                 launchPortal(email);
             }
 
@@ -60,18 +67,9 @@ public class LoginController {
     }
 
     public void createAccount() {
-        // Crypter to secure-save password
-        MessageDigest mdgst = null;
-        try {
-            mdgst = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        assert mdgst != null;
-        mdgst.update(passwordField.getText().getBytes());
-        String cryptPass = new String(mdgst.digest());
-
-        dbmanager.addNewUser(firstNameField.getText(), lastNameField.getText(), emailField.getText(), cryptPass);
+        // Crypting is handled in back-end
+        dbmanager.addNewUser(firstNameField.getText(), lastNameField.getText(), emailField.getText(), passwordField.getText());
+        System.err.println("Users password is: "+passwordField.getText());
         System.err.println("New user added. You can login now.");
     }
 
@@ -82,22 +80,12 @@ public class LoginController {
      *
      *
      * @param email
-     * @param PlaintextPass
+     * @param plaintextPass
      * @return
      * @throws NoSuchAlgorithmException
      */
-    private boolean authenticationSucceeded(String email, String PlaintextPass)  {
-        MessageDigest mdgst = null;
-        try {
-            mdgst = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        assert mdgst != null;
-        mdgst.update(PlaintextPass.getBytes());
-        String CryptPass = new String(mdgst.digest());
-
-        return dbmanager.authenticate(email, CryptPass); // rs.next() returns true if row exists
+    private boolean authenticationSucceeded(String email, String plaintextPass)  {
+        return dbmanager.authenticate(email, plaintextPass); // rs.next() returns true if row exists
     }
 
     private void launchPortal(String email) {
