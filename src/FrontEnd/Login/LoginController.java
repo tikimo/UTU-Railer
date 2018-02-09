@@ -1,11 +1,13 @@
 package FrontEnd.Login;
 
 import BusinessLogic.DatabaseManager;
+import FrontEnd.Main;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,7 +18,9 @@ import javafx.scene.effect.MotionBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -96,17 +100,32 @@ public class LoginController {
 
     private void launchPortal(String email) {
         String name = dbmanager.getUserName(email);
-
-        Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("Portal/portal.fxml"));
-        } catch (IOException e) { e.printStackTrace(); }
+            // Setup new stage
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../Portal/portal.fxml"));
+            Parent portalRoot = fxmlLoader.load();
+            Stage portalStage = new Stage();
+            portalStage.setTitle("Welcome to U-R Portal " + name);
+            portalStage.setScene(new Scene(portalRoot));
 
-        Stage Portal = new Stage();
-        Portal.setTitle("UTU-Railer Portal: " + name);
-        Portal.setScene(new Scene(root, 1200, 800));
-        Portal.setResizable(false);
-        Portal.show();
+            // Set variables and parameters
+            portalStage.setResizable(false);
+            portalStage.setHeight(768);
+            portalStage.setWidth(1024);
+
+
+            // Hide login and launch portal
+            Stage loginStage = (Stage) signInButton.getScene().getWindow();
+            loginStage.hide();
+            portalStage.show();
+
+        } catch (IOException e) {
+            System.err.println("[ERROR] Cant open new window!");
+        }
+
+
 
     }
+
+
 }

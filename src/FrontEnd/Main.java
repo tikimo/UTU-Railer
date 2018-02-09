@@ -9,18 +9,23 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.MotionBlur;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
+import java.io.IOException;
 
 public class Main extends Application {
 
     @Override
-    public void start(Stage loginStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Login/login.fxml"));
-        loginStage.setTitle("Login to UTU-Railer");
-        loginStage.setScene(new Scene(root, 600, 400));
-        loginStage.setResizable(false);
-        loginStage.show();
+        primaryStage.setTitle("Login to UTU-Railer");
+        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
+
 
     /**
      * NOT CURRENTLY USED
@@ -56,4 +61,5 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }
