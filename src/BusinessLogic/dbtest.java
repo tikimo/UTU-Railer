@@ -3,8 +3,6 @@ package BusinessLogic;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class dbtest extends Application {
     String fname = "Tijam", lname = "Moradi", email = "tikimo@utu.fi", pass = "huippusalainen";
@@ -28,19 +26,6 @@ public class dbtest extends Application {
         dbm.authenticate("tikimo@utu.fi", reverseLetters(pass)));
 
         System.exit(0);
-
-        /*
-        Crypter crypter = new Crypter();
-        System.out.println(crypter.generatePasswordHash(salis));
-        dbm.addNewUser("Vesi", "Pullo", "vesipullo@utu.fi", salis);
-        System.out.println(dbm.getUserName("vesipullo@utu.fi"));
-
-        System.out.println(dbm.userExists("vesipullo@utu.fi"));
-
-
-        System.out.println(dbm.authenticate("vesipullo@utu.fi", salis));
-        System.exit(0);
-        */
     }
 
     private String reverseLetters(String pass) {
