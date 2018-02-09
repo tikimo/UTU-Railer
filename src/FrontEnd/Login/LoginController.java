@@ -57,8 +57,10 @@ public class LoginController {
         if (dbmanager.userExists(email)) {  // check if user exists
             if (authenticationSucceeded(email, password)) { // check if users' name was returned
                 // Here authentication has succeeded. Login window will close and portal will launch.
-                System.err.println("Authentication succeeded");
+                System.err.println("Authentication succeeded!");
                 launchPortal(email);
+            } else {
+                System.err.println("Authentication failed!");
             }
 
         } else {
@@ -67,10 +69,14 @@ public class LoginController {
     }
 
     public void createAccount() {
-        // Crypting is handled in back-end
-        dbmanager.addNewUser(firstNameField.getText(), lastNameField.getText(), emailField.getText(), passwordField.getText());
-        System.err.println("Users password is: "+passwordField.getText());
-        System.err.println("New user added. You can login now.");
+
+        if (dbmanager.userExists(emailField.getText())) {
+            System.err.println("[WARNING] Email is already associated with another account! Aborting registration...");
+        } else {
+            // Crypting is handled in back-end
+            dbmanager.addNewUser(firstNameField.getText(), lastNameField.getText(), emailField.getText(), passwordField.getText());
+            System.err.println("New user added. You can login now.");
+        }
     }
 
     /**
