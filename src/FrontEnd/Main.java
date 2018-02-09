@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.effect.MotionBlur;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -23,6 +24,7 @@ public class Main extends Application {
         primaryStage.setTitle("Login to UTU-Railer");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.setResizable(false);
+        primaryStage.getIcons().add(new Image("FrontEnd/RES/logo.png"));
         primaryStage.show();
     }
 

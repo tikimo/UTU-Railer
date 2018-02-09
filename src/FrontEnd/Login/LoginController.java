@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.MotionBlur;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -112,6 +113,7 @@ public class LoginController {
             portalStage.setResizable(false);
             portalStage.setHeight(768);
             portalStage.setWidth(1024);
+            portalStage.getIcons().add(new Image("FrontEnd/RES/logo.png"));
 
 
             // Hide login and launch portal
