@@ -51,7 +51,7 @@ public class DatabaseManager {
     public boolean authenticate(String email, String plainPass) {
         try {
             Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT email FROM "+dbname+" WHERE email='"+email+"'AND passwd='"+crypter.generatePasswordHash(plainPass)+"'" );
+            ResultSet rs = statement.executeQuery("SELECT email FROM "+dbname+" WHERE email='"+email+"'AND passwd='"+crypter.generateHash(plainPass)+"'" );
             return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,7 +66,7 @@ public class DatabaseManager {
         try {
             Statement statement = conn.createStatement();
             statement.executeUpdate("INSERT INTO users (Fname, Lname, email, passwd)" +
-                    "VALUES ('" + Fname + "','" + Lname + "','" + email + "','" + crypter.generatePasswordHash(plainPass) + "') ");
+                    "VALUES ('" + Fname + "','" + Lname + "','" + email + "','" + crypter.generateHash(plainPass) + "') ");
             System.err.println("User added successfully");
         } catch (SQLException e) {
             if (e.toString().contains("constraint failed")) {
@@ -104,4 +104,5 @@ public class DatabaseManager {
         }
         return null;
     }
+
 }
