@@ -7,26 +7,30 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class dbtest extends Application {
+    String fname = "Tijam", lname = "Moradi", email = "tikimo@utu.fi", pass = "huippusalainen";
+
 
     @Override
     public void start(Stage primaryStage) {
+        // Crypt password
+        Crypter crypter = new Crypter();
+        String cpass = crypter.generatePasswordHash(pass);
+        System.out.println("pass after crypt (MD5): "+cpass);
+
+        // create user with the params
         DatabaseManager dbm = new DatabaseManager("users");
+        dbm.addNewUser(fname,lname,email,cpass);
 
-        MessageDigest digester = null;
-        try {
-            digester = MessageDigest.getInstance("SHA-256");
+        System.out.println(
+        dbm.userExists("tikimo@utu.fi") + "\n" +
+        dbm.getUserName("tikimo@utu.fi") + "\n" +
+        dbm.authenticate("tikimo@utu.fi", cpass));
 
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        assert digester != null;
-        digester.update("vesipullo".getBytes());
-        String salis = new String(digester.digest());
-        System.out.println(salis);
+        System.exit(0);
 
-
-
-
+        /*
+        Crypter crypter = new Crypter();
+        System.out.println(crypter.generatePasswordHash(salis));
         dbm.addNewUser("Vesi", "Pullo", "vesipullo@utu.fi", salis);
         System.out.println(dbm.getUserName("vesipullo@utu.fi"));
 
@@ -35,5 +39,6 @@ public class dbtest extends Application {
 
         System.out.println(dbm.authenticate("vesipullo@utu.fi", salis));
         System.exit(0);
+        */
     }
 }

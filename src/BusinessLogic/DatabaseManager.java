@@ -5,6 +5,7 @@ import java.sql.*;
 public class DatabaseManager {
     private Connection conn = null;
     private String dbname;
+    private Crypter crypter = new Crypter();
 
     public DatabaseManager(String dbname) {
         try {
@@ -44,13 +45,13 @@ public class DatabaseManager {
     /**
      * Returns first and last name if passwords matched, else returns null.
      * @param email plaintext email from UI field
-     * @param cryptPass SHA256 password from ui
+     * @param plainPass plaintext password from UI: crypting moved from front to back
      * @return
      */
-    public boolean authenticate(String email, String cryptPass) {
+    public boolean authenticate(String email, String plainPass) {
         try {
             Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT email FROM "+dbname+" WHERE email='"+email+"'AND passwd='"+cryptPass+"'" );
+            ResultSet rs = statement.executeQuery("SELECT email FROM "+dbname+" WHERE email='"+email+"'AND passwd='"+crypter.generatePasswordHash(plainPass)+"'" );
             return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,14 +59,14 @@ public class DatabaseManager {
         return false;
     }
 
-    public void addNewUser(String Fname, String Lname, String email, String passwd)  {
+    public void addNewUser(String Fname, String Lname, String email, String plainPass)  {
 
 
         // Statement
         try {
             Statement statement = conn.createStatement();
             statement.executeUpdate("INSERT INTO users (Fname, Lname, email, passwd)" +
-                    "VALUES ('" + Fname + "','" + Lname + "','" + email + "','" + passwd + "') ");
+                    "VALUES ('" + Fname + "','" + Lname + "','" + email + "','" + crypter.generatePasswordHash(plainPass) + "') ");
             System.err.println("User added successfully");
         } catch (SQLException e) {
             if (e.toString().contains("constraint failed")) {

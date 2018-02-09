@@ -15,7 +15,9 @@ public class Crypter {
         }
         assert digester != null;
         digester.update(passwd.getBytes());
+        String cryptedpass = new String(digester.digest());
+        System.out.println(cryptedpass);
 
-        return digester.toString();
+        return cryptedpass;
     }
 }
