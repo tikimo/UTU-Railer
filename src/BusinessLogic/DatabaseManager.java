@@ -91,7 +91,7 @@ public class DatabaseManager {
 
     /**
      * Assume user exists and has both names in database.
-     * @param email
+     * @param email Users email address
      * @return
      */
     public String getUserName (String email) {
@@ -106,3 +106,5 @@ public class DatabaseManager {
     }
 
 }
+
+
