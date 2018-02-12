@@ -1,33 +1,19 @@
 package FrontEnd.Login;
 
 import BusinessLogic.DatabaseManager;
-import FrontEnd.Main;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.MotionBlur;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
 
 import java.io.IOException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 
 public class LoginController {
     public Label createAccountLink;
@@ -39,9 +25,11 @@ public class LoginController {
     public PasswordField passwordFieldLogin;
     public Button signInButton;
     public Button createAccountButton;
+    public Label errorLabelSignIn;
+    public Label errorLabelCreateAccount;
     private DatabaseManager dbmanager = new DatabaseManager("users");
 
-    public void showAccountCreationDialog(MouseEvent mouseEvent) {
+    public void showAccountCreationDialog() {
         firstNameField.setDisable(false);
         lastNameField.setDisable(false);
         emailField.setDisable(false);
@@ -66,10 +54,12 @@ public class LoginController {
                 launchPortal(email);
             } else {
                 System.err.println("Authentication failed!");
+                errorLabelSignIn.setText("Authentication failed!");
             }
 
         } else {
             System.err.println("User does not exist!");
+            errorLabelSignIn.setText("User does not exist!");
         }
     }
 
@@ -77,10 +67,12 @@ public class LoginController {
 
         if (dbmanager.userExists(emailField.getText())) {
             System.err.println("[WARNING] Email is already associated with another account! Aborting registration...");
+            errorLabelCreateAccount.setText("Email already exists!");
         } else {
             // Crypting is handled in back-end
             dbmanager.addNewUser(firstNameField.getText(), lastNameField.getText(), emailField.getText(), passwordField.getText());
             System.err.println("New user added. You can login now.");
+            errorLabelCreateAccount.setText("Account created! You can login now.");
         }
     }
 
@@ -90,10 +82,10 @@ public class LoginController {
      * never leaves clients PC.
      *
      *
-     * @param email
-     * @param plaintextPass
-     * @return
-     * @throws NoSuchAlgorithmException
+     * @param email email address (key value)
+     * @param plaintextPass Password as plaintext. Crypting in backend
+     * @return returns true if auth succeeded
+     * @throws NoSuchAlgorithmException Throws dbmanagers exception
      */
     private boolean authenticationSucceeded(String email, String plaintextPass)  {
         return dbmanager.authenticate(email, plaintextPass); // rs.next() returns true if row exists
