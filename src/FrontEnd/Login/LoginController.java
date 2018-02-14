@@ -67,11 +67,13 @@ public class LoginController {
 
         if (dbmanager.userExists(emailField.getText())) {
             System.err.println("[WARNING] Email is already associated with another account! Aborting registration...");
+            errorLabelCreateAccount.setTextFill(Color.RED);
             errorLabelCreateAccount.setText("Email already exists!");
         } else {
             // Crypting is handled in back-end
             dbmanager.addNewUser(firstNameField.getText(), lastNameField.getText(), emailField.getText(), passwordField.getText());
             System.err.println("New user added. You can login now.");
+            errorLabelCreateAccount.setTextFill(Color.GREEN);
             errorLabelCreateAccount.setText("Account created! You can login now.");
         }
     }
