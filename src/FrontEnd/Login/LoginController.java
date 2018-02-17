@@ -51,7 +51,7 @@ public class LoginController {
             if (authenticationSucceeded(email, password)) { // check if users' name was returned
                 // Here authentication has succeeded. Login window will close and portal will launch.
                 System.err.println("Authentication succeeded!");
-                launchPortal(email);
+                launchPortal(email, false);
             } else {
                 System.err.println("Authentication failed!");
                 errorLabelSignIn.setText("Authentication failed!");
@@ -93,7 +93,7 @@ public class LoginController {
         return dbmanager.authenticate(email, plaintextPass); // rs.next() returns true if row exists
     }
 
-    private void launchPortal(String email) {
+    public void launchPortal(String email, boolean debug) {
         String name = dbmanager.getUserName(email);
         try {
             // Setup new stage
@@ -110,9 +110,12 @@ public class LoginController {
             portalStage.getIcons().add(new Image("FrontEnd/RES/logo.png"));
 
 
+            if (!debug) {
             // Hide login and launch portal
             Stage loginStage = (Stage) signInButton.getScene().getWindow();
             loginStage.hide();
+            }
+
             portalStage.show();
 
         } catch (IOException e) {
