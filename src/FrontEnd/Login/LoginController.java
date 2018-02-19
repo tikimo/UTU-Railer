@@ -120,6 +120,7 @@ public class LoginController {
 
         } catch (IOException e) {
             System.err.println("[ERROR] Cant open new window!");
+            System.exit(-1);
         }
 
 

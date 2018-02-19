@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
 
 <AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FrontEnd.Portal.PortalController">
    <children>
-      <ScrollPane fx:id="scrollPane" prefHeight="768.0" prefWidth="1024.0">
+      <ScrollPane fx:id="scrollPane" prefHeight="768.0" prefWidth="1024.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <content>
-          <AnchorPane fx:id="scrollPaneAnchorPane" minHeight="768.0" minWidth="3072.0" prefHeight="768.0" prefWidth="3072.0">
+            <AnchorPane fx:id="scrollPaneAnchorPane" minHeight="768.0" minWidth="3072.0" prefHeight="768.0" prefWidth="3072.0">
                <children>
-                  <Pane prefHeight="768.0" prefWidth="3072.0" />
+                  <ImageView fitHeight="150.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0">
+                     <image>
+                         <Image url="@../RES/pirii ja mammii.png" />
+                     </image>
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </ImageView>
                </children></AnchorPane>
         </content>
       </ScrollPane>
