@@ -10,7 +10,8 @@ public class PortalController {
 
 
     public void initialize() {
-        // scrollPane.setFitToHeight(true);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVisible(false);
         
     }
 
