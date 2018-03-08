@@ -23,11 +23,14 @@ public class DatabaseManager {
     private void createTable() {
         try {
             Statement statement = conn.createStatement();
-            statement.executeUpdate("CREATE TABLE " + "users" +
-                    "(Fname     TEXT    NOT NULL ," +
-                    "Lname      TEXT    NOT NULL ," +
-                    "email      VARCHAR (30)    PRIMARY KEY NOT NULL ," +
-                    "passwd     TEXT    NOT NULL )");
+            statement.executeUpdate("CREATE TABLE users(\n" +
+                    "  Fname     TEXT    NOT NULL ,\n" +
+                    "  Lname     TEXT    NOT NULL ,\n" +
+                    "  email     VARCHAR (30)    PRIMARY KEY NOT NULL ,\n" +
+                    "  passwd    TEXT    ,\n" +
+                    "  address   TEXT    ,\n" +
+                    "  phone     TEXT    ,\n" +
+                    "  cardnum   TEXT    )");
             statement.close();
             System.err.println("Table '"+ "users" +"' created successfully");
 
@@ -89,6 +92,64 @@ public class DatabaseManager {
         return false;
     }
 
+    public boolean addAddress (String address, String email) {
+        boolean success = false;
+        // Statement
+        try {
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("UPDATE users " +
+                    "SET address = '" + address + "' WHERE email='" + email + "'");
+            System.err.println("Email updated successfully");
+            success = true;
+        } catch (SQLException e) {
+            if (e.toString().contains("constraint failed")) {
+                System.err.println("[ERROR] Constraint failed! Error code:");
+                e.getErrorCode();
+            } else {
+                e.printStackTrace();
+            }
+        }
+        return success;
+    }
+    public boolean addPhone (String phone, String email) {
+        boolean success = false;
+        // Statement
+        try {
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("UPDATE users " +
+                    "SET phone = '" + phone + "' WHERE email='" + email + "'");
+            System.err.println("Phone updated successfully");
+            success = true;
+        } catch (SQLException e) {
+            if (e.toString().contains("constraint failed")) {
+                System.err.println("[ERROR] Constraint failed! Error code:");
+                e.getErrorCode();
+            } else {
+                e.printStackTrace();
+            }
+        }
+        return success;
+    }
+    public boolean addCard (String card, String email) {
+        boolean success = false;
+        // Statement
+        try {
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("UPDATE users " +
+                    "SET cardnum = '" + card + "' WHERE email='" + email + "'");
+            System.err.println("Card updated successfully");
+            success = true;
+        } catch (SQLException e) {
+            if (e.toString().contains("constraint failed")) {
+                System.err.println("[ERROR] Constraint failed! Error code:");
+                e.getErrorCode();
+            } else {
+                e.printStackTrace();
+            }
+        }
+        return success;
+    }
+
     /**
      * Assume user exists and has both names in database.
      * @param email Users email address
@@ -103,6 +164,43 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String getAddress(String email) {
+        String returnable = "NaN";
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT address FROM "+dbname+" WHERE email="+email+"'");
+            returnable = resultSet.getString(1);
+            return returnable.length() > 0 ? returnable : "NaN";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnable;
+    }
+    public String getPhone(String email) {
+        String returnable = "NaN";
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT phone FROM "+dbname+" WHERE email="+email+"'");
+            returnable = resultSet.getString(1);
+            return returnable.length() > 0 ? returnable : "NaN";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnable;
+    }
+    public String getCard(String email) {
+        String returnable = "NaN";
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT cardnum FROM "+dbname+" WHERE email="+email+"'");
+            returnable = resultSet.getString(1);
+            return returnable.length() > 0 ? returnable : "NaN";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnable;
     }
 
 }

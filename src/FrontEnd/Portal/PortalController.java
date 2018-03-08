@@ -1,5 +1,13 @@
 package FrontEnd.Portal;
 
+import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.Pane;
+
 /**
  * 1. First the user must select the route
  *      FROM - TO
@@ -23,14 +31,24 @@ package FrontEnd.Portal;
  *  In this tab, user can delcare:
  *      Address information
  *      new password
- *      payment information
+ *      billing information
  *
  */
 public class PortalController {
 
+    public Button settingsButton;
+    public AnchorPane settingsAnchorPane;
+    private boolean settingsOpen = false;
+
     public void initialize() {
-        // scrollPane.setFitToHeight(true);
-        
+        Image buttonBgImage = new Image("FrontEnd/RES/hamburger.png");
+        settingsButton.setGraphic(new ImageView(buttonBgImage));
+        settingsAnchorPane.setVisible(settingsOpen);
     }
 
+
+    public void toggleSettings(ActionEvent actionEvent) {
+        settingsAnchorPane.setVisible(!settingsOpen);
+        settingsOpen = !settingsOpen;
+    }
 }
