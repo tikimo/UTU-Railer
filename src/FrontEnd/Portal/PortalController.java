@@ -1,7 +1,9 @@
 package FrontEnd.Portal;
 
+import BusinessLogic.DatabaseManager;
+import FrontEnd.Login.LoginController;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -36,19 +38,55 @@ import javafx.scene.layout.Pane;
  */
 public class PortalController {
 
+    public TextField billingAddressFieldSettings;
+    public TextField phoneNumberFieldSettings;
+    public PasswordField oldPasswordFieldSettings;
+    public PasswordField newPasswordFieldSettings;
+    public Button updateBillingAddressButtonSettings;
+    public Button updatePhoneNumberButtonSettings;
+    public Button updatePasswordButtonSettings;
+    public Label settingPropertyUpdatedText;
+    public Button checkOldPassSettings;
+    public ListView tripOptionListView;
     public Button settingsButton;
     public AnchorPane settingsAnchorPane;
+    public Label settingsGreeting;
+    
     private boolean settingsOpen = false;
+    private String user = LoginController.getAuthenticatedUser();
+    private DatabaseManager dbm = LoginController.getDbmanager();
+
+
 
     public void initialize() {
+        // Settings tab
         Image buttonBgImage = new Image("FrontEnd/RES/hamburger.png");
         settingsButton.setGraphic(new ImageView(buttonBgImage));
         settingsAnchorPane.setVisible(settingsOpen);
+        settingsGreeting.setText("Hi " + dbm.getUserName(user) + ". Here you can edit your personal info.");
+        
+        // First pane
+        showFirstPane();
+    }
+
+    private void showFirstPane() {
     }
 
 
     public void toggleSettings(ActionEvent actionEvent) {
         settingsAnchorPane.setVisible(!settingsOpen);
         settingsOpen = !settingsOpen;
+    }
+
+    public void updateBillingInfo(ActionEvent actionEvent) {
+    }
+
+    public void updatePhoneNumber(ActionEvent actionEvent) {
+    }
+
+    public void updatePassword(ActionEvent actionEvent) {
+    }
+
+    public void checkOldPass(ActionEvent actionEvent) {
     }
 }

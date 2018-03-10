@@ -1,6 +1,7 @@
 package FrontEnd.Login;
 
 import BusinessLogic.DatabaseManager;
+import FrontEnd.Portal.PortalController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,6 +17,9 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 public class LoginController {
+    private static String authenticatedUser;
+    private static DatabaseManager dbmanager = new DatabaseManager("users");
+
     public Label createAccountLink;
     public TextField firstNameField;
     public TextField lastNameField;
@@ -27,7 +31,6 @@ public class LoginController {
     public Button createAccountButton;
     public Label errorLabelSignIn;
     public Label errorLabelCreateAccount;
-    private DatabaseManager dbmanager = new DatabaseManager("users");
 
     public void showAccountCreationDialog() {
         firstNameField.setDisable(false);
@@ -90,17 +93,22 @@ public class LoginController {
      * @throws NoSuchAlgorithmException Throws dbmanagers exception
      */
     private boolean authenticationSucceeded(String email, String plaintextPass)  {
-        return dbmanager.authenticate(email, plaintextPass); // rs.next() returns true if row exists
+        if (dbmanager.authenticate(email, plaintextPass)) { // rs.next() returns true if row exists
+            System.err.println("User "+email+" successfully authenticated.");
+            authenticatedUser = email;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void launchPortal(String email, boolean debug) {
-        String name = dbmanager.getUserName(email);
         try {
             // Setup new stage
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../Portal/portal.fxml"));
             Parent portalRoot = fxmlLoader.load();
             Stage portalStage = new Stage();
-            portalStage.setTitle("Welcome to U-R Portal " + name);
+            portalStage.setTitle("U-R Portal: " + email);
             portalStage.setScene(new Scene(portalRoot));
 
             // Set variables and parameters
@@ -127,4 +135,11 @@ public class LoginController {
     }
 
 
+    public static String getAuthenticatedUser() {
+        return authenticatedUser;
+    }
+
+    public static DatabaseManager getDbmanager() {
+        return dbmanager;
+    }
 }
