@@ -23,11 +23,14 @@ public class DatabaseManager {
     private void createTable() {
         try {
             Statement statement = conn.createStatement();
-            statement.executeUpdate("CREATE TABLE " + "users" +
-                    "(Fname     TEXT    NOT NULL ," +
-                    "Lname      TEXT    NOT NULL ," +
-                    "email      VARCHAR (30)    PRIMARY KEY NOT NULL ," +
-                    "passwd     TEXT    NOT NULL )");
+            statement.executeUpdate("CREATE TABLE users(\n" +
+                    "  Fname     TEXT    NOT NULL ,\n" +
+                    "  Lname     TEXT    NOT NULL ,\n" +
+                    "  email     VARCHAR (30)    PRIMARY KEY NOT NULL ,\n" +
+                    "  passwd    TEXT    ,\n" +
+                    "  address   TEXT    ,\n" +
+                    "  phone     TEXT    ,\n" +
+                    "  cardnum   TEXT    )");
             statement.close();
             System.err.println("Table '"+ "users" +"' created successfully");
 
@@ -43,16 +46,20 @@ public class DatabaseManager {
     }
 
     /**
-     * Returns first and last name if passwords matched, else returns null.
      * @param email plaintext email from UI field
      * @param plainPass plaintext password from UI: crypting moved from front to back
-     * @return
+     * @return Returns true if passwords matched, else returns false.
      */
     public boolean authenticate(String email, String plainPass) {
+        boolean success;
         try {
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery("SELECT email FROM "+dbname+" WHERE email='"+email+"'AND passwd='"+crypter.generateHash(plainPass)+"'" );
-            return rs.next();
+            success = rs.next();
+            if (success) {
+                System.err.println("Database authentication confirmed.");
+            }
+            return success;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -89,6 +96,79 @@ public class DatabaseManager {
         return false;
     }
 
+    public boolean updatePassword(String plainPass, String email) {
+        // Statement
+        try {
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("UPDATE users " +
+                    "SET passwd = '" + crypter.generateHash(plainPass) + "'" +
+                    "WHERE email = '" + email + "'");
+            System.err.println("Password updated successfully!");
+            return true;
+        } catch (SQLException sqle) {
+            System.err.println("SQL Error! Code: " + sqle.getErrorCode());
+        }
+        return false;
+    }
+
+    public boolean addAddress (String address, String email) {
+        boolean success = false;
+        // Statement
+        try {
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("UPDATE users " +
+                    "SET address = '" + address + "' WHERE email='" + email + "'");
+            System.err.println("Address updated successfully");
+            success = true;
+        } catch (SQLException e) {
+            if (e.toString().contains("constraint failed")) {
+                System.err.println("[ERROR] Constraint failed! Error code:");
+                e.getErrorCode();
+            } else {
+                e.printStackTrace();
+            }
+        }
+        return success;
+    }
+    public boolean addPhone (String phone, String email) {
+        boolean success = false;
+        // Statement
+        try {
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("UPDATE users " +
+                    "SET phone = '" + phone + "' WHERE email='" + email + "'");
+            System.err.println("Phone updated successfully");
+            success = true;
+        } catch (SQLException e) {
+            if (e.toString().contains("constraint failed")) {
+                System.err.println("[ERROR] Constraint failed! Error code:");
+                e.getErrorCode();
+            } else {
+                e.printStackTrace();
+            }
+        }
+        return success;
+    }
+    public boolean addCard (String card, String email) {
+        boolean success = false;
+        // Statement
+        try {
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("UPDATE users " +
+                    "SET cardnum = '" + card + "' WHERE email='" + email + "'");
+            System.err.println("Card updated successfully");
+            success = true;
+        } catch (SQLException e) {
+            if (e.toString().contains("constraint failed")) {
+                System.err.println("[ERROR] Constraint failed! Error code:");
+                e.getErrorCode();
+            } else {
+                e.printStackTrace();
+            }
+        }
+        return success;
+    }
+
     /**
      * Assume user exists and has both names in database.
      * @param email Users email address
@@ -103,6 +183,42 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return null;
+    }
+    public String getAddress(String email) {
+        String returnable = "NaN";
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT address FROM "+dbname+" WHERE email='"+email+"'");
+            returnable = resultSet.getString(1);
+            return (returnable == null) ? "NaN" : returnable;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnable;
+    }
+    public String getPhone(String email) {
+        String returnable = "NaN";
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT phone FROM "+dbname+" WHERE email='"+email+"'");
+            returnable = resultSet.getString(1);
+            return (returnable == null) ? "NaN" : returnable;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnable;
+    }
+    public String getCard(String email) {
+        String returnable = "NaN";
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT cardnum FROM "+dbname+" WHERE email='"+email+"'");
+            returnable = resultSet.getString(1);
+            return (returnable == null) ? "NaN" : returnable;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return returnable;
     }
 
 }

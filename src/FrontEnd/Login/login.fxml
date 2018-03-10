@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FrontEnd.Login.LoginController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FrontEnd.Login.LoginController">
    <children>
       <Label layoutX="15.0" layoutY="16.0" text="Authenticate with your UTU-Railer credentials">
          <font>
@@ -46,8 +46,8 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
-           <TextField fx:id="emailFieldLogin" layoutX="10.0" layoutY="31.0" promptText="user@utu-railer.fi" GridPane.rowIndex="1" />
-           <PasswordField fx:id="passwordFieldLogin" promptText="•••••••••••••" GridPane.rowIndex="3" />
+           <TextField fx:id="emailFieldLogin" layoutX="10.0" layoutY="31.0" onAction="#signIn" promptText="user@utu-railer.fi" GridPane.rowIndex="1" />
+           <PasswordField fx:id="passwordFieldLogin" onAction="#signIn" promptText="•••••••••••••" GridPane.rowIndex="3" />
          <Label text="Email" />
          <Label text="Password" GridPane.rowIndex="2" />
        </GridPane>
@@ -67,7 +67,7 @@
            <TextField fx:id="emailField" disable="true" layoutX="10.0" layoutY="31.0" promptText="email" GridPane.rowIndex="2" />
            <PasswordField fx:id="passwordField" disable="true" promptText="Password" GridPane.rowIndex="3" />
        </GridPane>
-      <Button fx:id="createAccountButton" disable="true" layoutX="534.0" layoutY="300.0" mnemonicParsing="false" onAction="#createAccount" text="Create account" AnchorPane.bottomAnchor="70.0" AnchorPane.rightAnchor="15.0" />
+      <Button fx:id="createAccountButton" disable="true" layoutX="534.0" layoutY="300.0" mnemonicParsing="false" onAction="#createAccount" text="Create account" AnchorPane.bottomAnchor="60.0" AnchorPane.rightAnchor="15.0" />
       <Label fx:id="logo" layoutX="498.0" layoutY="6.0" text="U-R" textFill="#05b91a" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="5.0">
          <font>
             <Font name="Broadway" size="47.0" />
