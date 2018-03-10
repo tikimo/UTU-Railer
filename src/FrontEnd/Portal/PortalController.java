@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 
 /**
@@ -51,42 +50,70 @@ public class PortalController {
     public Button settingsButton;
     public AnchorPane settingsAnchorPane;
     public Label settingsGreeting;
-    
+    public Pane firstPane;
+    public Pane secondPane;
+    public Pane thirdPane;
+
     private boolean settingsOpen = false;
     private String user = LoginController.getAuthenticatedUser();
     private DatabaseManager dbm = LoginController.getDbmanager();
 
 
-
+    /**
+     * Initializes settings for portal
+     */
     public void initialize() {
         // Settings tab
         Image buttonBgImage = new Image("FrontEnd/RES/hamburger.png");
         settingsButton.setGraphic(new ImageView(buttonBgImage));
         settingsAnchorPane.setVisible(settingsOpen);
         settingsGreeting.setText("Hi " + dbm.getUserName(user) + ". Here you can edit your personal info.");
+        // init text fills
+        settingPropertyUpdatedText.setText("");
+        billingAddressFieldSettings.setText(dbm.getAddress(user));
+        phoneNumberFieldSettings.setText(dbm.getPhone(user));
+
         
         // First pane
-        showFirstPane();
+        showPane(1);
     }
 
-    private void showFirstPane() {
+    /**
+     * Displays pane that is passed as parameter
+     * @param i index of pane
+     */
+    private void showPane(int i) {
+        firstPane.setVisible(false);
+        secondPane.setVisible(false);
+        thirdPane.setVisible(false);
+        switch (i) {
+            case 1:
+                firstPane.setVisible(true);
+            case 2:
+                secondPane.setVisible(true);
+            case 3:
+                thirdPane.setVisible(true);
+        }
     }
 
 
-    public void toggleSettings(ActionEvent actionEvent) {
+    /**
+     * Toggles the settings pane where user can update details
+     */
+    public void toggleSettings() {
         settingsAnchorPane.setVisible(!settingsOpen);
         settingsOpen = !settingsOpen;
     }
 
-    public void updateBillingInfo(ActionEvent actionEvent) {
+    public void updateBillingInfo() {
     }
 
-    public void updatePhoneNumber(ActionEvent actionEvent) {
+    public void updatePhoneNumber() {
     }
 
-    public void updatePassword(ActionEvent actionEvent) {
+    public void updatePassword() {
     }
 
-    public void checkOldPass(ActionEvent actionEvent) {
+    public void checkOldPass() {
     }
 }
