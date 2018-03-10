@@ -28,7 +28,7 @@
     
 -->
 
-<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FrontEnd.Portal.PortalController">
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FrontEnd.Portal.PortalController">
    <children>
       <Pane AnchorPane.bottomAnchor="700.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -121,7 +121,7 @@
                               <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField fx:id="billingAddressFieldSettings" promptText="Linnankatu 1, 20100 Turku" GridPane.rowIndex="1" />
+                              <TextField fx:id="billingAddressFieldSettings" onAction="#updateBillingInfo" promptText="Linnankatu 1, 20100 Turku" GridPane.rowIndex="1" />
                               <Label text="Billing address" />
                            </children>
                         </GridPane>
@@ -134,7 +134,7 @@
                               <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="36.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField fx:id="phoneNumberFieldSettings" promptText="040 123 4567" GridPane.rowIndex="1" />
+                              <TextField fx:id="phoneNumberFieldSettings" onAction="#updatePhoneNumber" promptText="040 123 4567" GridPane.rowIndex="1" />
                               <Label text="Phone number" />
                            </children>
                         </GridPane>
@@ -147,7 +147,7 @@
                               <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="36.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField fx:id="creditCardFieldSettings" promptText="XXXX XXXX XXXX XXXX" GridPane.rowIndex="1" />
+                              <TextField fx:id="creditCardFieldSettings" onAction="#updateCreditCardInfo" promptText="XXXX XXXX XXXX XXXX" GridPane.rowIndex="1" />
                               <Label text="Credit card number" />
                            </children>
                         </GridPane>
@@ -170,7 +170,7 @@
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <PasswordField fx:id="oldPasswordFieldSettings" promptText="OLD PASSWORD" />
+                                    <PasswordField fx:id="oldPasswordFieldSettings" onAction="#checkOldPass" promptText="OLD PASSWORD" />
                                     <Button fx:id="checkOldPassSettings" mnemonicParsing="false" onAction="#checkOldPass" text="Authenticate" GridPane.columnIndex="1">
                                        <GridPane.margin>
                                           <Insets left="10.0" />
@@ -178,7 +178,7 @@
                                     </Button>
                                  </children>
                               </GridPane>
-                              <PasswordField fx:id="newPasswordFieldSettings" disable="true" layoutX="10.0" layoutY="68.0" promptText="NEW PASSWORD" GridPane.rowIndex="2" />
+                              <PasswordField fx:id="newPasswordFieldSettings" disable="true" layoutX="10.0" layoutY="68.0" onAction="#updatePassword" promptText="NEW PASSWORD" GridPane.rowIndex="2" />
                               <Label text="Update your password" />
                            </children>
                         </GridPane>
@@ -188,6 +188,7 @@
                         <Button fx:id="updateCreditCardButton" defaultButton="true" mnemonicParsing="false" onAction="#updateCreditCardInfo" text="Update" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
+                  <Label fx:id="wrongPasswordLabel" layoutX="10.0" layoutY="384.0" text="Wrong password!" textFill="RED" />
                </children>
             </Pane>
             <Label fx:id="settingsGreeting" layoutX="14.0" layoutY="48.0" text="Welcome to the portal, Name" AnchorPane.leftAnchor="14.0" />

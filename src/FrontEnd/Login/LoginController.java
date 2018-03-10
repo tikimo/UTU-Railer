@@ -53,7 +53,7 @@ public class LoginController {
         if (dbmanager.userExists(email)) {  // check if user exists
             if (authenticationSucceeded(email, password)) { // check if users' name was returned
                 // Here authentication has succeeded. Login window will close and portal will launch.
-                System.err.println("Authentication succeeded!");
+                System.err.println("Sign-in succeeded!");
                 launchPortal(email, false);
             } else {
                 System.err.println("Authentication failed!");
@@ -128,6 +128,7 @@ public class LoginController {
 
         } catch (IOException e) {
             System.err.println("[ERROR] Cant open new window!");
+            e.printStackTrace();
         }
 
 

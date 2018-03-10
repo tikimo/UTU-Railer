@@ -46,16 +46,20 @@ public class DatabaseManager {
     }
 
     /**
-     * Returns first and last name if passwords matched, else returns null.
      * @param email plaintext email from UI field
      * @param plainPass plaintext password from UI: crypting moved from front to back
-     * @return
+     * @return Returns true if passwords matched, else returns false.
      */
     public boolean authenticate(String email, String plainPass) {
+        boolean success;
         try {
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery("SELECT email FROM "+dbname+" WHERE email='"+email+"'AND passwd='"+crypter.generateHash(plainPass)+"'" );
-            return rs.next();
+            success = rs.next();
+            if (success) {
+                System.err.println("Database authentication confirmed.");
+            }
+            return success;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -92,6 +96,21 @@ public class DatabaseManager {
         return false;
     }
 
+    public boolean updatePassword(String plainPass, String email) {
+        // Statement
+        try {
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("UPDATE users " +
+                    "SET passwd = '" + crypter.generateHash(plainPass) + "'" +
+                    "WHERE email = '" + email + "'");
+            System.err.println("Password updated successfully!");
+            return true;
+        } catch (SQLException sqle) {
+            System.err.println("SQL Error! Code: " + sqle.getErrorCode());
+        }
+        return false;
+    }
+
     public boolean addAddress (String address, String email) {
         boolean success = false;
         // Statement
@@ -99,7 +118,7 @@ public class DatabaseManager {
             Statement statement = conn.createStatement();
             statement.executeUpdate("UPDATE users " +
                     "SET address = '" + address + "' WHERE email='" + email + "'");
-            System.err.println("Email updated successfully");
+            System.err.println("Address updated successfully");
             success = true;
         } catch (SQLException e) {
             if (e.toString().contains("constraint failed")) {
@@ -165,14 +184,13 @@ public class DatabaseManager {
         }
         return null;
     }
-
     public String getAddress(String email) {
         String returnable = "NaN";
         try {
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT address FROM "+dbname+" WHERE email="+email+"'");
+            ResultSet resultSet = statement.executeQuery("SELECT address FROM "+dbname+" WHERE email='"+email+"'");
             returnable = resultSet.getString(1);
-            return returnable.length() > 0 ? returnable : "NaN";
+            return (returnable == null) ? "NaN" : returnable;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -182,9 +200,9 @@ public class DatabaseManager {
         String returnable = "NaN";
         try {
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT phone FROM "+dbname+" WHERE email="+email+"'");
+            ResultSet resultSet = statement.executeQuery("SELECT phone FROM "+dbname+" WHERE email='"+email+"'");
             returnable = resultSet.getString(1);
-            return returnable.length() > 0 ? returnable : "NaN";
+            return (returnable == null) ? "NaN" : returnable;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -194,9 +212,9 @@ public class DatabaseManager {
         String returnable = "NaN";
         try {
             Statement statement = conn.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT cardnum FROM "+dbname+" WHERE email="+email+"'");
+            ResultSet resultSet = statement.executeQuery("SELECT cardnum FROM "+dbname+" WHERE email='"+email+"'");
             returnable = resultSet.getString(1);
-            return returnable.length() > 0 ? returnable : "NaN";
+            return (returnable == null) ? "NaN" : returnable;
         } catch (SQLException e) {
             e.printStackTrace();
         }

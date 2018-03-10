@@ -53,6 +53,9 @@ public class PortalController {
     public Pane firstPane;
     public Pane secondPane;
     public Pane thirdPane;
+    public TextField creditCardFieldSettings;
+    public Button updateCreditCardButton;
+    public Label wrongPasswordLabel;
 
     private boolean settingsOpen = false;
     private String user = LoginController.getAuthenticatedUser();
@@ -68,11 +71,12 @@ public class PortalController {
         settingsButton.setGraphic(new ImageView(buttonBgImage));
         settingsAnchorPane.setVisible(settingsOpen);
         settingsGreeting.setText("Hi " + dbm.getUserName(user) + ". Here you can edit your personal info.");
+        wrongPasswordLabel.setVisible(false);
         // init text fills
         settingPropertyUpdatedText.setText("");
         billingAddressFieldSettings.setText(dbm.getAddress(user));
         phoneNumberFieldSettings.setText(dbm.getPhone(user));
-
+        creditCardFieldSettings.setText(dbm.getCard(user));
         
         // First pane
         showPane(1);
@@ -89,10 +93,13 @@ public class PortalController {
         switch (i) {
             case 1:
                 firstPane.setVisible(true);
+                break;
             case 2:
                 secondPane.setVisible(true);
+                break;
             case 3:
                 thirdPane.setVisible(true);
+                break;
         }
     }
 
@@ -106,14 +113,35 @@ public class PortalController {
     }
 
     public void updateBillingInfo() {
+        dbm.addAddress(billingAddressFieldSettings.getText(), user);
     }
 
     public void updatePhoneNumber() {
+        dbm.addPhone(phoneNumberFieldSettings.getText(), user);
+    }
+
+    public void updateCreditCardInfo() {
+        dbm.addCard(creditCardFieldSettings.getText(), user);
     }
 
     public void updatePassword() {
+        if (dbm.updatePassword(newPasswordFieldSettings.getText(), user)) {
+            settingPropertyUpdatedText.setText("Password updated!");
+            updatePasswordButtonSettings.setDisable(true);
+            newPasswordFieldSettings.setDisable(true);
+        } else {
+
+        }
     }
 
     public void checkOldPass() {
+        if (dbm.authenticate(user, oldPasswordFieldSettings.getText())) {
+            System.err.println("Front-end old password check confirmed.");
+            newPasswordFieldSettings.setDisable(false);
+            updatePasswordButtonSettings.setDisable(false);
+            wrongPasswordLabel.setVisible(false);
+        } else {
+            wrongPasswordLabel.setVisible(true);
+        }
     }
 }

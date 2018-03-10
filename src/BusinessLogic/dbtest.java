@@ -5,7 +5,7 @@ import javafx.stage.Stage;
 
 
 public class dbtest extends Application {
-    String fname = "Tijam", lname = "Moradi", email = "tikimo@utu.fi", pass = "huippusalainen";
+    String fname = "Tijam", lname = "Moradi", email = "tikimo@utu.fi", pass = "salasana";
 
 
     @Override
@@ -17,6 +17,9 @@ public class dbtest extends Application {
 
         // create user with the params
         DatabaseManager dbm = new DatabaseManager("users");
+
+        dbm.updatePassword(pass,email);
+        /*
         dbm.addNewUser(fname,lname,email,pass);
 
         System.out.println(
@@ -24,6 +27,7 @@ public class dbtest extends Application {
         dbm.getUserName("tikimo@utu.fi") + "\n" +
         dbm.authenticate("tikimo@utu.fi", pass) + "\n" +
         dbm.authenticate("tikimo@utu.fi", reverseLetters(pass)));
+        */
 
         System.exit(0);
     }
