@@ -72,7 +72,7 @@ public class DatabaseManager {
         // Statement
         try {
             Statement statement = conn.createStatement();
-            statement.executeUpdate("INSERT INTO users (Fname, Lname, email, passwd)" +
+            statement.executeUpdate("INSERT INTO users (Fname, Lname, email, passwd) " +
                     "VALUES ('" + Fname + "','" + Lname + "','" + email + "','" + crypter.generateHash(plainPass) + "') ");
             System.err.println("User added successfully");
         } catch (SQLException e) {
