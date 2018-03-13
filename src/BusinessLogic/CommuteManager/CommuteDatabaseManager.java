@@ -2,6 +2,7 @@ package BusinessLogic.CommuteManager;
 
 import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -70,7 +71,7 @@ public class CommuteDatabaseManager {
     }
 
     public List<Train> getTrainsByProperty(String property, String value) throws IOException, ClassNotFoundException {
-        List<Train> trains = null;
+        List<Train> trains = new ArrayList<>();
         try {
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery("SELECT serializedTrain FROM " + dbname +
@@ -92,7 +93,7 @@ public class CommuteDatabaseManager {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private static Object trainFromString(String s) throws IOException, ClassNotFoundException{
+    private static Train trainFromString(String s) throws IOException, ClassNotFoundException{
         byte[] data = Base64.getDecoder().decode(s);
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 
