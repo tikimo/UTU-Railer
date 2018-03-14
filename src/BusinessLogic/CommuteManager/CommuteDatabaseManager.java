@@ -7,6 +7,13 @@ import java.util.Base64;
 import java.util.List;
 
 public class CommuteDatabaseManager {
+    // Properties for querying train info
+    public final String SERIALIZED_TRAIN = "serializedTrain";
+    public final String DEPARTURE_TIME = "departureTime";
+    public final String DEPARTURE_CITY = "departureCity";
+    public final String ARRIVAL_TIME = "arrivalTime";
+    public final String ARRIVAL_CITY = "arrivalCity";
+
     private Connection conn = null;
     private String dbname;
 
@@ -82,7 +89,7 @@ public class CommuteDatabaseManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        return trains;
 
     }
 

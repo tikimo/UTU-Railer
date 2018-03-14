@@ -1,20 +1,26 @@
 package BusinessLogic.CommuteManager;
 
+import BusinessLogic.CommuteManager.Enums.Stations;
+
 import java.io.Serializable;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Train implements Serializable{
-    private List<Cabinet> cabinetList;
+    private ArrayList<Cabinet> cabinetList;
     private String departureStation;
     private String arrivalStation;
-    private String departureTime;
-    private String arrivalTime;
+    private LocalTime departureTime;
+    private LocalTime arrivalTime;
     private int availableSeats;
 
     private final static long serialVersionUID = 1;
 
-    public Train(List<Cabinet> cabinets, String departureStation, String arrivalStation, String departureTime, String arrivalTime) {
-        this.cabinetList = cabinets;
+    public Train(String departureStation, String arrivalStation, LocalTime departureTime, LocalTime arrivalTime) {
         this.departureStation = departureStation;
         this.arrivalStation = arrivalStation;
         this.departureTime = departureTime;
@@ -46,19 +52,19 @@ public class Train implements Serializable{
         this.arrivalStation = arrivalStation;
     }
 
-    public String getDepartureTime() {
+    public LocalTime getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(String departureTime) {
+    public void setDepartureTime(LocalTime departureTime) {
         this.departureTime = departureTime;
     }
 
-    public String getArrivalTime() {
+    public LocalTime getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(String arrivalTime) {
+    public void setArrivalTime(LocalTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
@@ -66,7 +72,23 @@ public class Train implements Serializable{
         return cabinetList;
     }
 
-    public void setCabinetList(List<Cabinet> cabinetList) {
+    public void setCabinetList(ArrayList<Cabinet> cabinetList) {
         this.cabinetList = cabinetList;
+    }
+
+    public Train generateRandomTrain() {
+        Train randomTrain = null;
+
+        // Generate random cabinets with random seat types
+        ArrayList<Cabinet> cabinetList = new ArrayList<>();
+        for (int i = 0; i<5; i++) {
+            cabinetList.add(Cabinet.generateRandomCabinet());
+        }
+
+        randomTrain.setCabinetList(cabinetList);
+        randomTrain.setDepartureStation(Stations.getRandomStation().getCity());
+        randomTrain.setDepartureTime(LocalTime.of(ThreadLocalRandom));
+
+        return randomTrain;
     }
 }
