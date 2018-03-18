@@ -60,7 +60,7 @@ public class CommuteDatabaseManager {
         }
     }
 
-    private boolean addNewTrain(Train train) throws IOException {
+    boolean addNewTrain(Train train) throws IOException {
         boolean failed = false;
         if (this.dbname == null) {
             this.dbname = "trains";
@@ -86,8 +86,8 @@ public class CommuteDatabaseManager {
         return failed;
     }
 
-    public List<Train> getTrainsByProperty(String property, String value) throws IOException, ClassNotFoundException {
-        List<Train> trains = new ArrayList<>();
+    public ArrayList<Train> getTrainsByProperty(String property, String value) throws IOException, ClassNotFoundException {
+        ArrayList<Train> trains = new ArrayList<>();
         try {
             Statement statement = conn.createStatement();
             ResultSet rs = statement.executeQuery("SELECT serializedTrain FROM " + dbname +
@@ -109,7 +109,7 @@ public class CommuteDatabaseManager {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    private static Train trainFromString(String s) throws IOException, ClassNotFoundException{
+    static Train trainFromString(String s) throws IOException, ClassNotFoundException{
         byte[] data = Base64.getDecoder().decode(s);
         ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
 
@@ -124,17 +124,22 @@ public class CommuteDatabaseManager {
      * @return String of object
      * @throws IOException
      */
-    private static String trainToString(Serializable o) throws IOException {
+    static String trainToString(Serializable o) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        ObjectOutputStream oos;
+        try {
+            oos = new ObjectOutputStream(baos);
+            oos.writeObject(o);
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        oos.writeObject(o);
-        oos.close();
 
         return Base64.getEncoder().encodeToString(baos.toByteArray());
     }
 
-    private static Train generateRandomTrain() {
+    static Train generateRandomTrain() {
 
         // Generate random cabinets with random seat types
         ArrayList<Cabinet> cabinetList = new ArrayList<>();
@@ -178,7 +183,7 @@ public class CommuteDatabaseManager {
     }
 
     public void fillDatabaseWithRandomTrains(CommuteDatabaseManager cdm, int count) {
-        for (int i = 0; i<=count; i++) {
+        for (int i = 0; i<count; i++) {
             try {
                 cdm.addNewTrain(generateRandomTrain());
             } catch (IOException e) {
