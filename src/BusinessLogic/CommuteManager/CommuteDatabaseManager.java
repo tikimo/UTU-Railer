@@ -1,10 +1,15 @@
 package BusinessLogic.CommuteManager;
 
+import BusinessLogic.CommuteManager.Enums.SeatTypes;
+import BusinessLogic.CommuteManager.Enums.Stations;
+
 import java.io.*;
 import java.sql.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CommuteDatabaseManager {
     // Properties for querying train info
@@ -123,6 +128,41 @@ public class CommuteDatabaseManager {
         oos.close();
 
         return Base64.getEncoder().encodeToString(baos.toByteArray());
+    }
+
+    public static Train generateRandomTrain() {
+
+        // Generate random cabinets with random seat types
+        ArrayList<Cabinet> cabinetList = new ArrayList<>();
+        for (int i = 0; i<5; i++) {
+            cabinetList.add(generateRandomCabinet());
+        }
+
+        String departureStation = Stations.getRandomStation().getCity();
+        String arrivalStation = Stations.getRandomStation().getCity();
+
+        // Set random times
+        int startHour = ThreadLocalRandom.current().nextInt(0, 24);
+        int startMin = ThreadLocalRandom.current().nextInt(0, 60);
+        int stopHour = ThreadLocalRandom.current().nextInt(startHour, 24);
+        int stopMin = ThreadLocalRandom.current().nextInt(0, 60);
+        LocalTime departureTime = LocalTime.of(startHour, startMin);
+        LocalTime arrivalTime = LocalTime.of(stopHour, stopMin);
+
+        Train randomTrain = new Train(departureStation, arrivalStation, departureTime, arrivalTime);
+        randomTrain.setCabinetList(cabinetList);
+
+        return randomTrain;
+    }
+
+    private static Cabinet generateRandomCabinet() {
+        ArrayList<Seat> seatList = new ArrayList<>();
+        for (int i = 1; i<=50; i++) {
+            seatList.add(new Seat(i, SeatTypes.getRandomSeatType().name().toLowerCase()));
+        }
+        Cabinet randomCabinet = new Cabinet();
+        randomCabinet.setSeatList(seatList);
+        return randomCabinet;
     }
 
 }

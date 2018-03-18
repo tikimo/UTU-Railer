@@ -28,6 +28,7 @@ public class Train implements Serializable{
     }
 
 
+
     public int getAvailableSeats() {
         return availableSeats;
     }
@@ -76,19 +77,5 @@ public class Train implements Serializable{
         this.cabinetList = cabinetList;
     }
 
-    public Train generateRandomTrain() {
-        Train randomTrain = null;
 
-        // Generate random cabinets with random seat types
-        ArrayList<Cabinet> cabinetList = new ArrayList<>();
-        for (int i = 0; i<5; i++) {
-            cabinetList.add(Cabinet.generateRandomCabinet());
-        }
-
-        randomTrain.setCabinetList(cabinetList);
-        randomTrain.setDepartureStation(Stations.getRandomStation().getCity());
-        randomTrain.setDepartureTime(LocalTime.of(ThreadLocalRandom));
-
-        return randomTrain;
-    }
 }

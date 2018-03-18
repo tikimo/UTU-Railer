@@ -1,8 +1,9 @@
 package BusinessLogic.CommuteManager;
 
 
+import java.io.Serializable;
 
-public class Seat {
+public class Seat implements Serializable{
     private int seatNumber;
     private String seatType;
     private boolean taken;
@@ -16,6 +17,7 @@ public class Seat {
      * @throws IllegalArgumentException To handle problems with parameters
      */
     public Seat(int seatNumber, String seatType) {
+        // System.err.println("Initializing seat " + seatNumber + " as a " + seatType);
 
         if (seatNumber >= 1 && seatNumber <= 50) {
         this.seatNumber = seatNumber;

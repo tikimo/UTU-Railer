@@ -11,13 +11,22 @@ public class commuteTester extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         CommuteDatabaseManager cdm = new CommuteDatabaseManager("trains");
-        LocalTime departure = LocalTime.of(22,15);
+        Train train = CommuteDatabaseManager.generateRandomTrain();
+        test(train);
+
+        cdm.addNewTrain(train);
+
+        Train secondTrain = cdm.getTrainsByProperty(cdm.DEPARTURE_CITY, train.getDepartureStation()).get(0);
+
+        test(secondTrain);
 
 
-        Train train = Train.generateRandomTrain();
+        System.exit(0);
+    }
 
-
-
-
+    private void test(Train train) {
+        int seatNumber = train.getCabinetList().get(2).getSeatList().get(2).getSeatNumber();
+        String seatType = train.getCabinetList().get(2).getSeatList().get(2).getSeatType();
+        System.out.println("Seatnumber is " + seatNumber + " and type is: " + seatType);
     }
 }

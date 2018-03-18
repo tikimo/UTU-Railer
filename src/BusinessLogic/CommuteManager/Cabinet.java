@@ -2,16 +2,17 @@ package BusinessLogic.CommuteManager;
 
 import BusinessLogic.CommuteManager.Enums.SeatTypes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Each cabinet of train has 50 seats no matter the type.
  */
-public class Cabinet {
+public class Cabinet implements Serializable{
     private static ArrayList<Seat> seatList;
 
-    public Cabinet(ArrayList<Seat> seatList) {
+    public Cabinet() {
     }
 
 
@@ -23,10 +24,5 @@ public class Cabinet {
         this.seatList = seatList;
     }
 
-    public static Cabinet generateRandomCabinet() {
-        for (int i = 1; i<=50; i++) {
-            seatList.add(new Seat(i, SeatTypes.getRandomSeatType().name()));
-        }
-        return new Cabinet(seatList);
-    }
+
 }
