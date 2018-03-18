@@ -11,14 +11,7 @@ public class commuteTester extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         CommuteDatabaseManager cdm = new CommuteDatabaseManager("trains");
-        Train train = CommuteDatabaseManager.generateRandomTrain();
-        test(train);
-
-        cdm.addNewTrain(train);
-
-        Train secondTrain = cdm.getTrainsByProperty(cdm.DEPARTURE_CITY, train.getDepartureStation()).get(0);
-
-        test(secondTrain);
+        cdm.fillDatabaseWithRandomTrains(cdm, 8);
 
 
         System.exit(0);

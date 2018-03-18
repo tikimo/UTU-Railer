@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CommuteDatabaseManager {
@@ -22,7 +23,7 @@ public class CommuteDatabaseManager {
     private Connection conn = null;
     private String dbname;
 
-    public CommuteDatabaseManager(String dbname) {
+    CommuteDatabaseManager(String dbname) {
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:"+dbname+".db");
@@ -59,8 +60,11 @@ public class CommuteDatabaseManager {
         }
     }
 
-    public boolean addNewTrain(Train train) throws IOException {
+    private boolean addNewTrain(Train train) throws IOException {
         boolean failed = false;
+        if (this.dbname == null) {
+            this.dbname = "trains";
+        }
 
         // Statement
         try {
@@ -130,7 +134,7 @@ public class CommuteDatabaseManager {
         return Base64.getEncoder().encodeToString(baos.toByteArray());
     }
 
-    public static Train generateRandomTrain() {
+    private static Train generateRandomTrain() {
 
         // Generate random cabinets with random seat types
         ArrayList<Cabinet> cabinetList = new ArrayList<>();
@@ -140,6 +144,11 @@ public class CommuteDatabaseManager {
 
         String departureStation = Stations.getRandomStation().getCity();
         String arrivalStation = Stations.getRandomStation().getCity();
+
+        while (departureStation == arrivalStation) {
+            arrivalStation = Stations.getRandomStation().getCity();
+        }
+
 
         // Set random times
         int startHour = ThreadLocalRandom.current().nextInt(0, 24);
@@ -156,13 +165,25 @@ public class CommuteDatabaseManager {
     }
 
     private static Cabinet generateRandomCabinet() {
+        Random random = new Random();
         ArrayList<Seat> seatList = new ArrayList<>();
         for (int i = 1; i<=50; i++) {
-            seatList.add(new Seat(i, SeatTypes.getRandomSeatType().name().toLowerCase()));
+            Seat seat = new Seat(i, SeatTypes.getRandomSeatType().name().toLowerCase());
+            seat.setReserved(random.nextBoolean());
+            seatList.add(seat);
         }
         Cabinet randomCabinet = new Cabinet();
         randomCabinet.setSeatList(seatList);
         return randomCabinet;
     }
 
+    public void fillDatabaseWithRandomTrains(CommuteDatabaseManager cdm, int count) {
+        for (int i = 0; i<=count; i++) {
+            try {
+                cdm.addNewTrain(generateRandomTrain());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class Seat implements Serializable{
     private int seatNumber;
     private String seatType;
-    private boolean taken;
+    private boolean reserved;
 
     /**
      *
@@ -38,5 +38,12 @@ public class Seat implements Serializable{
     }
     public String getSeatType() {
         return seatType;
+    }
+
+    public boolean isReserved() {
+        return reserved;
+    }
+    public void setReserved(boolean reserved) {
+        this.reserved = reserved;
     }
 }
