@@ -16,10 +16,10 @@ public class Seat implements Serializable{
      * @param seatType      Type of seat. Types: economy, allergy, pet, disabled, quiet, family
      * @throws IllegalArgumentException To handle problems with parameters
      */
-    public Seat(int seatNumber, String seatType) {
+    Seat(int seatNumber, String seatType) {
         // System.err.println("Initializing seat " + seatNumber + " as a " + seatType);
 
-        if (seatNumber >= 1 && seatNumber <= 50) {
+        if (seatNumber >= 1 && seatNumber <= 60) {
         this.seatNumber = seatNumber;
         } else {
             throw new IllegalArgumentException("Seat number is out of range!");
@@ -46,4 +46,5 @@ public class Seat implements Serializable{
     public void setReserved(boolean reserved) {
         this.reserved = reserved;
     }
+
 }

@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Each cabinet of train has 50 seats no matter the type.
+ * Each cabinet of train has 60 seats no matter the type.
  */
 public class Cabinet implements Serializable{
-    private static ArrayList<Seat> seatList;
+    private ArrayList<Seat> seatList;
 
-    public Cabinet() {
+    Cabinet(ArrayList<Seat> seats) {
+        this.seatList = seats;
     }
 
 
@@ -25,4 +26,28 @@ public class Cabinet implements Serializable{
     }
 
 
+    public void printCabin() {
+        int i = 0;
+        if (this.getSeatList() == null) {
+            System.err.println("Seatlist is null!");
+            return;
+        }
+
+        for (Seat seat : this.getSeatList()) {
+            if (seat.isReserved()) {
+                System.out.print(seat.getSeatType().substring(0,1) + " ");
+            } else {
+                System.out.print(seat.getSeatType().substring(0,1).toUpperCase() + " ");
+            }
+            if (i == 14 || i == 44) {
+                System.out.println();
+            }
+            if (i == 29) {
+                System.out.println("\n");
+            }
+
+            i++;
+        }
+        System.out.println();
+    }
 }

@@ -20,7 +20,7 @@ public class Train implements Serializable{
 
     private final static long serialVersionUID = 1;
 
-    public Train(String departureStation, String arrivalStation, LocalTime departureTime, LocalTime arrivalTime) {
+    Train(String departureStation, String arrivalStation, LocalTime departureTime, LocalTime arrivalTime) {
         this.departureStation = departureStation;
         this.arrivalStation = arrivalStation;
         this.departureTime = departureTime;
@@ -69,7 +69,7 @@ public class Train implements Serializable{
         this.arrivalTime = arrivalTime;
     }
 
-    public List<Cabinet> getCabinetList() {
+    public ArrayList<Cabinet> getCabinetList() {
         return cabinetList;
     }
 

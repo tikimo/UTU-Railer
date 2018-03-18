@@ -12,11 +12,41 @@ import java.util.Comparator;
 
 public class commuteTester extends Application {
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage)  {
 
         CommuteDatabaseManager cdm = new CommuteDatabaseManager("trains");
+        cdm.fillDatabaseWithRandomTrains(cdm, 8);
+
+        try {
+
+            ArrayList<Train> trains = cdm.getTrainsByProperty(cdm.DEPARTURE_CITY, Stations.TURKU.getCity());
+            System.err.println(trains == null);
+            Train train = trains.get(0);
+
+            ArrayList<Cabinet> cabins = train.getCabinetList();
+            Cabinet cabinet = cabins.get(0);
+
+            ArrayList<Seat> seats = cabinet.getSeatList();
+            System.err.println(seats == null);
+            Seat seat = seats.get(0);
+            System.out.println(seat.getSeatType());
+
+            for (Train t : trains) {
+                System.out.println("Train from " + t.getDepartureStation() + " to " + t.getArrivalStation());
+                t.getCabinetList().get(0).printCabin();
+                System.out.println("\n");
+            }
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+
+
         // cdm.fillDatabaseWithRandomTrains(cdm, 8);
 
+        /*
         Train train = CommuteDatabaseManager.generateRandomTrain();
 
         train.setDepartureStation(Stations.TURKU.getCity());
@@ -25,15 +55,19 @@ public class commuteTester extends Application {
         train.setDepartureTime(LocalTime.of(15,30));
         train.setArrivalTime(LocalTime.of(17, 0));
 
-        cdm.addNewTrain(train);
+
 
         ArrayList<Train> trains = cdm.getTrainsByProperty(cdm.DEPARTURE_CITY, Stations.TURKU.getCity());
+        System.out.println("Success: " + trains.get(0).getCabinetList().get(0).getSeatList());
 
         trains.sort(Comparator.comparing(Train::getDepartureTime));
 
         for (Train t : trains) {
+            System.out.println("\n");
             System.out.println(t.getDepartureStation() + t.getDepartureTime() + t.getArrivalStation() + t.getArrivalTime());
+            t.getCabinetList().get(2).printCabin();
         }
+        */
 
         System.exit(0);
     }

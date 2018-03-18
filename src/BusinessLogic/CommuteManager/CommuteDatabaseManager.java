@@ -150,7 +150,7 @@ public class CommuteDatabaseManager {
         String departureStation = Stations.getRandomStation().getCity();
         String arrivalStation = Stations.getRandomStation().getCity();
 
-        while (departureStation == arrivalStation) {
+        while (departureStation.equals(arrivalStation)) {
             arrivalStation = Stations.getRandomStation().getCity();
         }
 
@@ -172,13 +172,13 @@ public class CommuteDatabaseManager {
     private static Cabinet generateRandomCabinet() {
         Random random = new Random();
         ArrayList<Seat> seatList = new ArrayList<>();
-        for (int i = 1; i<=50; i++) {
+        for (int i = 1; i<=60; i++) {
             Seat seat = new Seat(i, SeatTypes.getRandomSeatType().name().toLowerCase());
             seat.setReserved(random.nextBoolean());
             seatList.add(seat);
         }
-        Cabinet randomCabinet = new Cabinet();
-        randomCabinet.setSeatList(seatList);
+        Cabinet randomCabinet = new Cabinet(seatList);
+        // randomCabinet.setSeatList(seatList);
         return randomCabinet;
     }
 
