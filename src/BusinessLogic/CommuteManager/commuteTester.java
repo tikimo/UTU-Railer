@@ -21,7 +21,7 @@ public class commuteTester extends Application {
         // This only fetches trains from Turku and prints data of them
         try {
 
-            // Retrieve trains with a property
+            // Retrieve trains with a property, throws both exceptions
             ArrayList<Train> trains = cdm.getTrainsByProperty(cdm.DEPARTURE_CITY, Stations.TURKU.getCity());
 
             // Sorting trains by lambda property function
