@@ -17,21 +17,42 @@ public class commuteTester extends Application {
         CommuteDatabaseManager cdm = new CommuteDatabaseManager("trains");
         // cdm.fillDatabaseWithRandomTrains(cdm, 8);
 
+
+        // This only fetches trains from Turku and prints data of them
         try {
 
+            // Retrieve trains with a property
             ArrayList<Train> trains = cdm.getTrainsByProperty(cdm.DEPARTURE_CITY, Stations.TURKU.getCity());
+
+            // Sorting trains by lambda property function
+            //  For example departure time ascending is Train::getDepartureTime
+            trains.sort(Comparator.comparing(Train::getDepartureTime));
+
+            // Selecting a train
             Train train = trains.get(0);
 
-            test(train, 0, 59);
-
+            // Retrieve cabinet list from train
             ArrayList<Cabinet> cabins = train.getCabinetList();
+
+            // Selecting a cabinet
             Cabinet cabinet = cabins.get(0);
 
+            // Retrieve seats in a cabinet
             ArrayList<Seat> seats = cabinet.getSeatList();
+
+            // Selecting a seat
             Seat seat = seats.get(0);
 
+            // Iterating trains
             for (Train t : trains) {
+
+                // Departure and arrival station retrieving
                 System.out.println("Train from " + t.getDepartureStation() + " to " + t.getArrivalStation());
+
+                // You can test matching
+                test(t,0,0);
+
+                // You can even print cabins
                 t.getCabinetList().get(0).printCabin();
                 System.out.println("\n");
             }
@@ -42,38 +63,13 @@ public class commuteTester extends Application {
 
 
 
-
-        // cdm.fillDatabaseWithRandomTrains(cdm, 8);
-
-        /*
-        Train train = CommuteDatabaseManager.generateRandomTrain();
-
-        train.setDepartureStation(Stations.TURKU.getCity());
-        train.setArrivalStation(Stations.HELSINKI.getCity());
-
-        train.setDepartureTime(LocalTime.of(15,30));
-        train.setArrivalTime(LocalTime.of(17, 0));
-
-
-
-        ArrayList<Train> trains = cdm.getTrainsByProperty(cdm.DEPARTURE_CITY, Stations.TURKU.getCity());
-        System.out.println("Success: " + trains.get(0).getCabinetList().get(0).getSeatList());
-
-        trains.sort(Comparator.comparing(Train::getDepartureTime));
-
-        for (Train t : trains) {
-            System.out.println("\n");
-            System.out.println(t.getDepartureStation() + t.getDepartureTime() + t.getArrivalStation() + t.getArrivalTime());
-            t.getCabinetList().get(2).printCabin();
-        }
-        */
-
         System.exit(0);
     }
 
     private void test(Train train, int cabin, int seat) {
         int seatNumber = train.getCabinetList().get(cabin).getSeatList().get(seat).getSeatNumber();
         String seatType = train.getCabinetList().get(cabin).getSeatList().get(seat).getSeatType();
-        System.out.println("Seatnumber is " + seatNumber + " and type is: " + seatType + " on cabin " + cabin + " and seat " + seat);
+        System.out.println("Seatnumber is " + seatNumber + " and type is: " + seatType + " on cabin " +
+                cabin + " and seat " + seat);
     }
 }
