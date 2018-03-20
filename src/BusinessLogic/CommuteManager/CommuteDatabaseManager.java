@@ -60,7 +60,7 @@ public class CommuteDatabaseManager {
         }
     }
 
-    boolean addNewTrain(Train train) throws IOException {
+    boolean addNewTrain(Train train) {
         boolean failed = false;
         if (this.dbname == null) {
             this.dbname = "trains";
@@ -106,8 +106,8 @@ public class CommuteDatabaseManager {
      * Reads train-object from base64 string
      * @param s Train object as a string
      * @return Train object
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException IOException for object streams
+     * @throws ClassNotFoundException   Base64 decoder may throw this
      */
     static Train trainFromString(String s) throws IOException, ClassNotFoundException{
         byte[] data = Base64.getDecoder().decode(s);
@@ -184,11 +184,7 @@ public class CommuteDatabaseManager {
 
     public void fillDatabaseWithRandomTrains(CommuteDatabaseManager cdm, int count) {
         for (int i = 0; i<count; i++) {
-            try {
-                cdm.addNewTrain(generateRandomTrain());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            cdm.addNewTrain(generateRandomTrain());
         }
     }
 }

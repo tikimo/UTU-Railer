@@ -15,21 +15,20 @@ public class commuteTester extends Application {
     public void start(Stage primaryStage)  {
 
         CommuteDatabaseManager cdm = new CommuteDatabaseManager("trains");
-        cdm.fillDatabaseWithRandomTrains(cdm, 8);
+        // cdm.fillDatabaseWithRandomTrains(cdm, 8);
 
         try {
 
             ArrayList<Train> trains = cdm.getTrainsByProperty(cdm.DEPARTURE_CITY, Stations.TURKU.getCity());
-            System.err.println(trains == null);
             Train train = trains.get(0);
+
+            test(train, 0, 59);
 
             ArrayList<Cabinet> cabins = train.getCabinetList();
             Cabinet cabinet = cabins.get(0);
 
             ArrayList<Seat> seats = cabinet.getSeatList();
-            System.err.println(seats == null);
             Seat seat = seats.get(0);
-            System.out.println(seat.getSeatType());
 
             for (Train t : trains) {
                 System.out.println("Train from " + t.getDepartureStation() + " to " + t.getArrivalStation());
@@ -72,9 +71,9 @@ public class commuteTester extends Application {
         System.exit(0);
     }
 
-    private void test(Train train) {
-        int seatNumber = train.getCabinetList().get(2).getSeatList().get(2).getSeatNumber();
-        String seatType = train.getCabinetList().get(2).getSeatList().get(2).getSeatType();
-        System.out.println("Seatnumber is " + seatNumber + " and type is: " + seatType);
+    private void test(Train train, int cabin, int seat) {
+        int seatNumber = train.getCabinetList().get(cabin).getSeatList().get(seat).getSeatNumber();
+        String seatType = train.getCabinetList().get(cabin).getSeatList().get(seat).getSeatType();
+        System.out.println("Seatnumber is " + seatNumber + " and type is: " + seatType + " on cabin " + cabin + " and seat " + seat);
     }
 }

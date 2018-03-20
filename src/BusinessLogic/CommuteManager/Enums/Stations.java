@@ -10,7 +10,8 @@ public enum Stations {
     HELSINKI("Helsinki"),
     KARJAA("Karjaa"),
     SALO("Salo"),
-    TURKU("Turku");
+    TURKU("Turku"),
+    TAMPERE("Tampere");
 
     private String city;
 
