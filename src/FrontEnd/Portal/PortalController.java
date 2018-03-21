@@ -211,9 +211,12 @@ public class PortalController {
         // Check if trains were even found
         if (trains.size() == 0) {
             System.err.println("[WARNING] No trains were found with these settings");
+            listTrains(trains);
         } else {
             System.err.println(trains.size() + " train(s) found!");
         }
+
+        listTrains(trains);
 
 
         } catch (NullPointerException npe) {
@@ -224,6 +227,14 @@ public class PortalController {
 
     }
 
-    public void pickSelectedItemFromList(ActionEvent actionEvent) {
+    private void listTrains(ArrayList<Train> trains) {
+        trainResultListViewJFX.getItems().remove(0, trainResultListViewJFX.getItems().size());
+        for (Train t : trains) {
+            trainResultListViewJFX.getItems().add(TrainView.presentTrain(t));
+        }
+
+    }
+
+    public void pickSelectedItemFromList() {
     }
 }

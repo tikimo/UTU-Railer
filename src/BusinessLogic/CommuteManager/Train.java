@@ -77,5 +77,9 @@ public class Train implements Serializable{
         this.cabinetList = cabinetList;
     }
 
-
+    @Override
+    public String toString() {
+        return "Train from " + departureStation + " at " + departureTime + " to " + arrivalStation + " at "
+                + arrivalTime;
+    }
 }

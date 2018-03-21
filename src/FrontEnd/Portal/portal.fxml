@@ -80,8 +80,8 @@
             <JFXTimePicker fx:id="JFXTimePicker" defaultColor="#3d9724" layoutX="201.0" layoutY="252.0" />
             <JFXButton buttonType="RAISED" layoutX="329.0" layoutY="340.0" onAction="#searchTrainsByProperty" ripplerFill="#38ab19" text="Search" />
             <Label fx:id="searchFieldErrorText" layoutX="354.0" layoutY="381.0" text="Error!" textAlignment="RIGHT" />
-            <JFXListView fx:id="trainResultListViewJFX" layoutX="559.0" layoutY="37.0" prefHeight="556.0" prefWidth="431.0" />
-            <Button layoutX="858.0" layoutY="615.0" mnemonicParsing="false" onAction="#pickSelectedItemFromList" text="Pick selected train" />
+            <JFXListView fx:id="trainResultListViewJFX" layoutX="529.0" layoutY="37.0" prefHeight="550.0" prefWidth="450.0" />
+            <Button layoutX="847.0" layoutY="613.0" mnemonicParsing="false" onAction="#pickSelectedItemFromList" text="Pick selected train" />
          </children>
       </Pane>
       <Pane fx:id="secondPane" layoutX="20.0" layoutY="88.0" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="78.0">
