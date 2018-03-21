@@ -23,7 +23,7 @@ public class CommuteDatabaseManager {
     private Connection conn = null;
     private String dbname;
 
-    CommuteDatabaseManager(String dbname) {
+    public CommuteDatabaseManager(String dbname) {
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection("jdbc:sqlite:"+dbname+".db");

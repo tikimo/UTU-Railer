@@ -1,25 +1,22 @@
 package FrontEnd.Portal;
 
+import BusinessLogic.CommuteManager.CommuteDatabaseManager;
+import BusinessLogic.CommuteManager.Enums.Stations;
+import BusinessLogic.CommuteManager.Train;
 import BusinessLogic.DatabaseManager;
 import FrontEnd.Login.LoginController;
-import FrontEnd.Portal.Functionality.TimeSpinner;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXTimePicker;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.util.converter.LocalTimeStringConverter;
 
+import java.io.IOException;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * 1. First the user must select the route
@@ -45,6 +42,10 @@ import java.util.Date;
  *      Address information
  *      new password
  *      billing information
+ *
+ * TO BE NOTED:
+ * Trains in database travel every day at the same time, so datepicker is just a
+ * placeholder for future expanding of application.
  *
  */
 public class PortalController {
@@ -109,6 +110,11 @@ public class PortalController {
         billingAddressFieldSettings.setText(dbm.getAddress(user));
         phoneNumberFieldSettings.setText(dbm.getPhone(user));
         creditCardFieldSettings.setText(dbm.getCard(user));
+
+        // init dropdown boxes
+        trainCitiesFromDropDown.setItems(Stations.getAllStations());
+        trainCitiesToDropDown.setItems(Stations.getAllStations());
+
 
 
         // First pane
@@ -184,6 +190,36 @@ public class PortalController {
     }
 
     public void searchTrainsByProperty(ActionEvent actionEvent) {
+        try {
+        String from = trainCitiesFromDropDown.getValue().toString();
+        String to = trainCitiesToDropDown.getValue().toString();
+        Boolean timeSettingDeparture = departureTimeRadiobutton.isSelected();
+        LocalTime time = JFXTimePicker.getValue();
+
+        CommuteDatabaseManager cdm = new CommuteDatabaseManager("trains");
+
+        // Sort trains by departure or arrival and remove that are out of scope
+        ArrayList<Train> trains = cdm.getTrainsByProperty(cdm.DEPARTURE_CITY, from);
+        if (timeSettingDeparture) {
+            trains.sort(Comparator.comparing(Train::getDepartureTime));
+            // Out of scope trim
+            trains.removeIf(o -> o.getDepartureTime().isBefore(time));
+
+        } else {
+            trains.sort(Comparator.comparing(Train::getArrivalTime));
+            // Out of scope trim
+            trains.removeIf(t -> t.getArrivalTime().isBefore(time));
+        }
+
+
+
+
+        } catch (NullPointerException npe) {
+            System.err.println("[ERROR] One of the fields were null!");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void pickSelectedItemFromList(ActionEvent actionEvent) {
