@@ -18,16 +18,13 @@ public class dbtest extends Application {
         // create user with the params
         DatabaseManager dbm = new DatabaseManager("users");
 
-        dbm.updatePassword(pass,email);
-        /*
-        dbm.addNewUser(fname,lname,email,pass);
 
         System.out.println(
         dbm.userExists("tikimo@utu.fi") + "\n" +
         dbm.getUserName("tikimo@utu.fi") + "\n" +
         dbm.authenticate("tikimo@utu.fi", pass) + "\n" +
         dbm.authenticate("tikimo@utu.fi", reverseLetters(pass)));
-        */
+
 
         System.exit(0);
     }

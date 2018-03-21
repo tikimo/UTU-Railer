@@ -57,8 +57,13 @@ public class PortalController {
     public Button updateCreditCardButton;
     public Label wrongPasswordLabel;
 
+    // Radio buttons
+    public ToggleGroup departureArrivalGroup;
+    public RadioButton departureTimeRadiobutton;
+    public RadioButton arrivalTimeRadiobutton;
+
     private boolean settingsOpen = false;
-    private String user = LoginController.getAuthenticatedUser();
+    private String user = null;
     private DatabaseManager dbm = LoginController.getDbmanager();
 
 
@@ -66,6 +71,16 @@ public class PortalController {
      * Initializes settings for portal
      */
     public void initialize() {
+        // init class variables
+        user = LoginController.getAuthenticatedUser();
+
+        //DBM debugging
+        /*
+        System.out.println("User exists: " +
+        dbm.userExists("tikimo@utu.fi") +
+        "\n Authenticated user name: " + user);
+        */
+
         // Settings tab
         Image buttonBgImage = new Image("FrontEnd/RES/hamburger.png");
         settingsButton.setGraphic(new ImageView(buttonBgImage));

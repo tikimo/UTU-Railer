@@ -8,6 +8,7 @@ public class portalTester extends Application {
     @Override
     public void start(Stage primaryStage) {
         LoginController lgc = new LoginController();
+        lgc.setAuthenticatedUser("tikimo@utu.fi");
         lgc.launchPortal("tikimo@utu.fi", true );
 
     }

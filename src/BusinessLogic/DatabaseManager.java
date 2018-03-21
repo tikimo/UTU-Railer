@@ -172,13 +172,19 @@ public class DatabaseManager {
     /**
      * Assume user exists and has both names in database.
      * @param email Users email address
-     * @return
+     * @return the name retrieved from database
      */
     public String getUserName (String email) {
+        String returnable = "NaN";
         try {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT Fname, Lname FROM "+dbname+" WHERE email='"+email+"'");
-            return resultSet.getString(1) +" "+ resultSet.getString(2);
+            if (resultSet.next()) {
+                returnable = resultSet.getString(1) +" "+ resultSet.getString(2);
+            } else {
+                System.err.println("[FATAL] No name record found on user!");
+            }
+            return returnable;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -189,7 +195,11 @@ public class DatabaseManager {
         try {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT address FROM "+dbname+" WHERE email='"+email+"'");
-            returnable = resultSet.getString(1);
+            if (resultSet.next()) {
+                returnable = resultSet.getString(1);
+            } else {
+                System.err.println("[WARNING] No address record found on user!");
+            }
             return (returnable == null) ? "NaN" : returnable;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -201,7 +211,11 @@ public class DatabaseManager {
         try {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT phone FROM "+dbname+" WHERE email='"+email+"'");
-            returnable = resultSet.getString(1);
+            if (resultSet.next()) {
+                returnable = resultSet.getString(1);
+            } else {
+                System.err.println("[WARNING] No phone record found on user!");
+            }
             return (returnable == null) ? "NaN" : returnable;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -213,7 +227,11 @@ public class DatabaseManager {
         try {
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT cardnum FROM "+dbname+" WHERE email='"+email+"'");
+            if (resultSet.next()) {
             returnable = resultSet.getString(1);
+            } else {
+                System.err.println("[WARNING] No card record found on user!");
+            }
             return (returnable == null) ? "NaN" : returnable;
         } catch (SQLException e) {
             e.printStackTrace();

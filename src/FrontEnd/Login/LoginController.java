@@ -140,6 +140,10 @@ public class LoginController {
         return authenticatedUser;
     }
 
+    public void setAuthenticatedUser(String email) {
+        this.authenticatedUser = email;
+    }
+
     public static DatabaseManager getDbmanager() {
         return dbmanager;
     }
