@@ -2,12 +2,24 @@ package FrontEnd.Portal;
 
 import BusinessLogic.DatabaseManager;
 import FrontEnd.Login.LoginController;
+import FrontEnd.Portal.Functionality.TimeSpinner;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTimePicker;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.util.converter.LocalTimeStringConverter;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Date;
 
 /**
  * 1. First the user must select the route
@@ -37,6 +49,11 @@ import javafx.scene.layout.Pane;
  */
 public class PortalController {
 
+    private boolean settingsOpen = false;
+    private String user = null;
+    private DatabaseManager dbm = LoginController.getDbmanager();
+
+
     public TextField billingAddressFieldSettings;
     public TextField phoneNumberFieldSettings;
     public PasswordField oldPasswordFieldSettings;
@@ -46,7 +63,6 @@ public class PortalController {
     public Button updatePasswordButtonSettings;
     public Label settingPropertyUpdatedText;
     public Button checkOldPassSettings;
-    public ListView tripOptionListView;
     public Button settingsButton;
     public AnchorPane settingsAnchorPane;
     public Label settingsGreeting;
@@ -57,14 +73,20 @@ public class PortalController {
     public Button updateCreditCardButton;
     public Label wrongPasswordLabel;
 
+    // First pane specifics
+
     // Radio buttons
     public ToggleGroup departureArrivalGroup;
     public RadioButton departureTimeRadiobutton;
     public RadioButton arrivalTimeRadiobutton;
 
-    private boolean settingsOpen = false;
-    private String user = null;
-    private DatabaseManager dbm = LoginController.getDbmanager();
+    // Time picker
+    public com.jfoenix.controls.JFXTimePicker JFXTimePicker;
+
+    public ChoiceBox trainCitiesFromDropDown;
+    public ChoiceBox trainCitiesToDropDown;
+    public Label searchFieldErrorText;
+    public JFXListView trainResultListViewJFX;
 
 
     /**
@@ -74,25 +96,21 @@ public class PortalController {
         // init class variables
         user = LoginController.getAuthenticatedUser();
 
-        //DBM debugging
-        /*
-        System.out.println("User exists: " +
-        dbm.userExists("tikimo@utu.fi") +
-        "\n Authenticated user name: " + user);
-        */
-
         // Settings tab
         Image buttonBgImage = new Image("FrontEnd/RES/hamburger.png");
         settingsButton.setGraphic(new ImageView(buttonBgImage));
         settingsAnchorPane.setVisible(settingsOpen);
         settingsGreeting.setText("Hi " + dbm.getUserName(user) + ". Here you can edit your personal info.");
         wrongPasswordLabel.setVisible(false);
+
         // init text fills
         settingPropertyUpdatedText.setText("");
+        searchFieldErrorText.setText("");
         billingAddressFieldSettings.setText(dbm.getAddress(user));
         phoneNumberFieldSettings.setText(dbm.getPhone(user));
         creditCardFieldSettings.setText(dbm.getCard(user));
-        
+
+
         // First pane
         showPane(1);
     }
@@ -158,5 +176,16 @@ public class PortalController {
         } else {
             wrongPasswordLabel.setVisible(true);
         }
+    }
+
+    public void timeUpdateButton() {
+        String currentTime = JFXTimePicker.getEditor().getText();
+        System.out.println(currentTime);
+    }
+
+    public void searchTrainsByProperty(ActionEvent actionEvent) {
+    }
+
+    public void pickSelectedItemFromList(ActionEvent actionEvent) {
     }
 }
