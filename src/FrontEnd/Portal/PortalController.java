@@ -53,6 +53,7 @@ public class PortalController {
     private boolean settingsOpen = false;
     private String user = null;
     private DatabaseManager dbm = LoginController.getDbmanager();
+    private CommuteDatabaseManager cdm = new CommuteDatabaseManager("trains");
 
 
     public TextField billingAddressFieldSettings;
@@ -184,19 +185,12 @@ public class PortalController {
         }
     }
 
-    public void timeUpdateButton() {
-        String currentTime = JFXTimePicker.getEditor().getText();
-        System.out.println(currentTime);
-    }
-
     public void searchTrainsByProperty(ActionEvent actionEvent) {
         try {
         String from = trainCitiesFromDropDown.getValue().toString();
         String to = trainCitiesToDropDown.getValue().toString();
         Boolean timeSettingDeparture = departureTimeRadiobutton.isSelected();
         LocalTime time = JFXTimePicker.getValue();
-
-        CommuteDatabaseManager cdm = new CommuteDatabaseManager("trains");
 
         // Sort trains by departure or arrival and remove that are out of scope
         ArrayList<Train> trains = cdm.getTrainsByProperty(cdm.DEPARTURE_CITY, from);
@@ -211,7 +205,15 @@ public class PortalController {
             trains.removeIf(t -> t.getArrivalTime().isBefore(time));
         }
 
+        // Remove stations that are out of scope
+        trains.removeIf(t -> !t.getArrivalStation().equals(to));
 
+        // Check if trains were even found
+        if (trains.size() == 0) {
+            System.err.println("[WARNING] No trains were found with these settings");
+        } else {
+            System.err.println(trains.size() + " train(s) found!");
+        }
 
 
         } catch (NullPointerException npe) {
