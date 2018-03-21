@@ -1,9 +1,9 @@
 package BusinessLogic.CommuteManager.Enums;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.util.*;
 
 public enum Stations {
 
@@ -30,5 +30,16 @@ public enum Stations {
 
     public static Stations getRandomStation() {
         return VALUES.get(RANDOM.nextInt(SIZE));
+    }
+
+    public static ObservableList<String> getAllStations() {
+        List<Stations> stationsAsList = Arrays.asList(Stations.values());
+        List<String> stationNamesAsList = new ArrayList<>();
+
+        for (Stations s : stationsAsList) {
+            stationNamesAsList.add(s.getCity());
+        }
+
+        return FXCollections.observableArrayList(stationNamesAsList);
     }
 }
