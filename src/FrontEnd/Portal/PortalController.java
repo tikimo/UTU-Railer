@@ -54,6 +54,8 @@ public class PortalController {
     private String user = null;
     private DatabaseManager dbm = LoginController.getDbmanager();
     private CommuteDatabaseManager cdm = new CommuteDatabaseManager("trains");
+    ArrayList<Train> searchResults = new ArrayList<>();
+    private Train selectedTrain = null;
 
 
     public TextField billingAddressFieldSettings;
@@ -185,7 +187,8 @@ public class PortalController {
         }
     }
 
-    public void searchTrainsByProperty(ActionEvent actionEvent) {
+    public void searchTrainsByProperty() {
+        searchFieldErrorText.setText("");
         try {
         String from = trainCitiesFromDropDown.getValue().toString();
         String to = trainCitiesToDropDown.getValue().toString();
@@ -211,30 +214,53 @@ public class PortalController {
         // Check if trains were even found
         if (trains.size() == 0) {
             System.err.println("[WARNING] No trains were found with these settings");
-            listTrains(trains);
+            searchResults = trains;
+            listTrains();
         } else {
             System.err.println(trains.size() + " train(s) found!");
         }
 
-        listTrains(trains);
+        searchResults = trains;
+        listTrains();
 
 
         } catch (NullPointerException npe) {
             System.err.println("[ERROR] One of the fields were null!");
+            searchFieldErrorText.setText("Please fill all the fields.");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+            searchFieldErrorText.setText("Unknown error!");
         }
 
     }
 
-    private void listTrains(ArrayList<Train> trains) {
+    private void listTrains() {
         trainResultListViewJFX.getItems().remove(0, trainResultListViewJFX.getItems().size());
-        for (Train t : trains) {
-            trainResultListViewJFX.getItems().add(TrainView.presentTrain(t));
+        for (Train t : searchResults) {
+            // Train class has toString() Override, it creates an automatic new Label()
+            trainResultListViewJFX.getItems().add(t);
         }
 
     }
 
     public void pickSelectedItemFromList() {
+        int selectedItemIndex = trainResultListViewJFX.getSelectionModel().getSelectedIndex();
+        selectedTrain = searchResults.get(selectedItemIndex);
+
+        System.out.println(selectedTrain);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
