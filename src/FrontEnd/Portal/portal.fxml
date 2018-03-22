@@ -71,8 +71,8 @@
                </font>
             </Label>
             <Button layoutX="14.0" layoutY="600.0" mnemonicParsing="false" onAction="#switchToPane1" text="Go back" />
-            <Button disable="true" layoutX="317.0" layoutY="72.0" mnemonicParsing="false" text="Prev. cabin" />
-            <Button layoutX="593.0" layoutY="72.0" mnemonicParsing="false" text="Next cabin" />
+            <Button fx:id="prevCabinButton" disable="true" layoutX="317.0" layoutY="72.0" mnemonicParsing="false" onAction="#prevCabinButton" text="Prev. cabin" />
+            <Button fx:id="nextCabinButton" layoutX="593.0" layoutY="72.0" mnemonicParsing="false" onAction="#nextCabinButton" text="Next cabin" />
             <Label layoutX="461.0" layoutY="74.0" text="Cabin: ">
                <font>
                   <Font size="17.0" />
@@ -83,7 +83,7 @@
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
-            <ScrollPane layoutX="14.0" layoutY="140.0" prefHeight="453.0" prefWidth="971.0">
+            <ScrollPane layoutX="14.0" layoutY="140.0" maxWidth="975.0" minWidth="975.0" prefHeight="453.0" prefWidth="975.0">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="1400.0">
                      <children>
@@ -127,7 +127,7 @@
             </Label>
          </children>
       </Pane>
-      <AnchorPane fx:id="settingsAnchorPane" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: gainsboro;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="68.0">
+      <AnchorPane fx:id="settingsAnchorPane" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: gainsboro;" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="68.0">
          <children>
             <Label layoutX="14.0" layoutY="14.0" text="User settings" AnchorPane.leftAnchor="14.0">
                <font>

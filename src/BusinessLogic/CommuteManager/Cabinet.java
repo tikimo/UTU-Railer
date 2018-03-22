@@ -32,6 +32,8 @@ public class Cabinet implements Serializable{
             return;
         }
 
+        System.out.println("\n\n");
+
         for (int i = 0; i<57; i += 4) {
             if (seatList.get(i).isReserved()) {
                 System.out.print(seatList.get(i).getSeatType().substring(0,1).toUpperCase() + " ");

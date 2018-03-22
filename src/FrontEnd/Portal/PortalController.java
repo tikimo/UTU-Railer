@@ -102,6 +102,8 @@ public class PortalController {
     private int cabinSelectorIndex = 0; // index 0 = cabin 1, index 1 = cabin 2, ...
     public Label cabinIndexIndicator;
     public GridPane cabinSeatGridpane;
+    public Button prevCabinButton;
+    public Button nextCabinButton;
 
 
     /**
@@ -138,10 +140,6 @@ public class PortalController {
         showPane(1);
     }
 
-    /**
-     * Displays pane that is passed as parameter
-     * @param i index of pane
-     */
 
 
     /**
@@ -304,6 +302,10 @@ public class PortalController {
         // cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/allergy.png")), 0, 0);
     }
 
+    /**
+     * Displays pane that is passed as parameter
+     * @param i index of pane
+     */
     private void showPane(int i) {
         firstPane.setVisible(false);
         secondPane.setVisible(false);
@@ -325,6 +327,27 @@ public class PortalController {
         showPane(1);
     }
 
+    public void prevCabinButton() {
+        cabinSelectorIndex--;
+        if (cabinSelectorIndex == 0) {
+            prevCabinButton.setDisable(true);
+        }
+        if (cabinSelectorIndex < 4) {
+            nextCabinButton.setDisable(false);
+        }
+        loadGraphicalCabin(cabinSelectorIndex);
+    }
+
+    public void nextCabinButton() {
+        cabinSelectorIndex++;
+        if (cabinSelectorIndex == 4) {
+            nextCabinButton.setDisable(true);
+        }
+        if (cabinSelectorIndex > 0) {
+            prevCabinButton.setDisable(false);
+        }
+        loadGraphicalCabin(cabinSelectorIndex);
+    }
 }
 
 
