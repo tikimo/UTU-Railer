@@ -6,7 +6,11 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Seattypes:   economy, allergy, Pet, disabled, quiet, family
+ * Seattypes:
+ *
+ *     economy(white), allergy(green), pet(brown), disabled(orange), quiet(blue), family(red), {taken(gray)}
+ *
+ * Taken seat is defined in Seat class
  */
 public enum SeatTypes {
     ECONOMY("economy"),

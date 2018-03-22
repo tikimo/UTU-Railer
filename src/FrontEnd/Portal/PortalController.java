@@ -5,13 +5,15 @@ import BusinessLogic.CommuteManager.Enums.Stations;
 import BusinessLogic.CommuteManager.Train;
 import BusinessLogic.DatabaseManager;
 import FrontEnd.Login.LoginController;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -28,7 +30,7 @@ import java.util.Comparator;
  *
  *  2. Second is the position selection
  *  Seat will have seatType. Types:
- *      Allergy, Pet, disabled, quiet, family
+ *      Allergy(green), Pet(brown), disabled(orange), quiet(blue), family(red), taken(gray), economy(white)
  *  Whatever the type, user must be able to select the position to sit in.
  *
  *  3. Payment of commute
@@ -50,11 +52,12 @@ import java.util.Comparator;
  */
 public class PortalController {
 
+    public JFXButton firstPaneSearchButton;
     private boolean settingsOpen = false;
     private String user = null;
     private DatabaseManager dbm = LoginController.getDbmanager();
     private CommuteDatabaseManager cdm = new CommuteDatabaseManager("trains");
-    ArrayList<Train> searchResults = new ArrayList<>();
+    private ArrayList<Train> searchResults = new ArrayList<>();
     private Train selectedTrain = null;
 
 
@@ -113,6 +116,9 @@ public class PortalController {
         billingAddressFieldSettings.setText(dbm.getAddress(user));
         phoneNumberFieldSettings.setText(dbm.getPhone(user));
         creditCardFieldSettings.setText(dbm.getCard(user));
+
+        // Make material button look cool for fun
+        firstPaneSearchButton.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(2), new Insets(2))));
 
         // init dropdown boxes
         trainCitiesFromDropDown.setItems(Stations.getAllStations());
@@ -246,8 +252,8 @@ public class PortalController {
     public void pickSelectedItemFromList() {
         int selectedItemIndex = trainResultListViewJFX.getSelectionModel().getSelectedIndex();
         selectedTrain = searchResults.get(selectedItemIndex);
-
-        System.out.println(selectedTrain);
+        System.out.println(selectedTrain + " selected successfully!");
+        showPane(2);
     }
 }
 

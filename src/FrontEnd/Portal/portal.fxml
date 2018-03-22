@@ -78,8 +78,8 @@
             </RadioButton>
             <RadioButton fx:id="arrivalTimeRadiobutton" layoutX="16.0" layoutY="286.0" mnemonicParsing="false" text="Arrival time" toggleGroup="$departureArrivalGroup" />
             <JFXTimePicker fx:id="JFXTimePicker" defaultColor="#3d9724" layoutX="201.0" layoutY="252.0" />
-            <JFXButton buttonType="RAISED" layoutX="329.0" layoutY="340.0" onAction="#searchTrainsByProperty" ripplerFill="#38ab19" text="Search" />
-            <Label fx:id="searchFieldErrorText" layoutX="354.0" layoutY="381.0" text="Error!" textAlignment="RIGHT" />
+            <JFXButton fx:id="firstPaneSearchButton" buttonType="RAISED" layoutX="329.0" layoutY="340.0" onAction="#searchTrainsByProperty" ripplerFill="#38ab19" text="Search" />
+            <Label fx:id="searchFieldErrorText" alignment="CENTER_RIGHT" layoutX="250.0" layoutY="380.0" text="Please fill all the fields." textAlignment="RIGHT" textFill="red" />
             <JFXListView fx:id="trainResultListViewJFX" layoutX="529.0" layoutY="37.0" prefHeight="550.0" prefWidth="450.0" />
             <Button layoutX="847.0" layoutY="613.0" mnemonicParsing="false" onAction="#pickSelectedItemFromList" text="Pick selected train" />
          </children>
