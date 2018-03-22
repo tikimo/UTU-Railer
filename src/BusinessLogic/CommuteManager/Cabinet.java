@@ -27,27 +27,54 @@ public class Cabinet implements Serializable{
 
 
     public void printCabin() {
-        int i = 0;
         if (this.getSeatList() == null) {
             System.err.println("Seatlist is null!");
             return;
         }
 
+        for (int i = 0; i<57; i += 4) {
+            if (seatList.get(i).isReserved()) {
+                System.out.print(seatList.get(i).getSeatType().substring(0,1).toUpperCase() + " ");
+            } else {
+                System.out.print(seatList.get(i).getSeatType().substring(0,1) + " ");
+            }
+        }
+        System.out.println();
+        for (int i = 1; i<58; i += 4) {
+            if (seatList.get(i).isReserved()) {
+                System.out.print(seatList.get(i).getSeatType().substring(0,1).toUpperCase() + " ");
+            } else {
+                System.out.print(seatList.get(i).getSeatType().substring(0,1) + " ");
+            }
+        }
+        System.out.println("\n");
+        for (int i = 2; i<59; i += 4) {
+            if (seatList.get(i).isReserved()) {
+                System.out.print(seatList.get(i).getSeatType().substring(0,1).toUpperCase() + " ");
+            } else {
+                System.out.print(seatList.get(i).getSeatType().substring(0,1) + " ");
+            }
+        }
+        System.out.println();
+        for (int i = 3; i<60; i += 4) {
+            if (seatList.get(i).isReserved()) {
+                System.out.print(seatList.get(i).getSeatType().substring(0,1).toUpperCase() + " ");
+            } else {
+                System.out.print(seatList.get(i).getSeatType().substring(0,1) + " ");
+            }
+        }
+        System.out.println();
+
+
+        /*
         for (Seat seat : this.getSeatList()) {
+
             if (seat.isReserved()) {
                 System.out.print(seat.getSeatType().substring(0,1) + " ");
             } else {
                 System.out.print(seat.getSeatType().substring(0,1).toUpperCase() + " ");
             }
-            if (i == 14 || i == 44) {
-                System.out.println();
-            }
-            if (i == 29) {
-                System.out.println("\n");
-            }
 
-            i++;
-        }
-        System.out.println();
+        } */
     }
 }

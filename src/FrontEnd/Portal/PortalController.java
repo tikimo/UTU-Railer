@@ -1,7 +1,9 @@
 package FrontEnd.Portal;
 
+import BusinessLogic.CommuteManager.Cabinet;
 import BusinessLogic.CommuteManager.CommuteDatabaseManager;
 import BusinessLogic.CommuteManager.Enums.Stations;
+import BusinessLogic.CommuteManager.Seat;
 import BusinessLogic.CommuteManager.Train;
 import BusinessLogic.DatabaseManager;
 import FrontEnd.Login.LoginController;
@@ -10,6 +12,8 @@ import com.jfoenix.controls.JFXListView;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -80,8 +84,6 @@ public class PortalController {
     public Button updateCreditCardButton;
     public Label wrongPasswordLabel;
 
-    // First pane specifics
-
     // Radio buttons
     public ToggleGroup departureArrivalGroup;
     public RadioButton departureTimeRadiobutton;
@@ -90,10 +92,16 @@ public class PortalController {
     // Time picker
     public com.jfoenix.controls.JFXTimePicker JFXTimePicker;
 
+    // First pane specifics
     public ChoiceBox trainCitiesFromDropDown;
     public ChoiceBox trainCitiesToDropDown;
     public Label searchFieldErrorText;
     public JFXListView trainResultListViewJFX;
+
+    // Second pane specifics
+    private int cabinSelectorIndex = 0; // index 0 = cabin 1, index 1 = cabin 2, ...
+    public Label cabinIndexIndicator;
+    public GridPane cabinSeatGridpane;
 
 
     /**
@@ -134,22 +142,6 @@ public class PortalController {
      * Displays pane that is passed as parameter
      * @param i index of pane
      */
-    private void showPane(int i) {
-        firstPane.setVisible(false);
-        secondPane.setVisible(false);
-        thirdPane.setVisible(false);
-        switch (i) {
-            case 1:
-                firstPane.setVisible(true);
-                break;
-            case 2:
-                secondPane.setVisible(true);
-                break;
-            case 3:
-                thirdPane.setVisible(true);
-                break;
-        }
-    }
 
 
     /**
@@ -253,8 +245,86 @@ public class PortalController {
         int selectedItemIndex = trainResultListViewJFX.getSelectionModel().getSelectedIndex();
         selectedTrain = searchResults.get(selectedItemIndex);
         System.out.println(selectedTrain + " selected successfully!");
+        loadGraphicalCabin(cabinSelectorIndex);
         showPane(2);
     }
+
+    /**
+     * This method loads the cabin to the gridpane and also sets the indicator (label)
+     * Seat numbering is from up to down, left to right as follows:
+     *      1   5   9  ...
+     *      2   6   10 ...
+     *
+     *      3   7   11 ...
+     *      4   8   12 ...
+     *
+     *      and seat index = number - 1
+     *
+     * @param cabinIndex number of cabinet to present as index
+     */
+    private void loadGraphicalCabin(int cabinIndex) {
+        cabinIndexIndicator.setText(cabinIndex+1 + "");
+        Cabinet currentCabinet = selectedTrain.getCabinetList().get(cabinIndex);
+        currentCabinet.printCabin();
+        int currentSeatIndex;
+
+        for (int i = 0; i < 15; i++) {   // column
+            for (int j = 0; j < 4; j++) {  // row
+                currentSeatIndex = i*4 + j;
+                Seat currentSeat = currentCabinet.getSeatList().get(currentSeatIndex);
+                if (currentSeat.isReserved()) {
+                    cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/taken.png")), i, j);
+                } else {
+                    switch (currentSeat.getSeatType().substring(0,1)) {
+                        case "a":
+                            cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/allergy.png")), i, j);
+                            break;
+                        case "d":
+                            cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/disabled.png")), i, j);
+                            break;
+                        case "e":
+                            cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/economy.png")), i, j);
+                            break;
+                        case "f":
+                            cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/family.png")), i, j);
+                            break;
+                        case "p":
+                            cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/pet.png")), i, j);
+                            break;
+                        case "q":
+                            cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/quiet.png")), i, j);
+                            break;
+                    }
+                }
+            }
+        }
+        cabinSeatGridpane.addRow(2);
+        cabinSeatGridpane.getRowConstraints().get(2).setPrefHeight(50);
+
+        // cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/allergy.png")), 0, 0);
+    }
+
+    private void showPane(int i) {
+        firstPane.setVisible(false);
+        secondPane.setVisible(false);
+        thirdPane.setVisible(false);
+        switch (i) {
+            case 1:
+                firstPane.setVisible(true);
+                break;
+            case 2:
+                secondPane.setVisible(true);
+                break;
+            case 3:
+                thirdPane.setVisible(true);
+                break;
+        }
+    }
+
+    public void switchToPane1() {
+        showPane(1);
+    }
+
 }
 
 
