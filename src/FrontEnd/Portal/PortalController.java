@@ -16,6 +16,7 @@ import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -104,6 +105,8 @@ public class PortalController {
     public GridPane cabinSeatGridpane;
     public Button prevCabinButton;
     public Button nextCabinButton;
+    public Label selectedSeatNumberIndicator;
+    public ScrollPane cabinSeatScrollPane;
 
 
     /**
@@ -347,6 +350,15 @@ public class PortalController {
             prevCabinButton.setDisable(false);
         }
         loadGraphicalCabin(cabinSelectorIndex);
+    }
+
+    public void confirmSeatSelectionButton() {
+    }
+
+    public void changeScrollDirection(ScrollEvent scrollEvent) {
+        if (scrollEvent.getDeltaX() == 0 && scrollEvent.getDeltaY() != 0) {
+            cabinSeatScrollPane.setHvalue(cabinSeatScrollPane.getHvalue() - scrollEvent.getDeltaY() / 700);
+        }
     }
 }
 

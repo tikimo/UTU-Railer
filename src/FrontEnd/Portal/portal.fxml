@@ -19,6 +19,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <!--
@@ -70,7 +71,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button layoutX="14.0" layoutY="600.0" mnemonicParsing="false" onAction="#switchToPane1" text="Go back" />
+            <Button layoutX="14.0" layoutY="613.0" mnemonicParsing="false" onAction="#switchToPane1" text="Go back" />
             <Button fx:id="prevCabinButton" disable="true" layoutX="317.0" layoutY="72.0" mnemonicParsing="false" onAction="#prevCabinButton" text="Prev. cabin" />
             <Button fx:id="nextCabinButton" layoutX="593.0" layoutY="72.0" mnemonicParsing="false" onAction="#nextCabinButton" text="Next cabin" />
             <Label layoutX="461.0" layoutY="74.0" text="Cabin: ">
@@ -83,11 +84,11 @@
                   <Font name="System Bold" size="17.0" />
                </font>
             </Label>
-            <ScrollPane layoutX="14.0" layoutY="140.0" maxWidth="975.0" minWidth="975.0" prefHeight="453.0" prefWidth="975.0">
+            <ScrollPane fx:id="cabinSeatScrollPane" layoutX="14.0" layoutY="140.0" maxWidth="975.0" minWidth="975.0" onScroll="#changeScrollDirection" prefHeight="453.0" prefWidth="975.0">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="1400.0">
                      <children>
-                        <GridPane fx:id="cabinSeatGridpane" layoutX="14.0" layoutY="14.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                        <GridPane fx:id="cabinSeatGridpane" layoutX="14.0" layoutY="14.0" prefWidth="1400.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                           <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -116,6 +117,51 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
+            <AnchorPane layoutX="763.0" layoutY="14.0" prefHeight="109.0" prefWidth="226.0">
+               <children>
+                  <GridPane layoutX="49.0" layoutY="5.0" prefHeight="109.0" prefWidth="222.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="20.0" prefWidth="20.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="70.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="20.0" prefWidth="20.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="70.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Circle fill="WHITE" radius="8.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#8a8a8a" radius="8.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="1" />
+                        <Circle fill="#1fff35" radius="8.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="2" />
+                        <Circle fill="#ffbf1f" radius="8.0" stroke="BLACK" strokeType="INSIDE" GridPane.rowIndex="3" />
+                        <Circle fill="#ff6b6b" radius="8.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" />
+                        <Circle fill="#b6bc09" radius="8.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Circle fill="DODGERBLUE" radius="8.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label text="Economy" GridPane.columnIndex="1" />
+                        <Label text="Reserved" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Allergy" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="Disabled" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Family" GridPane.columnIndex="3" />
+                        <Label text="Pet" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label text="Quiet" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                     </children>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+            <Label layoutX="769.0" layoutY="613.0" text="Selected seat:">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <Label fx:id="selectedSeatNumberIndicator" layoutX="882.0" layoutY="613.0">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+            <Button defaultButton="true" layoutX="925.0" layoutY="614.0" mnemonicParsing="false" onAction="#confirmSeatSelectionButton" text="Confirm" />
          </children>
       </Pane>
       <Pane fx:id="thirdPane" layoutX="20.0" layoutY="88.0" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="78.0">
