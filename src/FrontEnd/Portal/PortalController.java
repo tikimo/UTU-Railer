@@ -9,13 +9,16 @@ import BusinessLogic.DatabaseManager;
 import FrontEnd.Login.LoginController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -101,6 +104,7 @@ public class PortalController {
 
     // Second pane specifics
     private int cabinSelectorIndex = 0; // index 0 = cabin 1, index 1 = cabin 2, ...
+    private int seatSelectorIndex = 0;  // index 0 = seat 1 on cabin x, ...
     public Label cabinIndexIndicator;
     public GridPane cabinSeatGridpane;
     public Button prevCabinButton;
@@ -296,13 +300,23 @@ public class PortalController {
                             cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/quiet.png")), i, j);
                             break;
                     }
+                    // Attach click listener to current node
+                    Node node = getNodeByRowColumnIndex(j, i, cabinSeatGridpane);
+                    System.out.println("we reached seat "+currentSeatIndex + "  and node is: " + node);
+                    int finalCurrentSeatIndex = currentSeatIndex;   // Expressions in lambda must be final
+
+                    node.setOnMouseClicked((MouseEvent e) -> {
+                        seatSelectorIndex = finalCurrentSeatIndex;
+                        System.out.println("Seat " + seatSelectorIndex + " selected!");
+                        selectedSeatNumberIndicator.setText((seatSelectorIndex + 1) + "");
+                    });
                 }
+
             }
         }
         cabinSeatGridpane.addRow(2);
         cabinSeatGridpane.getRowConstraints().get(2).setPrefHeight(50);
 
-        // cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/allergy.png")), 0, 0);
     }
 
     /**
@@ -359,6 +373,19 @@ public class PortalController {
         if (scrollEvent.getDeltaX() == 0 && scrollEvent.getDeltaY() != 0) {
             cabinSeatScrollPane.setHvalue(cabinSeatScrollPane.getHvalue() - scrollEvent.getDeltaY() / 700);
         }
+    }
+
+    private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+        Node result = null;
+
+        for (Node node : gridPane.getChildren()) {
+            if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                result = node;
+                break;
+            }
+        }
+
+        return result;
     }
 }
 
