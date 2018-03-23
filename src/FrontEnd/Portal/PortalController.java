@@ -273,9 +273,10 @@ public class PortalController {
         currentCabinet.printCabin();
         int currentSeatIndex;
 
+        // Iterate through cabin
         for (int i = 0; i < 15; i++) {   // column
             for (int j = 0; j < 4; j++) {  // row
-                currentSeatIndex = i*4 + j;
+                currentSeatIndex = i*4 + j; // keep track of seat index
                 Seat currentSeat = currentCabinet.getSeatList().get(currentSeatIndex);
                 if (currentSeat.isReserved()) {
                     cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/taken.png")), i, j);
@@ -300,11 +301,13 @@ public class PortalController {
                             cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/quiet.png")), i, j);
                             break;
                     }
+
                     // Attach click listener to current node
-                    Node node = getNodeByRowColumnIndex(j, i, cabinSeatGridpane);
-                    System.out.println("we reached seat "+currentSeatIndex + "  and node is: " + node);
+                    ImageView node = (ImageView) getNodeByRowColumnIndex(j, i, cabinSeatGridpane);
+                    System.out.println("we reached seat "+ currentSeatIndex + "  and node is: " + node);
                     int finalCurrentSeatIndex = currentSeatIndex;   // Expressions in lambda must be final
 
+                    // This lambda is only accessed the first time this method is called.. Why?
                     node.setOnMouseClicked((MouseEvent e) -> {
                         seatSelectorIndex = finalCurrentSeatIndex;
                         System.out.println("Seat " + seatSelectorIndex + " selected!");
