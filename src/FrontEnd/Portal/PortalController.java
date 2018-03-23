@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -107,10 +108,12 @@ public class PortalController {
     private int seatSelectorIndex = 0;  // index 0 = seat 1 on cabin x, ...
     public Label cabinIndexIndicator;
     public GridPane cabinSeatGridpane;
+    public GridPane cabinSeatOldGridpane;
     public Button prevCabinButton;
     public Button nextCabinButton;
     public Label selectedSeatNumberIndicator;
     public ScrollPane cabinSeatScrollPane;
+    public AnchorPane cabinSeatScrollpaneAnchorpane;
 
 
     /**
@@ -140,7 +143,6 @@ public class PortalController {
         // init dropdown boxes
         trainCitiesFromDropDown.setItems(Stations.getAllStations());
         trainCitiesToDropDown.setItems(Stations.getAllStations());
-
 
 
         // First pane
@@ -248,10 +250,15 @@ public class PortalController {
 
     public void pickSelectedItemFromList() {
         int selectedItemIndex = trainResultListViewJFX.getSelectionModel().getSelectedIndex();
-        selectedTrain = searchResults.get(selectedItemIndex);
-        System.out.println(selectedTrain + " selected successfully!");
-        loadGraphicalCabin(cabinSelectorIndex);
-        showPane(2);
+
+        try {
+            selectedTrain = searchResults.get(selectedItemIndex);
+            System.out.println(selectedTrain + " selected successfully!");
+            loadGraphicalCabin(cabinSelectorIndex);
+            showPane(2);
+        } catch (IndexOutOfBoundsException e) {
+            System.err.println("No train was selected!");
+        }
     }
 
     /**
@@ -272,6 +279,7 @@ public class PortalController {
         Cabinet currentCabinet = selectedTrain.getCabinetList().get(cabinIndex);
         currentCabinet.printCabin();
         int currentSeatIndex;
+        initNewGridPane();
 
         // Iterate through cabin
         for (int i = 0; i < 15; i++) {   // column
@@ -307,19 +315,33 @@ public class PortalController {
                     System.out.println("we reached seat "+ currentSeatIndex + "  and node is: " + node);
                     int finalCurrentSeatIndex = currentSeatIndex;   // Expressions in lambda must be final
 
+
                     // This lambda is only accessed the first time this method is called.. Why?
                     node.setOnMouseClicked((MouseEvent e) -> {
                         seatSelectorIndex = finalCurrentSeatIndex;
                         System.out.println("Seat " + seatSelectorIndex + " selected!");
                         selectedSeatNumberIndicator.setText((seatSelectorIndex + 1) + "");
                     });
+
                 }
 
             }
         }
-        cabinSeatGridpane.addRow(2);
-        cabinSeatGridpane.getRowConstraints().get(2).setPrefHeight(50);
+        cabinSeatGridpane.addRow(1);
+        Pane spring = new Pane();
+        spring.setMinHeight(50);
+        cabinSeatGridpane.add(spring, 0, 2);
+    }
 
+    private void initNewGridPane() {
+        cabinSeatGridpane = new GridPane();
+        cabinSeatGridpane.setPadding(new Insets(55,25,25,25));
+        cabinSeatGridpane.setHgap(25);
+        cabinSeatGridpane.setVgap(25);
+        cabinSeatGridpane.setLayoutX(10);
+
+        cabinSeatScrollpaneAnchorpane.getChildren().clear();
+        cabinSeatScrollpaneAnchorpane.getChildren().add(cabinSeatGridpane);
     }
 
     /**

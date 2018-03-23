@@ -86,9 +86,9 @@
             </Label>
             <ScrollPane fx:id="cabinSeatScrollPane" layoutX="14.0" layoutY="140.0" maxWidth="975.0" minWidth="975.0" onScroll="#changeScrollDirection" prefHeight="453.0" prefWidth="975.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="1400.0">
+                <AnchorPane fx:id="cabinSeatScrollpaneAnchorpane" minHeight="0.0" minWidth="0.0" prefHeight="431.0" prefWidth="1400.0">
                      <children>
-                        <GridPane fx:id="cabinSeatGridpane" layoutX="14.0" layoutY="14.0" prefWidth="1400.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                        <GridPane fx:id="cabinSeatOldGridpane" layoutX="14.0" layoutY="14.0" prefWidth="1400.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                           <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
