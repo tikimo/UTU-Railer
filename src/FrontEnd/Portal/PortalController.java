@@ -153,6 +153,7 @@ public class PortalController {
         billingAddressFieldSettings.setText(dbm.getAddress(user));
         phoneNumberFieldSettings.setText(dbm.getPhone(user));
         creditCardFieldSettings.setText(dbm.getCard(user));
+        selectedSeatNumberIndicator.setText("");
 
         // Make material button look cool for fun
         firstPaneSearchButton.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(2), new Insets(2))));
@@ -534,6 +535,8 @@ public class PortalController {
     }
 
     public void makeANewReservation() {
+        trainResultListViewJFX.getItems().remove(0, trainResultListViewJFX.getItems().size());
+        seatSelectorIndex = -1;
         initialize();
     }
 }
