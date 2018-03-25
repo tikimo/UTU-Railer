@@ -218,38 +218,33 @@ public class CommuteDatabaseManager {
         Train newTrain = new Train(oldTrain.getDepartureStation(), oldTrain.getArrivalStation(),
                 oldTrain.getDepartureTime(), oldTrain.getArrivalTime());
 
-        ArrayList<Cabinet> newCabinetList = new ArrayList<>();
+        ArrayList<Cabinet> newCabinetList = new ArrayList<>();  // init new cabinet list
         for (int i = 0; i < oldTrain.getCabinetList().size(); i++) {    // cabins in train
-
-            ArrayList<Seat> newSeatList = new ArrayList<>();
+            ArrayList<Seat> newSeatList = new ArrayList<>();    // init new seat list for each cabin
             for (int j = 0; j < oldTrain.getCabinetList().get(i).getSeatList().size(); j++) {   // seats in cabin
-
+                // init new seat
                 Seat newSeat = new Seat(j+1, oldTrain.getCabinetList().get(i).getSeatList().get(j).getSeatType());
 
+                // check if seat was reserved or to be reserved
                 if ((i == cabinSelectorIndex && j == seatSelectorIndex) ||
                         oldTrain.getCabinetList().get(i).getSeatList().get(j).isReserved()) {
-                    newSeat.setReserved(true);
+                    newSeat.setReserved(true);  // reserve it
                 }
-
-                newSeatList.add(newSeat);
-
+                newSeatList.add(newSeat);   // add seat to list
             }
-            Cabinet newCabinet = new Cabinet(newSeatList);
-            newCabinetList.add(newCabinet);
+            Cabinet newCabinet = new Cabinet(newSeatList); // init cabin with new seatlist
+            newCabinetList.add(newCabinet); // add cabin to cabinlist
         }
-
-        newTrain.setCabinetList(newCabinetList);
+        newTrain.setCabinetList(newCabinetList);    // add cabinetlist to fresh train
 
         // Check that the new train serialization differs from old one
-        System.err.println("\n" + trainToString(oldTrain) + "\n" + trainToString(newTrain) + "\n" +
-        trainToString(oldTrain).equals(trainToString(newTrain)) + "\n" +
-        oldTrain.getCabinetList().get(cabinSelectorIndex).getSeatList().get(seatSelectorIndex).isReserved() +
-        newTrain.getCabinetList().get(cabinSelectorIndex).getSeatList().get(seatSelectorIndex).isReserved()
-        );
-
-
-
-        // Now that its reserved we need to replace old train with the new one in database
-        updateTrain(oldTrain, newTrain);
+        if (!trainToString(oldTrain).equals(newTrain)) {
+            System.err.println("New train generated successfully with reserved seat.");
+            // Now that its reserved we need to replace old train with the new one in database
+            updateTrain(oldTrain, newTrain);
+        } else {
+            System.err.println("[ERROR] New train has the same serialization as old one!" +
+                    "\nNothing was changed.");
+        }
     }
 }
