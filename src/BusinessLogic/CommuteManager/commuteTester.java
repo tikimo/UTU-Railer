@@ -15,7 +15,9 @@ public class commuteTester extends Application {
     public void start(Stage primaryStage)  {
 
         CommuteDatabaseManager cdm = new CommuteDatabaseManager("trains");
-        // cdm.fillDatabaseWithRandomTrains(cdm, 8);
+
+        // This adds randomly filled trains to database by selected amount
+        // cdm.fillDatabaseWithRandomTrains(cdm, 60);
 
 
         // This only fetches trains from Turku and prints data of them

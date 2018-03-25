@@ -108,7 +108,6 @@ public class PortalController {
     private int seatSelectorIndex = 0;  // index 0 = seat 1 on cabin x, ...
     public Label cabinIndexIndicator;
     public GridPane cabinSeatGridpane;
-    public GridPane cabinSeatOldGridpane;
     public Button prevCabinButton;
     public Button nextCabinButton;
     public Label selectedSeatNumberIndicator;
@@ -275,11 +274,12 @@ public class PortalController {
      * @param cabinIndex number of cabinet to present as index
      */
     private void loadGraphicalCabin(int cabinIndex) {
-        cabinIndexIndicator.setText(cabinIndex+1 + "");
+        cabinIndexIndicator.setText(cabinIndex+1 + " / " + selectedTrain.getCabinetList().size());
         Cabinet currentCabinet = selectedTrain.getCabinetList().get(cabinIndex);
         currentCabinet.printCabin();
         int currentSeatIndex;
         initNewGridPane();
+        ImageView node;
 
         // Iterate through cabin
         for (int i = 0; i < 15; i++) {   // column
@@ -288,6 +288,7 @@ public class PortalController {
                 Seat currentSeat = currentCabinet.getSeatList().get(currentSeatIndex);
                 if (currentSeat.isReserved()) {
                     cabinSeatGridpane.add(new ImageView(new Image("FrontEnd/RES/Seats/taken.png")), i, j);
+                    node = (ImageView) getNodeByRowColumnIndex(j, i, cabinSeatGridpane);
                 } else {
                     switch (currentSeat.getSeatType().substring(0,1)) {
                         case "a":
@@ -311,34 +312,37 @@ public class PortalController {
                     }
 
                     // Attach click listener to current node
-                    ImageView node = (ImageView) getNodeByRowColumnIndex(j, i, cabinSeatGridpane);
-                    System.out.println("we reached seat "+ currentSeatIndex + "  and node is: " + node);
                     int finalCurrentSeatIndex = currentSeatIndex;   // Expressions in lambda must be final
-
-
-                    // This lambda is only accessed the first time this method is called.. Why?
+                    node = (ImageView) getNodeByRowColumnIndex(j, i, cabinSeatGridpane);
                     node.setOnMouseClicked((MouseEvent e) -> {
                         seatSelectorIndex = finalCurrentSeatIndex;
-                        System.out.println("Seat " + seatSelectorIndex + " selected!");
+                        System.out.println("Seat with index " + seatSelectorIndex + " (" + currentSeat.getSeatType() + ") selected!");
                         selectedSeatNumberIndicator.setText((seatSelectorIndex + 1) + "");
                     });
-
                 }
 
+                // Set margin to present aisle
+                if (j == 2) {
+                    GridPane.setMargin(node, new Insets(50, 0, 0, 0));
+                }
             }
         }
-        cabinSeatGridpane.addRow(1);
+
+
+        /*
+        cabinSeatGridpane.setMaxHeight(150);
         Pane spring = new Pane();
-        spring.setMinHeight(50);
-        cabinSeatGridpane.add(spring, 0, 2);
+        spring.setMinHeight(100);
+        cabinSeatGridpane.add(spring, 1, 2);
+        */
     }
 
     private void initNewGridPane() {
         cabinSeatGridpane = new GridPane();
-        cabinSeatGridpane.setPadding(new Insets(55,25,25,25));
-        cabinSeatGridpane.setHgap(25);
-        cabinSeatGridpane.setVgap(25);
-        cabinSeatGridpane.setLayoutX(10);
+        cabinSeatGridpane.setPadding(new Insets(30,25,25,25));
+        cabinSeatGridpane.setHgap(40);
+        cabinSeatGridpane.setVgap(40);
+        cabinSeatGridpane.setLayoutX(20);
 
         cabinSeatScrollpaneAnchorpane.getChildren().clear();
         cabinSeatScrollpaneAnchorpane.getChildren().add(cabinSeatGridpane);
@@ -395,8 +399,9 @@ public class PortalController {
     }
 
     public void changeScrollDirection(ScrollEvent scrollEvent) {
+        double speed = 1400; // Smaller number is faster
         if (scrollEvent.getDeltaX() == 0 && scrollEvent.getDeltaY() != 0) {
-            cabinSeatScrollPane.setHvalue(cabinSeatScrollPane.getHvalue() - scrollEvent.getDeltaY() / 700);
+            cabinSeatScrollPane.setHvalue(cabinSeatScrollPane.getHvalue() - scrollEvent.getDeltaY() / speed);
         }
     }
 
