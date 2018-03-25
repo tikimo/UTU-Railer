@@ -128,6 +128,9 @@ public class PortalController {
     public AnchorPane orderSuccessfullPane;
     public Label reservationNumberLabel;
     public Label creditCardPaymentErrorLabel;
+    public AnchorPane creditCardPaymentPane;
+    public AnchorPane payInTrainPane;
+    public JFXButton makeANewReservationButton;
 
 
     /**
@@ -155,6 +158,8 @@ public class PortalController {
         firstPaneSearchButton.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(2), new Insets(2))));
         payWithCreditCardButton.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(2), new Insets(2))));
         payInTrainReserveButton.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(2), new Insets(2))));
+        makeANewReservationButton.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(2), new Insets(2))));
+
 
         // init dropdown boxes
         trainCitiesFromDropDown.setItems(Stations.getAllStations());
@@ -178,6 +183,8 @@ public class PortalController {
         creditCardPaymentErrorLabel.setVisible(false);
         payWithCreditCardButton.setDisable(true);
         payInTrainReserveButton.setDisable(true);
+        payInTrainPane.setDisable(false);
+        creditCardPaymentPane.setDisable(false);
     }
 
 
@@ -484,9 +491,7 @@ public class PortalController {
         } else {
             // Insert payment logic here
             System.err.println("Payment successfull!");
-            cdm.reserveSeat(selectedTrain, cabinSelectorIndex, seatSelectorIndex);
-            reservationNumberLabel.setText(generateReservationNo());
-            orderSuccessfullPane.setVisible(true);
+            reserveSeat();
         }
     }
 
@@ -500,11 +505,14 @@ public class PortalController {
         return serTrain.substring(serTrain.length()-4, serTrain.length()-1) + cabinSelectorIndex+1 + seatSelectorIndex+1;
     }
 
-    public void reserveSeat(ActionEvent actionEvent) {
-        System.err.println("Reservation successfull!");
+    public void reserveSeat() {
+        System.err.println("Trying to reserve seat...");
         cdm.reserveSeat(selectedTrain, cabinSelectorIndex, seatSelectorIndex);
+        System.err.println("Reservation successfull!");
         reservationNumberLabel.setText(generateReservationNo());
         orderSuccessfullPane.setVisible(true);
+        payInTrainPane.setDisable(true);
+        creditCardPaymentPane.setDisable(true);
     }
 
     public void payWithCreditCardRadioButton() {
@@ -524,6 +532,10 @@ public class PortalController {
 
     public void exitApplication() {
         System.exit(0);
+    }
+
+    public void makeANewReservation() {
+        initialize();
     }
 }
 

@@ -151,17 +151,17 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <AnchorPane layoutX="495.0" layoutY="51.0" prefHeight="120.0" prefWidth="492.0">
+            <AnchorPane layoutX="495.0" layoutY="51.0" prefHeight="151.0" prefWidth="492.0">
                <children>
-                  <Label fx:id="orderDetailsLabel" alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="94.0" prefWidth="235.0" text="Train from" wrapText="true">
+                  <Label fx:id="orderDetailsLabel" alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="128.0" prefWidth="293.0" text="Train from" wrapText="true">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <ImageView fx:id="paymentWindowSeatImageView" fitHeight="96.0" fitWidth="96.0" layoutX="358.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="10.0" />
+                  <ImageView fx:id="paymentWindowSeatImageView" fitHeight="96.0" fitWidth="96.0" layoutX="367.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="27.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="28.0" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutY="57.0" prefHeight="231.0" prefWidth="424.0">
+            <AnchorPane fx:id="creditCardPaymentPane" layoutY="57.0" prefHeight="231.0" prefWidth="424.0">
                <children>
                   <JFXRadioButton fx:id="payWithCreditCardRadioButton" layoutX="13.0" layoutY="14.0" onAction="#payWithCreditCardRadioButton" text="Pay with your credit card">
                      <toggleGroup>
@@ -184,14 +184,14 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="14.0" layoutY="348.0" prefHeight="199.0" prefWidth="424.0">
+            <AnchorPane fx:id="payInTrainPane" layoutX="14.0" layoutY="348.0" prefHeight="199.0" prefWidth="424.0">
                <children>
                   <JFXRadioButton layoutY="14.0" onAction="#payInTrainRadioButton" text="Pay in train" toggleGroup="$paymentMethodRadioGroup" />
                   <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="49.0" prefHeight="109.0" prefWidth="343.0" text="If you pay in train a handling fee of 6,66€ will be added. You can pay with credit/debit or cash. Please remember to write down your ticket number so you can present it for conductor." wrapText="true" />
                   <JFXButton fx:id="payInTrainReserveButton" buttonType="RAISED" layoutX="14.0" layoutY="118.0" onAction="#reserveSeat" ripplerFill="#27b543" text="Reserve" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="orderSuccessfullPane" layoutX="495.0" layoutY="173.0" prefHeight="170.0" prefWidth="450.0">
+            <AnchorPane fx:id="orderSuccessfullPane" layoutX="495.0" layoutY="245.0" prefHeight="170.0" prefWidth="450.0">
                <children>
                   <Label layoutX="14.0" layoutY="14.0" text="Order successfull!" textFill="#26a840">
                      <font>
@@ -209,10 +209,11 @@
                      </font>
                   </Label>
                   <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="77.0" prefHeight="38.0" prefWidth="361.0" text="Please have this reservation number with you when boarding. Have a pleasant trip!" wrapText="true" />
+                  <JFXButton fx:id="makeANewReservationButton" buttonType="RAISED" layoutX="14.0" layoutY="131.0" onAction="#makeANewReservation" ripplerFill="#2ab243" text="Make a new reservation" />
                </children>
             </AnchorPane>
-            <Button layoutX="928.0" layoutY="616.0" mnemonicParsing="false" onAction="#exitApplication" text="Exit" />
-            <Button layoutX="14.0" layoutY="616.0" mnemonicParsing="false" onAction="#switchToPane2" text="Back" />
+            <Button layoutX="14.0" layoutY="604.0" mnemonicParsing="false" onAction="#switchToPane2" text="Go back" />
+            <Button layoutX="945.0" layoutY="604.0" mnemonicParsing="false" onAction="#exitApplication" text="Exit" />
          </children>
       </Pane>
       <AnchorPane fx:id="settingsAnchorPane" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: gainsboro;" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="68.0">
