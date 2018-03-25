@@ -484,6 +484,7 @@ public class PortalController {
         } else {
             // Insert payment logic here
             System.err.println("Payment successfull!");
+            cdm.reserveSeat(selectedTrain, cabinSelectorIndex, seatSelectorIndex);
             reservationNumberLabel.setText(generateReservationNo());
             orderSuccessfullPane.setVisible(true);
         }
@@ -500,6 +501,10 @@ public class PortalController {
     }
 
     public void reserveSeat(ActionEvent actionEvent) {
+        System.err.println("Reservation successfull!");
+        cdm.reserveSeat(selectedTrain, cabinSelectorIndex, seatSelectorIndex);
+        reservationNumberLabel.setText(generateReservationNo());
+        orderSuccessfullPane.setVisible(true);
     }
 
     public void payWithCreditCardRadioButton() {

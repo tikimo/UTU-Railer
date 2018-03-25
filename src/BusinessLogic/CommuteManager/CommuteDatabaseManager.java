@@ -86,6 +86,21 @@ public class CommuteDatabaseManager {
         return failed;
     }
 
+    boolean updateTrain(Train train) {
+        // Statement
+        try {
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("UPDATE trains " +
+                    "SET serializedtrain = '" + trainToString(train) + "'" +
+                    "WHERE serializedTrain = '" + trainToString(train)+ "'");
+            System.err.println("Train updated successfully!");
+            return true;
+        } catch (SQLException sqle) {
+            System.err.println("SQL Error! Code: " + sqle.getErrorCode());
+        }
+        return false;
+    }
+
     public ArrayList<Train> getTrainsByProperty(String property, String value) throws IOException, ClassNotFoundException {
         ArrayList<Train> trains = new ArrayList<>();
         try {
@@ -186,5 +201,20 @@ public class CommuteDatabaseManager {
         for (int i = 0; i<count; i++) {
             cdm.addNewTrain(generateRandomTrain());
         }
+    }
+
+    /**
+     * This method marks a seat as reserved and saves it to database.
+     * To avoid hacking into reserved seats, this can be expanded to have an exception.
+     * @param selectedTrain train to be modified
+     * @param cabinSelectorIndex cabin to be modified
+     * @param seatSelectorIndex seat to be marked as taken
+     */
+    public void reserveSeat(Train selectedTrain, int cabinSelectorIndex, int seatSelectorIndex) {
+        Seat seat = selectedTrain.getCabinetList().get(cabinSelectorIndex).getSeatList().get(seatSelectorIndex);
+        seat.setReserved(true);
+
+        // Now that its reserved we need to save it back to database
+        updateTrain(selectedTrain);
     }
 }
