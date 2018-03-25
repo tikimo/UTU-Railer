@@ -82,7 +82,7 @@
                   <Font size="17.0" />
                </font>
             </Label>
-            <Label fx:id="cabinIndexIndicator" layoutX="502.0" layoutY="74.0" text="1">
+            <Label fx:id="cabinIndexIndicator" layoutX="502.0" layoutY="74.0" text="1 / 5">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
@@ -153,12 +153,12 @@
             </Label>
             <AnchorPane layoutX="495.0" layoutY="51.0" prefHeight="120.0" prefWidth="492.0">
                <children>
-                  <Label fx:id="orderDetailsLabel" alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="94.0" prefWidth="206.0" text="Train from" wrapText="true">
+                  <Label fx:id="orderDetailsLabel" alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="94.0" prefWidth="235.0" text="Train from" wrapText="true">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <ImageView fx:id="paymentWindowSeatImageView" fitHeight="120.0" fitWidth="132.0" layoutX="327.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="paymentWindowSeatImageView" fitHeight="96.0" fitWidth="96.0" layoutX="358.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="10.0" />
                </children>
             </AnchorPane>
             <AnchorPane layoutY="57.0" prefHeight="231.0" prefWidth="424.0">
@@ -211,8 +211,8 @@
                   <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="77.0" prefHeight="38.0" prefWidth="361.0" text="Please have this reservation number with you when boarding. Have a pleasant trip!" wrapText="true" />
                </children>
             </AnchorPane>
-            <JFXButton buttonType="RAISED" layoutX="14.0" layoutY="641.0" onAction="#switchToPane2" ripplerFill="#27b543" text="Go back" />
-            <JFXButton buttonType="RAISED" layoutX="952.0" layoutY="641.0" onAction="#exitApplication" ripplerFill="#2bb945" text="Exit" />
+            <Button layoutX="928.0" layoutY="616.0" mnemonicParsing="false" onAction="#exitApplication" text="Exit" />
+            <Button layoutX="14.0" layoutY="616.0" mnemonicParsing="false" onAction="#switchToPane2" text="Back" />
          </children>
       </Pane>
       <AnchorPane fx:id="settingsAnchorPane" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: gainsboro;" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="68.0">

@@ -11,14 +11,10 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -28,6 +24,7 @@ import javafx.scene.paint.Color;
 
 import java.io.IOException;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -70,6 +67,7 @@ public class PortalController {
     private CommuteDatabaseManager cdm = new CommuteDatabaseManager("trains");
     private ArrayList<Train> searchResults = new ArrayList<>();
     private Train selectedTrain = null;
+    private Image selectedSeatImage;
 
 
     public TextField billingAddressFieldSettings;
@@ -132,7 +130,6 @@ public class PortalController {
     public Label creditCardPaymentErrorLabel;
 
 
-
     /**
      * Initializes settings for portal
      */
@@ -156,6 +153,8 @@ public class PortalController {
 
         // Make material button look cool for fun
         firstPaneSearchButton.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(2), new Insets(2))));
+        payWithCreditCardButton.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(2), new Insets(2))));
+        payInTrainReserveButton.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(2), new Insets(2))));
 
         // init dropdown boxes
         trainCitiesFromDropDown.setItems(Stations.getAllStations());
@@ -346,10 +345,13 @@ public class PortalController {
                     // Attach click listener to current node
                     int finalCurrentSeatIndex = currentSeatIndex;   // Expressions in lambda must be final
                     node = (ImageView) getNodeByRowColumnIndex(j, i, cabinSeatGridpane);
+                    ImageView finalNode = node;
                     node.setOnMouseClicked((MouseEvent e) -> {
                         seatSelectorIndex = finalCurrentSeatIndex;
-                        System.out.println("Seat with index " + seatSelectorIndex + " (" + currentSeat.getSeatType() + ") selected!");
+                        System.out.println("Seat with index " + seatSelectorIndex + " (" + currentSeat.getSeatType() + ")" +
+                                " on cabin " + cabinIndex +" selected!");
                         selectedSeatNumberIndicator.setText((seatSelectorIndex + 1) + "");
+                        selectedSeatImage = finalNode.getImage();
                     });
                 }
 
@@ -395,6 +397,7 @@ public class PortalController {
 
     public void switchToPane1() {
         seatSelectorIndex = -1;
+        selectedSeatNumberIndicator.setText("");
         showPane(1);
     }
 
@@ -424,14 +427,36 @@ public class PortalController {
         if (seatSelectorIndex == -1) {
             System.err.println("[ERROR] No seat selected");
         } else {
+            long chronoHours = ChronoUnit.HOURS
+                    .between(selectedTrain.getDepartureTime(), selectedTrain.getArrivalTime());
+            long chronoMins = ChronoUnit.MINUTES
+                    .between(selectedTrain.getDepartureTime(), selectedTrain.getArrivalTime()) - chronoHours*60;
+
+            // Set text to order details with precise information
+            String detailText =
+                    // Train info
+                    "Train from " + selectedTrain.getDepartureStation() + " at " +
+                    selectedTrain.getDepartureTime() + " to " + selectedTrain.getArrivalStation() + " at " +
+                    // Travel time
+                    selectedTrain.getArrivalTime() + "\n\nTravel time is " +
+                    chronoHours + " hours and " +
+                    chronoMins + " minutes. \n\n" +
+                    // Seat number and type
+                    "Your seat number is " + seatSelectorIndex+1 + " (" +
+                    selectedTrain.getCabinetList().get(cabinSelectorIndex).getSeatList().get(seatSelectorIndex).getSeatType()
+                    +") in cabin " + cabinSelectorIndex+1
+                    ;
+            orderDetailsLabel.setText(detailText);
+            paymentWindowSeatImageView.setImage(selectedSeatImage);
+
             showPane(3);
         }
     }
 
     public void changeScrollDirection(ScrollEvent scrollEvent) {
-        double speed = 1400; // Smaller number is faster
+        double scrollDensity = 1400; // Smaller number is faster scrolling
         if (scrollEvent.getDeltaX() == 0 && scrollEvent.getDeltaY() != 0) {
-            cabinSeatScrollPane.setHvalue(cabinSeatScrollPane.getHvalue() - scrollEvent.getDeltaY() / speed);
+            cabinSeatScrollPane.setHvalue(cabinSeatScrollPane.getHvalue() - scrollEvent.getDeltaY() / scrollDensity);
         }
     }
 
@@ -448,7 +473,30 @@ public class PortalController {
         return result;
     }
 
-    public void payWithCreditCard(ActionEvent actionEvent) {
+    public void payWithCreditCard() {
+        creditCardPaymentErrorLabel.setVisible(false);
+        // Check if one of credit info fields are empty
+        if (creditCardNumberField3.getText().equals("") ||
+                cardHolderTextField3.getText().equals("") ||
+                CVCTextField3.getText().equals("") ||
+                expirationDateTextField3.getText().equals("")) {
+            creditCardPaymentErrorLabel.setVisible(true);
+        } else {
+            // Insert payment logic here
+            System.err.println("Payment successfull!");
+            reservationNumberLabel.setText(generateReservationNo());
+            orderSuccessfullPane.setVisible(true);
+        }
+    }
+
+    /**
+     * Reservation number is generated by 4 last chars of train serialization string,
+     * cabin number and seat number.
+     * @return reservation number
+     */
+    private String generateReservationNo() {
+        String serTrain = CommuteDatabaseManager.trainToString(selectedTrain);
+        return serTrain.substring(serTrain.length()-4, serTrain.length()-1) + cabinSelectorIndex+1 + seatSelectorIndex+1;
     }
 
     public void reserveSeat(ActionEvent actionEvent) {

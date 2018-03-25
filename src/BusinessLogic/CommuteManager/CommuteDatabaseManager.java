@@ -124,7 +124,7 @@ public class CommuteDatabaseManager {
      * @return String of object
      * @throws IOException
      */
-    static String trainToString(Serializable o) {
+    public static String trainToString(Serializable o) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos;
         try {
