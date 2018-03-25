@@ -9,6 +9,8 @@ import BusinessLogic.DatabaseManager;
 import FrontEnd.Login.LoginController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTextField;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -105,14 +107,30 @@ public class PortalController {
 
     // Second pane specifics
     private int cabinSelectorIndex = 0; // index 0 = cabin 1, index 1 = cabin 2, ...
-    private int seatSelectorIndex = 0;  // index 0 = seat 1 on cabin x, ...
+    private int seatSelectorIndex = -1;  // index 0 = seat 1 on cabin x, ...
     public Label cabinIndexIndicator;
-    public GridPane cabinSeatGridpane;
+    private GridPane cabinSeatGridpane;
     public Button prevCabinButton;
     public Button nextCabinButton;
     public Label selectedSeatNumberIndicator;
     public ScrollPane cabinSeatScrollPane;
     public AnchorPane cabinSeatScrollpaneAnchorpane;
+
+    // Third pane specifics
+    public Label orderDetailsLabel;
+    public ImageView paymentWindowSeatImageView;
+    public JFXRadioButton payWithCreditCardRadioButton;
+    public ToggleGroup paymentMethodRadioGroup;
+    public JFXTextField creditCardNumberField3;
+    public JFXTextField cardHolderTextField3;
+    public JFXTextField CVCTextField3;
+    public JFXTextField expirationDateTextField3;
+    public JFXButton payWithCreditCardButton;
+    public JFXButton payInTrainReserveButton;
+    public AnchorPane orderSuccessfullPane;
+    public Label reservationNumberLabel;
+    public Label creditCardPaymentErrorLabel;
+
 
 
     /**
@@ -143,11 +161,25 @@ public class PortalController {
         trainCitiesFromDropDown.setItems(Stations.getAllStations());
         trainCitiesToDropDown.setItems(Stations.getAllStations());
 
+        // Third pane text fills etc.
+        creditCardNumberField3.setText(dbm.getCard(user));
+        cardHolderTextField3.setText(dbm.getUserName(user));
+        initThirdPane();
 
         // First pane
         showPane(1);
     }
 
+    /**
+     * This page has to be initiated in case the user changes train or seat
+     */
+    private void initThirdPane() {
+        orderDetailsLabel.setText("");
+        orderSuccessfullPane.setVisible(false);
+        creditCardPaymentErrorLabel.setVisible(false);
+        payWithCreditCardButton.setDisable(true);
+        payInTrainReserveButton.setDisable(true);
+    }
 
 
     /**
@@ -327,14 +359,6 @@ public class PortalController {
                 }
             }
         }
-
-
-        /*
-        cabinSeatGridpane.setMaxHeight(150);
-        Pane spring = new Pane();
-        spring.setMinHeight(100);
-        cabinSeatGridpane.add(spring, 1, 2);
-        */
     }
 
     private void initNewGridPane() {
@@ -370,6 +394,7 @@ public class PortalController {
     }
 
     public void switchToPane1() {
+        seatSelectorIndex = -1;
         showPane(1);
     }
 
@@ -396,6 +421,11 @@ public class PortalController {
     }
 
     public void confirmSeatSelectionButton() {
+        if (seatSelectorIndex == -1) {
+            System.err.println("[ERROR] No seat selected");
+        } else {
+            showPane(3);
+        }
     }
 
     public void changeScrollDirection(ScrollEvent scrollEvent) {
@@ -416,6 +446,31 @@ public class PortalController {
         }
 
         return result;
+    }
+
+    public void payWithCreditCard(ActionEvent actionEvent) {
+    }
+
+    public void reserveSeat(ActionEvent actionEvent) {
+    }
+
+    public void payWithCreditCardRadioButton() {
+        payInTrainReserveButton.setDisable(true);
+        payWithCreditCardButton.setDisable(false);
+    }
+
+    public void payInTrainRadioButton() {
+        payInTrainReserveButton.setDisable(false);
+        payWithCreditCardButton.setDisable(true);
+    }
+
+    public void switchToPane2() {
+        showPane(2);
+        initThirdPane();
+    }
+
+    public void exitApplication() {
+        System.exit(0);
     }
 }
 

@@ -2,6 +2,8 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTimePicker?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -14,6 +16,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -64,7 +67,7 @@
             <Button layoutX="847.0" layoutY="613.0" mnemonicParsing="false" onAction="#pickSelectedItemFromList" text="Pick selected train" />
          </children>
       </Pane>
-      <Pane fx:id="secondPane" layoutX="20.0" layoutY="88.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="78.0">
+      <Pane fx:id="secondPane" layoutX="20.0" layoutY="88.0" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="78.0">
          <children>
             <Label layoutX="14.0" layoutY="14.0" text="2. Choose your seating from this screen">
                <font>
@@ -136,13 +139,80 @@
             <Button defaultButton="true" layoutX="925.0" layoutY="614.0" mnemonicParsing="false" onAction="#confirmSeatSelectionButton" text="Confirm" />
          </children>
       </Pane>
-      <Pane fx:id="thirdPane" layoutX="20.0" layoutY="88.0" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="78.0">
+      <Pane fx:id="thirdPane" layoutX="20.0" layoutY="88.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="78.0">
          <children>
             <Label layoutX="14.0" layoutY="14.0" text="3. Choose your payment method">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
+            <Label layoutX="495.0" layoutY="19.0" text="Your order:">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <AnchorPane layoutX="495.0" layoutY="51.0" prefHeight="120.0" prefWidth="492.0">
+               <children>
+                  <Label fx:id="orderDetailsLabel" alignment="TOP_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="94.0" prefWidth="206.0" text="Train from" wrapText="true">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <ImageView fx:id="paymentWindowSeatImageView" fitHeight="120.0" fitWidth="132.0" layoutX="327.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutY="57.0" prefHeight="231.0" prefWidth="424.0">
+               <children>
+                  <JFXRadioButton fx:id="payWithCreditCardRadioButton" layoutX="13.0" layoutY="14.0" onAction="#payWithCreditCardRadioButton" text="Pay with your credit card">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="paymentMethodRadioGroup" />
+                     </toggleGroup>
+                  </JFXRadioButton>
+                  <AnchorPane layoutX="27.0" layoutY="42.0" prefHeight="186.0" prefWidth="380.0">
+                     <children>
+                        <Label layoutX="14.0" layoutY="14.0" text="Credit card number" />
+                        <JFXTextField fx:id="creditCardNumberField3" focusColor="#2bab2b" layoutX="14.0" layoutY="31.0" prefHeight="25.0" prefWidth="191.0" />
+                        <Label layoutX="14.0" layoutY="82.0" text="Card holder" />
+                        <JFXTextField fx:id="cardHolderTextField3" focusColor="#2bab2b" layoutX="14.0" layoutY="99.0" prefHeight="25.0" prefWidth="191.0" />
+                        <Label layoutX="245.0" layoutY="14.0" text="CVC" />
+                        <JFXTextField fx:id="CVCTextField3" focusColor="#2bab2b" layoutX="245.0" layoutY="31.0" prefHeight="25.0" prefWidth="73.0" />
+                        <Label layoutX="245.0" layoutY="82.0" text="Expiration date" />
+                        <JFXTextField fx:id="expirationDateTextField3" focusColor="#2bab2b" layoutX="245.0" layoutY="99.0" prefHeight="25.0" prefWidth="73.0" />
+                        <JFXButton fx:id="payWithCreditCardButton" buttonType="RAISED" layoutX="14.0" layoutY="147.0" onAction="#payWithCreditCard" ripplerFill="#29b543" text="Pay" />
+                        <Label fx:id="creditCardPaymentErrorLabel" layoutX="59.0" layoutY="151.0" text="Please fill all the fields" textFill="RED" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="14.0" layoutY="348.0" prefHeight="199.0" prefWidth="424.0">
+               <children>
+                  <JFXRadioButton layoutY="14.0" onAction="#payInTrainRadioButton" text="Pay in train" toggleGroup="$paymentMethodRadioGroup" />
+                  <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="49.0" prefHeight="109.0" prefWidth="343.0" text="If you pay in train a handling fee of 6,66€ will be added. You can pay with credit/debit or cash. Please remember to write down your ticket number so you can present it for conductor." wrapText="true" />
+                  <JFXButton fx:id="payInTrainReserveButton" buttonType="RAISED" layoutX="14.0" layoutY="118.0" onAction="#reserveSeat" ripplerFill="#27b543" text="Reserve" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="orderSuccessfullPane" layoutX="495.0" layoutY="173.0" prefHeight="170.0" prefWidth="450.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Order successfull!" textFill="#26a840">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="14.0" layoutY="49.0" text="Reservation number: ">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="reservationNumberLabel" layoutX="156.0" layoutY="49.0" text="ABC123DEF456">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="77.0" prefHeight="38.0" prefWidth="361.0" text="Please have this reservation number with you when boarding. Have a pleasant trip!" wrapText="true" />
+               </children>
+            </AnchorPane>
+            <JFXButton buttonType="RAISED" layoutX="14.0" layoutY="641.0" onAction="#switchToPane2" ripplerFill="#27b543" text="Go back" />
+            <JFXButton buttonType="RAISED" layoutX="952.0" layoutY="641.0" onAction="#exitApplication" ripplerFill="#2bb945" text="Exit" />
          </children>
       </Pane>
       <AnchorPane fx:id="settingsAnchorPane" prefHeight="700.0" prefWidth="400.0" style="-fx-background-color: gainsboro;" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="68.0">
