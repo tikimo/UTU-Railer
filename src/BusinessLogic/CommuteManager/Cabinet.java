@@ -16,7 +16,6 @@ public class Cabinet implements Serializable{
         this.seatList = seats;
     }
 
-
     public ArrayList<Seat> getSeatList() {
         return seatList;
     }
@@ -24,7 +23,6 @@ public class Cabinet implements Serializable{
     public void setSeatList(ArrayList<Seat> seatList) {
         this.seatList = seatList;
     }
-
 
     public void printCabin() {
         if (this.getSeatList() == null) {

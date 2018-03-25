@@ -86,13 +86,13 @@ public class CommuteDatabaseManager {
         return failed;
     }
 
-    boolean updateTrain(Train train) {
+    boolean updateTrain(Train oldTrain, Train newTrain) {
         // Statement
         try {
             Statement statement = conn.createStatement();
             statement.executeUpdate("UPDATE trains " +
-                    "SET serializedtrain = '" + trainToString(train) + "'" +
-                    "WHERE serializedTrain = '" + trainToString(train)+ "'");
+                    "SET serializedTrain = '" + trainToString(newTrain) + "'" +
+                    "WHERE serializedTrain = '" + trainToString(oldTrain)+ "'");
             System.err.println("Train updated successfully!");
             return true;
         } catch (SQLException sqle) {
@@ -204,17 +204,52 @@ public class CommuteDatabaseManager {
     }
 
     /**
-     * This method marks a seat as reserved and saves it to database.
+     * This method marks a seat as reserved and saves it to database. The process is a little bit complicated
+     * since serialization needs a new train object. New train object will be filled with old train properties
+     * except for the seat to be reserved.
+     *
      * To avoid hacking into reserved seats, this can be expanded to have an exception.
-     * @param selectedTrain train to be modified
+     * @param oldTrain train to be modified
      * @param cabinSelectorIndex cabin to be modified
      * @param seatSelectorIndex seat to be marked as taken
      */
-    public void reserveSeat(Train selectedTrain, int cabinSelectorIndex, int seatSelectorIndex) {
-        Seat seat = selectedTrain.getCabinetList().get(cabinSelectorIndex).getSeatList().get(seatSelectorIndex);
-        seat.setReserved(true);
+    public void reserveSeat(Train oldTrain, int cabinSelectorIndex, int seatSelectorIndex) {
+        // Make a new train object with old trains properties to be serialized
+        Train newTrain = new Train(oldTrain.getDepartureStation(), oldTrain.getArrivalStation(),
+                oldTrain.getDepartureTime(), oldTrain.getArrivalTime());
 
-        // Now that its reserved we need to save it back to database
-        updateTrain(selectedTrain);
+        ArrayList<Cabinet> newCabinetList = new ArrayList<>();
+        for (int i = 0; i < oldTrain.getCabinetList().size(); i++) {    // cabins in train
+
+            ArrayList<Seat> newSeatList = new ArrayList<>();
+            for (int j = 0; j < oldTrain.getCabinetList().get(i).getSeatList().size(); j++) {   // seats in cabin
+
+                Seat newSeat = new Seat(j+1, oldTrain.getCabinetList().get(i).getSeatList().get(j).getSeatType());
+
+                if ((i == cabinSelectorIndex && j == seatSelectorIndex) ||
+                        oldTrain.getCabinetList().get(i).getSeatList().get(j).isReserved()) {
+                    newSeat.setReserved(true);
+                }
+
+                newSeatList.add(newSeat);
+
+            }
+            Cabinet newCabinet = new Cabinet(newSeatList);
+            newCabinetList.add(newCabinet);
+        }
+
+        newTrain.setCabinetList(newCabinetList);
+
+        // Check that the new train serialization differs from old one
+        System.err.println("\n" + trainToString(oldTrain) + "\n" + trainToString(newTrain) + "\n" +
+        trainToString(oldTrain).equals(trainToString(newTrain)) + "\n" +
+        oldTrain.getCabinetList().get(cabinSelectorIndex).getSeatList().get(seatSelectorIndex).isReserved() +
+        newTrain.getCabinetList().get(cabinSelectorIndex).getSeatList().get(seatSelectorIndex).isReserved()
+        );
+
+
+
+        // Now that its reserved we need to replace old train with the new one in database
+        updateTrain(oldTrain, newTrain);
     }
 }

@@ -187,7 +187,6 @@ public class PortalController {
         creditCardPaymentPane.setDisable(false);
     }
 
-
     /**
      * Toggles the settings pane where user can update details
      */
@@ -449,9 +448,9 @@ public class PortalController {
                     chronoHours + " hours and " +
                     chronoMins + " minutes. \n\n" +
                     // Seat number and type
-                    "Your seat number is " + seatSelectorIndex+1 + " (" +
+                    "Your seat number is " + (seatSelectorIndex+1) + " (" +
                     selectedTrain.getCabinetList().get(cabinSelectorIndex).getSeatList().get(seatSelectorIndex).getSeatType()
-                    +") in cabin " + cabinSelectorIndex+1
+                    +") in cabin " + (cabinSelectorIndex+1)
                     ;
             orderDetailsLabel.setText(detailText);
             paymentWindowSeatImageView.setImage(selectedSeatImage);

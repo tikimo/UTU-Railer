@@ -27,8 +27,6 @@ public class Train implements Serializable{
         this.arrivalTime = arrivalTime;
     }
 
-
-
     public int getAvailableSeats() {
         return availableSeats;
     }
