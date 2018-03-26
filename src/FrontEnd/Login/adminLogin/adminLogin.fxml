@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="FrontEnd.Login.adminLogin.adminLoginController"
-            prefHeight="400.0" prefWidth="600.0">
 
+<AnchorPane prefHeight="139.0" prefWidth="427.0" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FrontEnd.Login.adminLogin.adminLoginController">
+   <children>
+      <Label layoutX="128.0" layoutY="32.0" text="Admin login detected">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="loginAdminPortalButton" buttonType="RAISED" layoutX="35.0" layoutY="86.0" onAction="#loginAdminPortal" ripplerFill="#2ec53b" text="Log in to admin portal" />
+      <JFXButton fx:id="loginOrderPortalButton" buttonType="RAISED" layoutX="226.0" layoutY="86.0" onAction="#loginOrderPortal" ripplerFill="#2bb937" text="Log in to order portal" />
+   </children>
 </AnchorPane>

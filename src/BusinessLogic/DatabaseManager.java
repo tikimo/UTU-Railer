@@ -240,6 +240,25 @@ public class DatabaseManager {
         return returnable;
     }
 
+    /**
+     * Checks if user is admin. User is admin if the field "admin" in database is 1
+     * @param email
+     * @return
+     */
+    public boolean isAdmin(String email) {
+        Statement statement;
+        try {
+            statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT admin FROM " + dbname + " WHERE email='" + email + "'");
+            if (rs.getInt(0) == 1) {
+                System.err.println("User is admin, database checked.");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
 
 

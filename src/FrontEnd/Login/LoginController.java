@@ -53,8 +53,12 @@ public class LoginController {
         if (dbmanager.userExists(email)) {  // check if user exists
             if (authenticationSucceeded(email, password)) { // check if users' name was returned
                 // Here authentication has succeeded. Login window will close and portal will launch.
+                if (dbmanager.isAdmin(email)) {
+                    launchAdminDialog();
+                } else {
                 System.err.println("Sign-in succeeded!");
                 launchPortal(email, false);
+                }
             } else {
                 System.err.println("Authentication failed!");
                 errorLabelSignIn.setText("Authentication failed!");
@@ -64,6 +68,33 @@ public class LoginController {
             System.err.println("User does not exist!");
             errorLabelSignIn.setText("User does not exist!");
         }
+    }
+
+    private void launchAdminDialog() {
+        // Setup new stage
+        try {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../Login/adminLogin/adminLogin.fxml"));
+        Parent adminLoginRoot = fxmlLoader.load();
+        Stage adminLoginStage = new Stage();
+        adminLoginStage.setTitle("Choose your portal");
+        adminLoginStage.setScene(new Scene(adminLoginRoot));
+
+        // Set variables and parameters
+        adminLoginStage.setResizable(false);
+        adminLoginStage.getIcons().add(new Image("FrontEnd/RES/logo.png"));
+
+        //  Hide login stage and launch portal selector
+        Stage loginStage = (Stage) signInButton.getScene().getWindow();
+        loginStage.hide();
+        adminLoginStage.show();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void createAccount() {
