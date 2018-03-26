@@ -29,7 +29,12 @@ public class adminLoginController {
         LoginController lgc = new LoginController();
 
         user = LoginController.getAuthenticatedUser();
-        lgc.launchPortal(user, false);
+        System.err.println(user);
+        lgc.launchPortal(user, true);
+
+        // Hide portalselector
+        Stage portalSelector = (Stage) loginOrderPortalButton.getScene().getWindow();
+        portalSelector.hide();
     }
 
     public void loginAdminPortal() {
@@ -48,8 +53,8 @@ public class adminLoginController {
             portalStage.getIcons().add(new Image("FrontEnd/RES/logo.png"));
 
             // Hide login and launch portal
-            Stage loginStage = (Stage) loginOrderPortalButton.getScene().getWindow();
-            loginStage.hide();
+            Stage portalSelector = (Stage) loginOrderPortalButton.getScene().getWindow();
+            portalSelector.hide();
 
             portalStage.show();
 
