@@ -30,7 +30,8 @@ public class DatabaseManager {
                     "  passwd    TEXT    ,\n" +
                     "  address   TEXT    ,\n" +
                     "  phone     TEXT    ,\n" +
-                    "  cardnum   TEXT    )");
+                    "  cardnum   TEXT    ,\n" +
+                    "  admin     INTEGER )");
             statement.close();
             System.err.println("Table '"+ "users" +"' created successfully");
 

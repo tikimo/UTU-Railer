@@ -77,6 +77,6 @@
          </effect>
       </Label>
       <Label fx:id="errorLabelSignIn" layoutX="15.0" layoutY="264.0" textFill="RED" AnchorPane.leftAnchor="15.0" />
-      <Label fx:id="errorLabelCreateAccount" layoutX="328.0" layoutY="309.0" textFill="RED" AnchorPane.leftAnchor="330.0" />
+      <Label fx:id="errorLabelCreateAccount" layoutX="328.0" layoutY="309.0" prefHeight="35.0" prefWidth="132.0" textFill="RED" wrapText="true" AnchorPane.leftAnchor="330.0" />
    </children>
 </AnchorPane>

@@ -135,7 +135,6 @@ public class LoginController {
 
     }
 
-
     public static String getAuthenticatedUser() {
         return authenticatedUser;
     }
