@@ -213,7 +213,7 @@ public class CommuteDatabaseManager {
      * @param cabinSelectorIndex cabin to be modified
      * @param seatSelectorIndex seat to be marked as taken
      */
-    public void reserveSeat(Train oldTrain, int cabinSelectorIndex, int seatSelectorIndex) {
+    public void reserveSeat(Train oldTrain, int cabinSelectorIndex, int seatSelectorIndex, boolean toBeReserved) {
         // Make a new train object with old trains properties to be serialized
         Train newTrain = new Train(oldTrain.getDepartureStation(), oldTrain.getArrivalStation(),
                 oldTrain.getDepartureTime(), oldTrain.getArrivalTime());
@@ -226,10 +226,22 @@ public class CommuteDatabaseManager {
                 Seat newSeat = new Seat(j+1, oldTrain.getCabinetList().get(i).getSeatList().get(j).getSeatType());
 
                 // check if seat was reserved or to be reserved
-                if ((i == cabinSelectorIndex && j == seatSelectorIndex) ||
-                        oldTrain.getCabinetList().get(i).getSeatList().get(j).isReserved()) {
-                    newSeat.setReserved(true);  // reserve it
+                if (i == cabinSelectorIndex && j == seatSelectorIndex) {
+                    // Check if seat is reserved and it needs to be freed
+                    if (oldTrain.getCabinetList().get(i).getSeatList().get(j).isReserved()) {
+                        if(!toBeReserved) {
+                            newSeat.setReserved(false); // Free reservation
+                        } else {
+                            newSeat.setReserved(true);  // Keep reservation
+                        }
+                    } else {
+                        newSeat.setReserved(false);
+                    }
+                } else {
+                    newSeat.setReserved(oldTrain.getCabinetList().get(i).getSeatList().get(j).isReserved());
                 }
+
+
                 newSeatList.add(newSeat);   // add seat to list
             }
             Cabinet newCabinet = new Cabinet(newSeatList); // init cabin with new seatlist
@@ -248,3 +260,14 @@ public class CommuteDatabaseManager {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+

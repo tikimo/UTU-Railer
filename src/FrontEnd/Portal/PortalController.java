@@ -132,6 +132,13 @@ public class PortalController {
     public AnchorPane payInTrainPane;
     public JFXButton makeANewReservationButton;
 
+    // History pane specifics
+    public ScrollPane historyScrollPane;
+    public JFXListView JFXListViewHistory;
+    public ImageView historyToggleButton;
+    public AnchorPane historyPaneAnchorPane;
+
+
 
     /**
      * Initializes settings for portal
@@ -169,6 +176,10 @@ public class PortalController {
         // Third pane text fills etc.
         creditCardNumberField3.setText(dbm.getCard(user));
         cardHolderTextField3.setText(dbm.getUserName(user));
+
+        // History pane specifics
+        historyPaneAnchorPane.setVisible(false);
+
         initThirdPane();
 
         // First pane
@@ -507,7 +518,7 @@ public class PortalController {
 
     public void reserveSeat() {
         System.err.println("Trying to reserve seat...");
-        cdm.reserveSeat(selectedTrain, cabinSelectorIndex, seatSelectorIndex);
+        cdm.reserveSeat(selectedTrain, cabinSelectorIndex, seatSelectorIndex, true);
         System.err.println("Reservation successfull!");
         reservationNumberLabel.setText(generateReservationNo());
         orderSuccessfullPane.setVisible(true);
@@ -538,6 +549,26 @@ public class PortalController {
         trainResultListViewJFX.getItems().remove(0, trainResultListViewJFX.getItems().size());
         seatSelectorIndex = -1;
         initialize();
+    }
+
+    public void toggleHistoryPane() {
+        if (historyPaneAnchorPane.isVisible()) {    // History pane will be closed
+            historyPaneAnchorPane.setVisible(false);
+            historyToggleButton.setTranslateY(0);
+        } else {    // History pane will be opened
+            historyPaneAnchorPane.setVisible(true);
+            historyToggleButton.setTranslateY(312);
+            addSampleHistory();
+        }
+    }
+
+    private void addSampleHistory() {
+        JFXListViewHistory.getItems().clear();
+        JFXListViewHistory.getItems().add(new Label("Example train from Turku at 12:30 to Helsinki at 14:00"));
+        JFXListViewHistory.getItems().add(new Label("Example train from Karjaa at 12:30 to Salo at 14:00"));
+        JFXListViewHistory.getItems().add(new Label("Example train from Salo at 12:30 to Turku at 14:00"));
+        JFXListViewHistory.getItems().add(new Label("Example train from Helsinki at 12:30 to Turku at 14:00"));
+        JFXListViewHistory.getItems().add(new Label("Example train from Turku at 12:30 to Karjaa at 14:00"));
     }
 }
 
