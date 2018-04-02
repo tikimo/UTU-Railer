@@ -45,7 +45,7 @@ public class Seat implements Serializable{
 
     /**
      * Getter for seat type. No setter is needed
-     * @return
+     * @return type of seat defined in this enum
      */
     public String getSeatType() {
         return seatType;

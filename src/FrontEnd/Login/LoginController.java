@@ -209,7 +209,7 @@ public class LoginController {
 
     /**
      * Returns the databasemanager so it does not need to be initialized every time.
-     * @return
+     * @return databasemanager used in loginController
      */
     public static DatabaseManager getDbmanager() {
         return dbmanager;

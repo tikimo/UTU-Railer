@@ -25,7 +25,7 @@ public enum Stations {
 
     /**
      * Get city name
-     * @return Get the string defined in City enum: HELSINKI.getCity() -> "Helsinki"
+     * @return Get the string defined in City enum: HELSINKI.getCity() gives "Helsinki"
      */
     public String getCity() {
         return city;

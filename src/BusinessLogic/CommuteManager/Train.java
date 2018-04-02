@@ -35,7 +35,7 @@ public class Train implements Serializable{
      * @param departureStation departure station defined in enum Stations
      * @param arrivalStation arrival station defined in enum Stations
      * @param departureTime LocalTime type of departure time
-     * @param arrivalTime arrival time. Remember: arrivalTime > departureTime
+     * @param arrivalTime arrival time. Remember: arrivalTime should be greater than departureTime
      */
     Train(String departureStation, String arrivalStation, LocalTime departureTime, LocalTime arrivalTime) {
         this.departureStation = departureStation;

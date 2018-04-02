@@ -255,6 +255,7 @@ public class CommuteDatabaseManager {
      * @param oldTrain train to be modified
      * @param cabinSelectorIndex cabin to be modified
      * @param seatSelectorIndex seat to be marked as taken
+     * @param toBeReserved true to make new seat reserved
      */
     public void reserveSeat(Train oldTrain, int cabinSelectorIndex, int seatSelectorIndex, boolean toBeReserved) {
         // Make a new train object with old trains properties to be serialized
