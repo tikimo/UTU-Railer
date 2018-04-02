@@ -226,21 +226,11 @@ public class CommuteDatabaseManager {
 
                 // check if seat was reserved or to be reserved
                 if (i == cabinSelectorIndex && j == seatSelectorIndex) {
-                    // Check if seat is reserved and it needs to be freed
-                    if (oldTrain.getCabinetList().get(i).getSeatList().get(j).isReserved()) {
-                        if(!toBeReserved) {
-                            newSeat.setReserved(false); // Free reservation
-                        } else {
-                            newSeat.setReserved(true);  // Keep reservation
-                        }
-                    } else {
-                        newSeat.setReserved(false);
-                    }
+                    // Set the desired property
+                    newSeat.setReserved(toBeReserved);
                 } else {
                     newSeat.setReserved(oldTrain.getCabinetList().get(i).getSeatList().get(j).isReserved());
                 }
-
-
                 newSeatList.add(newSeat);   // add seat to list
             }
             Cabinet newCabinet = new Cabinet(newSeatList); // init cabin with new seatlist

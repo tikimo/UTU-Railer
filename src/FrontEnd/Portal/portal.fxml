@@ -39,7 +39,7 @@
     
 -->
 
-<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FrontEnd.Portal.PortalController">
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FrontEnd.Portal.PortalController">
    <children>
       <Pane fx:id="firstPane" layoutX="6.0" layoutY="68.0" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="78.0">
          <children>
@@ -140,7 +140,7 @@
             <Button defaultButton="true" layoutX="925.0" layoutY="614.0" mnemonicParsing="false" onAction="#confirmSeatSelectionButton" text="Confirm" />
          </children>
       </Pane>
-      <Pane fx:id="thirdPane" layoutX="20.0" layoutY="88.0" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="78.0">
+      <Pane fx:id="thirdPane" layoutX="20.0" layoutY="88.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="78.0">
          <children>
             <Label layoutX="14.0" layoutY="14.0" text="3. Choose your payment method">
                <font>
@@ -213,7 +213,7 @@
                   <JFXButton fx:id="makeANewReservationButton" buttonType="RAISED" layoutX="14.0" layoutY="131.0" onAction="#makeANewReservation" ripplerFill="#2ab243" text="Make a new reservation" />
                </children>
             </AnchorPane>
-            <Button layoutX="14.0" layoutY="604.0" mnemonicParsing="false" onAction="#switchToPane2" text="Go back" />
+            <Button fx:id="thirdPaneGoBackButton" layoutX="14.0" layoutY="604.0" mnemonicParsing="false" onAction="#switchToPane2" text="Go back" />
             <Button layoutX="945.0" layoutY="604.0" mnemonicParsing="false" onAction="#exitApplication" text="Exit" />
          </children>
       </Pane>
@@ -346,7 +346,7 @@
             </AnchorPane>
          </children>
       </Pane>
-      <AnchorPane fx:id="historyPaneAnchorPane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="350.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="72.0">
+      <AnchorPane fx:id="historyPaneAnchorPane" prefHeight="200.0" prefWidth="200.0" visible="false" AnchorPane.bottomAnchor="350.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="68.0">
          <children>
             <ScrollPane fx:id="historyScrollPane" layoutX="14.0" layoutY="14.0" prefHeight="323.0" prefWidth="799.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
                <content>
@@ -359,7 +359,7 @@
             </ScrollPane>
          </children>
       </AnchorPane>
-      <ImageView fx:id="historyToggleButton" fitHeight="63.0" fitWidth="409.0" onMouseClicked="#toggleHistoryPane" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="310.0" AnchorPane.topAnchor="72.0">
+      <ImageView fx:id="historyToggleButton" onMouseClicked="#toggleHistoryPane" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="310.0" AnchorPane.topAnchor="65.0">
          <image>
             <Image url="@../RES/history.png" />
          </image>

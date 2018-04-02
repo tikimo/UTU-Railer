@@ -130,6 +130,7 @@ public class PortalController {
     public AnchorPane creditCardPaymentPane;
     public AnchorPane payInTrainPane;
     public JFXButton makeANewReservationButton;
+    public Button thirdPaneGoBackButton;
 
     // History pane specifics
     public ScrollPane historyScrollPane;
@@ -196,6 +197,7 @@ public class PortalController {
         payInTrainReserveButton.setDisable(true);
         payInTrainPane.setDisable(false);
         creditCardPaymentPane.setDisable(false);
+        thirdPaneGoBackButton.setDisable(false);
     }
 
     /**
@@ -523,6 +525,8 @@ public class PortalController {
         orderSuccessfullPane.setVisible(true);
         payInTrainPane.setDisable(true);
         creditCardPaymentPane.setDisable(true);
+        thirdPaneGoBackButton.setDisable(true);
+
     }
 
     public void payWithCreditCardRadioButton() {
@@ -556,7 +560,7 @@ public class PortalController {
             historyToggleButton.setTranslateY(0);
         } else {    // History pane will be opened
             historyPaneAnchorPane.setVisible(true);
-            historyToggleButton.setTranslateY(312);
+            historyToggleButton.setTranslateY(300);
             addSampleHistory();
         }
     }

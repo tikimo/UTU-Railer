@@ -5,8 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="139.0" prefWidth="427.0" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FrontEnd.Login.adminLogin.adminLoginController">
+<AnchorPane prefHeight="139.0" prefWidth="427.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FrontEnd.Login.adminLogin.adminLoginController">
    <children>
       <Label layoutX="128.0" layoutY="32.0" text="Admin login detected">
          <font>
@@ -14,6 +13,6 @@
          </font>
       </Label>
       <JFXButton fx:id="loginAdminPortalButton" buttonType="RAISED" layoutX="35.0" layoutY="86.0" onAction="#loginAdminPortal" ripplerFill="#2ec53b" text="Log in to admin portal" />
-      <JFXButton fx:id="loginOrderPortalButton" buttonType="RAISED" layoutX="226.0" layoutY="86.0" onAction="#loginOrderPortal" ripplerFill="#2bb937" text="Log in to order portal" />
+      <JFXButton fx:id="loginOrderPortalButton" buttonType="RAISED" layoutX="268.0" layoutY="86.0" onAction="#loginOrderPortal" ripplerFill="#2bb937" text="Log in to order portal" />
    </children>
 </AnchorPane>

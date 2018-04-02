@@ -58,7 +58,6 @@ public class adminController {
     private CommuteDatabaseManager cdm = new CommuteDatabaseManager("trains");
     private ArrayList<Train> searchResults = new ArrayList<>();
     private Train selectedTrain = null;
-    private Image selectedSeatImage;
 
 
     public TextField billingAddressFieldSettings;
@@ -75,7 +74,6 @@ public class adminController {
     public Label settingsGreeting;
     public Pane firstPane;
     public Pane secondPane;
-    public Pane thirdPane;
     public TextField creditCardFieldSettings;
     public Button updateCreditCardButton;
     public Label wrongPasswordLabel;
@@ -101,18 +99,8 @@ public class adminController {
     private GridPane cabinSeatGridpane;
     public Button prevCabinButton;
     public Button nextCabinButton;
-    public Label selectedSeatNumberIndicator;
     public ScrollPane cabinSeatScrollPane;
     public AnchorPane cabinSeatScrollpaneAnchorpane;
-
-
-    // History pane specifics
-    public ScrollPane historyScrollPane;
-    public JFXListView JFXListViewHistory;
-    public ImageView historyToggleButton;
-    public AnchorPane historyPaneAnchorPane;
-
-
 
     /**
      * Initializes settings for portal
@@ -138,11 +126,9 @@ public class adminController {
         // Make material button look cool for fun
         firstPaneSearchButton.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(2), new Insets(2))));
 
-
         // init dropdown boxes
         trainCitiesFromDropDown.setItems(Stations.getAllStations());
         trainCitiesToDropDown.setItems(Stations.getAllStations());
-
 
         // First pane
         showPane(1);
@@ -156,14 +142,23 @@ public class adminController {
         settingsOpen = !settingsOpen;
     }
 
+    /**
+     * Updates billing information on user through database manager
+     */
     public void updateBillingInfo() {
         dbm.addAddress(billingAddressFieldSettings.getText(), user);
     }
 
+    /**
+     * Updates phone number on user through database manager
+     */
     public void updatePhoneNumber() {
         dbm.addPhone(phoneNumberFieldSettings.getText(), user);
     }
 
+    /**
+     * Updates CC information on user through database manager
+     */
     public void updateCreditCardInfo() {
         dbm.addCard(creditCardFieldSettings.getText(), user);
     }
@@ -174,7 +169,7 @@ public class adminController {
             updatePasswordButtonSettings.setDisable(true);
             newPasswordFieldSettings.setDisable(true);
         } else {
-
+            System.err.println("[ERROR] Problem updating password");
         }
     }
 
@@ -297,7 +292,6 @@ public class adminController {
                         setSeatToAvailable(cabinIndex, finalCurrentSeatIndex, currentSeat, finalNode);
                         System.out.println("Seat with index " + seatSelectorIndex + " (" + currentSeat.getSeatType() + ")" +
                                 " on cabin " + cabinIndex +" changed to available!");
-                        selectedSeatImage = finalNode.getImage();
                     });
 
                 } else {
