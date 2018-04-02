@@ -15,16 +15,26 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This window is shown when an admin login is detected, so admin can choose between logging
+ * into normal reservation or administrator portal.
+ */
 public class adminLoginController {
     public JFXButton loginAdminPortalButton;
     public JFXButton loginOrderPortalButton;
     private String user = null;
 
+    /**
+     * Make JFoenix buttons look cool af.
+     */
     public void initialize() {
         loginAdminPortalButton.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(2), new Insets(2))));
         loginOrderPortalButton.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(2), new Insets(2))));
     }
 
+    /**
+     * Login to user portal (Button)
+     */
     public void loginOrderPortal() {
         LoginController lgc = new LoginController();
 
@@ -37,6 +47,9 @@ public class adminLoginController {
         portalSelector.hide();
     }
 
+    /**
+     * Login to admin portal (Button)
+     */
     public void loginAdminPortal() {
         try {
             // Setup new stage

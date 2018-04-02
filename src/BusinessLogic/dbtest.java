@@ -4,6 +4,10 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 
+/**
+ * In this runnable class you can test the database that has users. This is very similar
+ * to runnable test class for trains. You can manually try adding a user here!
+ */
 public class dbtest extends Application {
     String fname = "Tijam", lname = "Moradi", email = "tikimo@utu.fi", pass = "salasana";
 

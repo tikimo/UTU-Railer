@@ -11,6 +11,10 @@ import java.util.Base64;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * This class acts as a databasemanager to trains. Data is kept in a SQLite database in root folder.
+ * This class is also ready to save all data to remote database :)
+ */
 public class CommuteDatabaseManager {
     // Properties for querying train info
     public final String SERIALIZED_TRAIN = "serializedTrain";
@@ -22,6 +26,10 @@ public class CommuteDatabaseManager {
     private Connection conn = null;
     private String dbname;
 
+    /**
+     * Constructor
+     * @param dbname requires the database name to connect to
+     */
     public CommuteDatabaseManager(String dbname) {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -35,6 +43,9 @@ public class CommuteDatabaseManager {
         createTable();
     }
 
+    /**
+     * This method is invoked whenever constructor is called to make sure the table is correct and exists
+     */
     private void createTable() {
         try {
             Statement statement = conn.createStatement();
@@ -59,6 +70,11 @@ public class CommuteDatabaseManager {
         }
     }
 
+    /**
+     * Adds a new train to database
+     * @param train train to add to the connected database
+     * @return true if it was successful, otherwise false.
+     */
     boolean addNewTrain(Train train) {
         boolean failed = false;
         if (this.dbname == null) {
@@ -85,6 +101,14 @@ public class CommuteDatabaseManager {
         return failed;
     }
 
+    /**
+     * Update a train in the connected database. It will basically erase the
+     * old train and replace it with the new train. New train will inherit all properties
+     * except for the serialization key.
+     * @param oldTrain train to be updated
+     * @param newTrain train to replace the old train
+     * @return return true if it was successful
+     */
     boolean updateTrain(Train oldTrain, Train newTrain) {
         // Statement
         try {
@@ -100,6 +124,15 @@ public class CommuteDatabaseManager {
         return false;
     }
 
+    /**
+     * Retieve a list of trains that match a single query. For example return trains
+     * that depart(property) from "Helsinki"(value)
+     * @param property a database property to be selected ...
+     * @param value ... with this value
+     * @return A list of trains that matched the query in the database
+     * @throws IOException resultset.getString can throw this
+     * @throws ClassNotFoundException also a property of resultset
+     */
     public ArrayList<Train> getTrainsByProperty(String property, String value) throws IOException, ClassNotFoundException {
         ArrayList<Train> trains = new ArrayList<>();
         try {
@@ -136,7 +169,6 @@ public class CommuteDatabaseManager {
      * Makes serialized Train to base64 string
      * @param o Train object
      * @return String of object
-     * @throws IOException
      */
     public static String trainToString(Serializable o) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -153,6 +185,11 @@ public class CommuteDatabaseManager {
         return Base64.getEncoder().encodeToString(baos.toByteArray());
     }
 
+    /**
+     * All-inclusive package to generate a random train.
+     * Generates a random train with random properties, random cabins and random seats.
+     * @return train that was generated
+     */
     static Train generateRandomTrain() {
 
         // Generate random cabinets with random seat types
@@ -183,6 +220,10 @@ public class CommuteDatabaseManager {
         return randomTrain;
     }
 
+    /**
+     * Generates a random cabinet. With random seats. Neat.
+     * @return Randomly filled cabin
+     */
     private static Cabinet generateRandomCabinet() {
         Random random = new Random();
         ArrayList<Seat> seatList = new ArrayList<>();
@@ -191,11 +232,14 @@ public class CommuteDatabaseManager {
             seat.setReserved(random.nextBoolean());
             seatList.add(seat);
         }
-        Cabinet randomCabinet = new Cabinet(seatList);
-        // randomCabinet.setSeatList(seatList);
-        return randomCabinet;
+        return new Cabinet(seatList);
     }
 
+    /**
+     * Adds random trains to database with specified amount.
+     * @param cdm the database manager for trains
+     * @param count how many random trains to add
+     */
     public void fillDatabaseWithRandomTrains(CommuteDatabaseManager cdm, int count) {
         for (int i = 0; i<count; i++) {
             cdm.addNewTrain(generateRandomTrain());

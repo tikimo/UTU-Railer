@@ -2,11 +2,22 @@ package BusinessLogic;
 
 import java.sql.*;
 
+/**
+ * This class is a database manager just like CommuteDAtabaseManager.
+ * This databasemanager only handles user information. Uses the Crypter
+ * class for sotring passwords.
+ *
+ * In database, key value of each user is email so no duplicates
+ */
 public class DatabaseManager {
     private Connection conn = null;
     private String dbname;
     private Crypter crypter = new Crypter();
 
+    /**
+     * Constructor
+     * @param dbname database address to connect to.
+     */
     public DatabaseManager(String dbname) {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -20,6 +31,10 @@ public class DatabaseManager {
         createTable();
     }
 
+    /**
+     * This method is invoked whenever constructor is called.
+     * Checks if table exists in db, if not create it. Otherwise continue...
+     */
     private void createTable() {
         try {
             Statement statement = conn.createStatement();
@@ -47,6 +62,8 @@ public class DatabaseManager {
     }
 
     /**
+     * Checks if user and passwords match. returns a boolean of success.
+     *
      * @param email plaintext email from UI field
      * @param plainPass plaintext password from UI: crypting moved from front to back
      * @return Returns true if passwords matched, else returns false.
@@ -67,6 +84,15 @@ public class DatabaseManager {
         return false;
     }
 
+    /**
+     * Simply adds a new user to database. Make sure none of the fields are empty. This
+     * is front-end's reponsibility.
+     *
+     * @param Fname Front name
+     * @param Lname Last name
+     * @param email email address to associate account with (login name)
+     * @param plainPass desired passwords as plaintext
+     */
     public void addNewUser(String Fname, String Lname, String email, String plainPass)  {
 
 
@@ -85,6 +111,11 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Checks if user exists. This should be called before authentication for obvious reasons.
+     * @param email email (login id) of user.
+     * @return returns a boolean of success
+     */
     public boolean userExists(String email) {
         Statement statement;
         try {
@@ -97,6 +128,14 @@ public class DatabaseManager {
         return false;
     }
 
+    /**
+     * Updates user's password. This should only be done after authentication. And
+     * that is also front-end's responsibility.
+     *
+     * @param plainPass password as plaintext
+     * @param email email (user id) to have password changed on
+     * @return returns boolean of success
+     */
     public boolean updatePassword(String plainPass, String email) {
         // Statement
         try {
@@ -112,6 +151,12 @@ public class DatabaseManager {
         return false;
     }
 
+    /**
+     * Adds address to user
+     * @param address address as string. Format is front-end responsibility
+     * @param email account that address should be associated with
+     * @return returns boolean of success
+     */
     public boolean addAddress (String address, String email) {
         boolean success = false;
         // Statement
@@ -131,6 +176,13 @@ public class DatabaseManager {
         }
         return success;
     }
+
+    /**
+     * Adds phone number to user
+     * @param phone number to be attached. Format is front-end's reponsibility
+     * @param email account that phone no. should be associated with
+     * @return boolean of success
+     */
     public boolean addPhone (String phone, String email) {
         boolean success = false;
         // Statement
@@ -150,6 +202,13 @@ public class DatabaseManager {
         }
         return success;
     }
+
+    /**
+     * Adds a credit card to user
+     * @param card CC number. Format is again front-end's responsibility
+     * @param email account that CC should be associated with
+     * @return boolean of success
+     */
     public boolean addCard (String card, String email) {
         boolean success = false;
         // Statement
@@ -171,6 +230,7 @@ public class DatabaseManager {
     }
 
     /**
+     * Returns the user's Fname and Lname
      * Assume user exists and has both names in database.
      * @param email Users email address
      * @return the name retrieved from database
@@ -191,6 +251,13 @@ public class DatabaseManager {
         }
         return null;
     }
+
+    /**
+     * Returns the user's address
+     * Assume user exists and has address in database.
+     * @param email Users email address
+     * @return the address retrieved from database
+     */
     public String getAddress(String email) {
         String returnable = "NaN";
         try {
@@ -207,6 +274,13 @@ public class DatabaseManager {
         }
         return returnable;
     }
+
+    /**
+     * Returns the user's phone
+     * Assume user exists and has phone number in database.
+     * @param email Users email address
+     * @return the number retrieved from database
+     */
     public String getPhone(String email) {
         String returnable = "NaN";
         try {
@@ -223,6 +297,13 @@ public class DatabaseManager {
         }
         return returnable;
     }
+
+    /**
+     * Returns the user's credit card number
+     * Assume user exists and has credit card saved in database.
+     * @param email Users email address
+     * @return the CC retrieved from database
+     */
     public String getCard(String email) {
         String returnable = "NaN";
         try {
@@ -242,8 +323,8 @@ public class DatabaseManager {
 
     /**
      * Checks if user is admin. User is admin if the field "admin" in database is 1
-     * @param email
-     * @return
+     * @param email account to run check on
+     * @return boolean of success
      */
     public boolean isAdmin(String email) {
         Statement statement;

@@ -8,6 +8,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+/**
+ * This runnable class is meant for testing the commuting database.
+ * Here for example you can fill database with ready functions to-go.
+ */
 public class commuteTester extends Application {
     @Override
     public void start(Stage primaryStage)  {

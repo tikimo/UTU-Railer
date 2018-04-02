@@ -57,6 +57,7 @@ import java.util.Comparator;
  * placeholder for future expanding of application.
  *
  */
+@SuppressWarnings("Duplicates")
 public class PortalController {
 
     public JFXButton firstPaneSearchButton;
@@ -141,7 +142,7 @@ public class PortalController {
 
 
     /**
-     * Initializes settings for portal
+     * Initializes settings for portal. For example text fills etc..
      */
     public void initialize() {
         // init class variables
@@ -208,18 +209,30 @@ public class PortalController {
         settingsOpen = !settingsOpen;
     }
 
+    /**
+     * Button to update billing
+     */
     public void updateBillingInfo() {
         dbm.addAddress(billingAddressFieldSettings.getText(), user);
     }
 
+    /**
+     * Button to update phone number
+     */
     public void updatePhoneNumber() {
         dbm.addPhone(phoneNumberFieldSettings.getText(), user);
     }
 
+    /**
+     * Button to update CC info
+     */
     public void updateCreditCardInfo() {
         dbm.addCard(creditCardFieldSettings.getText(), user);
     }
 
+    /**
+     * Button to update pass
+     */
     public void updatePassword() {
         if (dbm.updatePassword(newPasswordFieldSettings.getText(), user)) {
             settingPropertyUpdatedText.setText("Password updated!");
@@ -230,6 +243,9 @@ public class PortalController {
         }
     }
 
+    /**
+     * Button to enable pass update via checking old password
+     */
     public void checkOldPass() {
         if (dbm.authenticate(user, oldPasswordFieldSettings.getText())) {
             System.err.println("Front-end old password check confirmed.");
@@ -241,6 +257,9 @@ public class PortalController {
         }
     }
 
+    /**
+     * Button to search trains with properties listed in textfields
+     */
     public void searchTrainsByProperty() {
         searchFieldErrorText.setText("");
         try {
@@ -288,6 +307,9 @@ public class PortalController {
 
     }
 
+    /**
+     * Function to list the desired trains in a listview
+     */
     private void listTrains() {
         trainResultListViewJFX.getItems().remove(0, trainResultListViewJFX.getItems().size());
         for (Train t : searchResults) {
@@ -296,6 +318,10 @@ public class PortalController {
         }
 
     }
+
+    /**
+     * Pick the highlighted item (train) from the listview
+     */
 
     public void pickSelectedItemFromList() {
         int selectedItemIndex = trainResultListViewJFX.getSelectionModel().getSelectedIndex();
@@ -382,6 +408,11 @@ public class PortalController {
         }
     }
 
+    /**
+     * Initialize a gridpane so its clickable. This is very important!
+     * PS. spent many days figuring this bug out
+     */
+
     private void initNewGridPane() {
         cabinSeatGridpane = new GridPane();
         cabinSeatGridpane.setPadding(new Insets(30,25,25,25));
@@ -414,11 +445,19 @@ public class PortalController {
         }
     }
 
+    /**
+     * Switch to first pane and reset seat selector index
+     */
+
     public void switchToPane1() {
         seatSelectorIndex = -1;
         selectedSeatNumberIndicator.setText("");
         showPane(1);
     }
+
+    /**
+     * Button to control cabin selector. Updaes visual view
+     */
 
     public void prevCabinButton() {
         cabinSelectorIndex--;
@@ -431,6 +470,10 @@ public class PortalController {
         loadGraphicalCabin(cabinSelectorIndex);
     }
 
+    /**
+     * Button to control cabin selectior. Updates visual view
+     */
+
     public void nextCabinButton() {
         cabinSelectorIndex++;
         if (cabinSelectorIndex == 4) {
@@ -442,6 +485,9 @@ public class PortalController {
         loadGraphicalCabin(cabinSelectorIndex);
     }
 
+    /**
+     * Confirms the selected seat if index is != -1 and changes pane to order pane
+     */
     public void confirmSeatSelectionButton() {
         if (seatSelectorIndex == -1) {
             System.err.println("[ERROR] No seat selected");
@@ -472,6 +518,11 @@ public class PortalController {
         }
     }
 
+    /**
+     * This is very cool. When scrolling vertically (e.g. desktop mouse) this method will translate
+     * it to actually scroll horizontally!
+     * @param scrollEvent scrollevent to be translated
+     */
     public void changeScrollDirection(ScrollEvent scrollEvent) {
         double scrollDensity = 1400; // Smaller number is faster scrolling
         if (scrollEvent.getDeltaX() == 0 && scrollEvent.getDeltaY() != 0) {
@@ -479,6 +530,13 @@ public class PortalController {
         }
     }
 
+    /**
+     * This function simplifies life by getting a node in a gridpane since there is no native solution :)
+     * @param row row to be selected
+     * @param column column to be selected
+     * @param gridPane gridpane to run selection on
+     * @return return the node
+     */
     private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         Node result = null;
 
@@ -492,6 +550,10 @@ public class PortalController {
         return result;
     }
 
+    /**
+     * Button to pay with credit card. You can add credit card functionality here or
+     * direct it to backend. Checks that fields are not empty
+     */
     public void payWithCreditCard() {
         creditCardPaymentErrorLabel.setVisible(false);
         // Check if one of credit info fields are empty
@@ -517,6 +579,9 @@ public class PortalController {
         return serTrain.substring(serTrain.length()-4, serTrain.length()-1) + cabinSelectorIndex+1 + seatSelectorIndex+1;
     }
 
+    /**
+     * Reserves seat and saves it to train database
+     */
     public void reserveSeat() {
         System.err.println("Trying to reserve seat...");
         cdm.reserveSeat(selectedTrain, cabinSelectorIndex, seatSelectorIndex, true);
@@ -529,31 +594,53 @@ public class PortalController {
 
     }
 
+    /**
+     * Radio button group is defined in FXML file, here is only the functionality.
+     * Disables reserve button and enables pay with CC button.
+     */
     public void payWithCreditCardRadioButton() {
         payInTrainReserveButton.setDisable(true);
         payWithCreditCardButton.setDisable(false);
     }
 
+    /**
+     * Radio button group is defined in FXML file
+     * This only disables pay with CC button and enables reservation button.
+     */
     public void payInTrainRadioButton() {
         payInTrainReserveButton.setDisable(false);
         payWithCreditCardButton.setDisable(true);
     }
 
+    /**
+     * Switches pane back to seat selection pane while reservation is not made.
+     * If reservation is already made this button should be disabled to avoid duplicate reservations
+     */
     public void switchToPane2() {
         showPane(2);
         initThirdPane();
     }
 
+    /**
+     * Exits the application (Button)
+     */
     public void exitApplication() {
         System.exit(0);
     }
 
+    /**
+     * returns to firts pane and resets necessary variables. Also clears the result list since
+     * one train has a new serialization that needs to be fetched.
+     */
     public void makeANewReservation() {
         trainResultListViewJFX.getItems().remove(0, trainResultListViewJFX.getItems().size());
         seatSelectorIndex = -1;
         initialize();
     }
 
+    /**
+     * This is available on every screen. Here you can add functionality on how to display reservation history.
+     */
     public void toggleHistoryPane() {
         if (historyPaneAnchorPane.isVisible()) {    // History pane will be closed
             historyPaneAnchorPane.setVisible(false);
@@ -565,6 +652,9 @@ public class PortalController {
         }
     }
 
+    /**
+     * Adds a simple sample history to the historypane.
+     */
     private void addSampleHistory() {
         JFXListViewHistory.getItems().clear();
         JFXListViewHistory.getItems().add(new Label("Example train from Turku at 12:30 to Helsinki at 14:00"));

@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * Here are all the available seattypes you can use to build your own cabin.
+ * If you want to add a specific type of seat, you can add it here.
+ * UTU-Railer only uses types defined in here.
+ *
  * Seattypes:
  *
  *     economy(white), allergy(green), pet(brown), disabled(orange), quiet(blue), family(red), {taken(gray)}
@@ -22,16 +26,19 @@ public enum SeatTypes {
 
     private String type;
 
-
     SeatTypes(String type) {
         this.type = type;
     }
 
-    private static final List<SeatTypes> VALUES =
-            Collections.unmodifiableList(Arrays.asList(values()));
+    // Class variables
+    private static final List<SeatTypes> VALUES = List.of(values());
     private static final int SIZE = VALUES.size();
     private static final Random RANDOM = new Random();
 
+    /**
+     * Random seat
+     * @return returns a random seat defined in this enum class
+     */
     public static SeatTypes getRandomSeatType() {
         return VALUES.get(RANDOM.nextInt(SIZE));
     }

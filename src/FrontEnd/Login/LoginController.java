@@ -14,7 +14,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * This class is a controller for log-in window. In this window a user can
+ * log in to an existing account or create a new one. This also detects
+ * an admin login.
+ */
 public class LoginController {
+    // Keep track of suthenticated user. This can then be retrieved from other controllers
     private static String authenticatedUser;
     private static DatabaseManager dbmanager = new DatabaseManager("users");
 
@@ -30,6 +36,10 @@ public class LoginController {
     public Label errorLabelSignIn;
     public Label errorLabelCreateAccount;
 
+    /**
+     * Clickable text "Create account" runs this method. It set disable(false)
+     * on all objects that were there.
+     */
     public void showAccountCreationDialog() {
         firstNameField.setDisable(false);
         lastNameField.setDisable(false);
@@ -42,7 +52,7 @@ public class LoginController {
     }
 
     /**
-     * Sign in logic.
+     * Sign in logic (Button)
      */
     public void signIn() {
         String email = emailFieldLogin.getText();
@@ -68,6 +78,9 @@ public class LoginController {
         }
     }
 
+    /**
+     * launches a new window (portal or admin prompt) with stage and hides the login window.
+     */
     private void launchAdminDialog() {
         // Setup new stage
         try {
@@ -95,6 +108,10 @@ public class LoginController {
 
     }
 
+    /**
+     * Creates a new account with given information. Starts complaining if
+     * some of the required fields were empty.
+     */
     public void createAccount() {
         if (firstNameField.getText().equals("") ||
                 lastNameField.getText().equals("") ||
@@ -119,10 +136,7 @@ public class LoginController {
     }
 
     /**
-     * Turns the textfield to encrypted password before sending it to database.
-     * Assumes database only has encrypted passwords stored. Plaintext
-     * never leaves clients PC.
-     *
+     * Sends a plaintext password to backend. Crypting is done in backend.
      *
      * @param email email address (key value)
      * @param plaintextPass Password as plaintext. Crypting in backend
@@ -138,6 +152,12 @@ public class LoginController {
         }
     }
 
+    /**
+     * This badboy launches the actual portal. If admin login is detected,
+     * launch admin prompt first
+     * @param email email field to launch portal with
+     * @param debug debug mode for testing purposes
+     */
     public void launchPortal(String email, boolean debug) {
         try {
             // Setup new stage
@@ -171,14 +191,26 @@ public class LoginController {
 
     }
 
+    /**
+     * Getter for user email that succeeded login
+     * @return user email
+     */
     public static String getAuthenticatedUser() {
         return authenticatedUser;
     }
 
+    /**
+     * Used for debug purposes to force the authenticated user
+     * @param email user to be set as authenticated
+     */
     public void setAuthenticatedUser(String email) {
         authenticatedUser = email;
     }
 
+    /**
+     * Returns the databasemanager so it does not need to be initialized every time.
+     * @return
+     */
     public static DatabaseManager getDbmanager() {
         return dbmanager;
     }

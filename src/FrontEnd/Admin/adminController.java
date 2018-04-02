@@ -25,6 +25,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
+ * This class has very many similarities with PortalController. If something is uncommented
+ * or unclear, be sure to check portal controller for more info and vice versa.
+ *
+ * There is a LOT of class variables because the JFXML file has many controllable objects.
+ *
  * 1. First the user must select the route
  *      FROM - TO
  *      Time of leaving / Arrival time
@@ -51,6 +56,7 @@ import java.util.Comparator;
 @SuppressWarnings("Duplicates")
 public class adminController {
 
+    // Class function-specific variables
     public JFXButton firstPaneSearchButton;
     private boolean settingsOpen = false;
     private String user = null;
@@ -59,7 +65,7 @@ public class adminController {
     private ArrayList<Train> searchResults = new ArrayList<>();
     private Train selectedTrain = null;
 
-
+    // FXML global specifics
     public TextField billingAddressFieldSettings;
     public TextField phoneNumberFieldSettings;
     public PasswordField oldPasswordFieldSettings;
@@ -163,6 +169,9 @@ public class adminController {
         dbm.addCard(creditCardFieldSettings.getText(), user);
     }
 
+    /**
+     * Update password button function thourgh database manager
+     */
     public void updatePassword() {
         if (dbm.updatePassword(newPasswordFieldSettings.getText(), user)) {
             settingPropertyUpdatedText.setText("Password updated!");
@@ -173,6 +182,9 @@ public class adminController {
         }
     }
 
+    /**
+     * Button function to check old password before changing it
+     */
     public void checkOldPass() {
         if (dbm.authenticate(user, oldPasswordFieldSettings.getText())) {
             System.err.println("Front-end old password check confirmed.");
@@ -184,6 +196,9 @@ public class adminController {
         }
     }
 
+    /**
+     * Button to search trains with properties listed in textfields
+     */
     public void searchTrainsByProperty() {
         searchFieldErrorText.setText("");
         try {
@@ -231,6 +246,9 @@ public class adminController {
 
     }
 
+    /**
+     * Function to list the desired trains in a listview
+     */
     private void listTrains() {
         trainResultListViewJFX.getItems().remove(0, trainResultListViewJFX.getItems().size());
         for (Train t : searchResults) {
@@ -240,6 +258,9 @@ public class adminController {
 
     }
 
+    /**
+     * Pick the highlighted item (train) from the listview
+     */
     public void pickSelectedItemFromList() {
         int selectedItemIndex = trainResultListViewJFX.getSelectionModel().getSelectedIndex();
 
@@ -327,6 +348,13 @@ public class adminController {
         }
     }
 
+    /**
+     * Change a reserved seat to be un-reserved. Used to fix user mistakes.
+     * @param cabinIndex index of cabin to have fix applied on
+     * @param finalCurrentSeatIndex index of seat to have reservation freed
+     * @param currentSeat seat that the modification should be applied on
+     * @param finalNode Imageview to change the seat image corresponding the type.
+     */
     private void setSeatToAvailable(int cabinIndex, int finalCurrentSeatIndex, Seat currentSeat, ImageView finalNode) {
         cdm.reserveSeat(selectedTrain, cabinIndex, finalCurrentSeatIndex, false);
 
@@ -353,6 +381,10 @@ public class adminController {
         }
     }
 
+    /**
+     * Initialize a gridpane so its clickable. This is very important!
+     * PS. spent many days figuring this bug out
+     */
     private void initNewGridPane() {
         cabinSeatGridpane = new GridPane();
         cabinSeatGridpane.setPadding(new Insets(30,25,25,25));
@@ -381,11 +413,17 @@ public class adminController {
         }
     }
 
+    /**
+     * Switch to first pane and reset seat selector index
+     */
     public void switchToPane1() {
         seatSelectorIndex = -1;
         showPane(1);
     }
 
+    /**
+     * Button to control cabin selector. Updaes visual view
+     */
     public void prevCabinButton() {
         cabinSelectorIndex--;
         if (cabinSelectorIndex == 0) {
@@ -397,6 +435,9 @@ public class adminController {
         loadGraphicalCabin(cabinSelectorIndex);
     }
 
+    /**
+     * Button to control cabin selectior. Updates visual view
+     */
     public void nextCabinButton() {
         cabinSelectorIndex++;
         if (cabinSelectorIndex == 4) {
@@ -408,6 +449,11 @@ public class adminController {
         loadGraphicalCabin(cabinSelectorIndex);
     }
 
+    /**
+     * This is very cool. When scrolling vertically (e.g. desktop mouse) this method will translate
+     * it to actually scroll horizontally!
+     * @param scrollEvent scrollevent to be translated
+     */
     public void changeScrollDirection(ScrollEvent scrollEvent) {
         double scrollDensity = 1400; // Smaller number is faster scrolling
         if (scrollEvent.getDeltaX() == 0 && scrollEvent.getDeltaY() != 0) {
@@ -415,6 +461,13 @@ public class adminController {
         }
     }
 
+    /**
+     * This function simplifies life by getting a node in a gridpane since there is no native solution :)
+     * @param row row to be selected
+     * @param column column to be selected
+     * @param gridPane gridpane to run selection on
+     * @return return the node
+     */
     private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         Node result = null;
 
@@ -428,6 +481,9 @@ public class adminController {
         return result;
     }
 
+    /**
+     * Button to exit the applicaiton.
+     */
     public void exitApplication() {
         System.exit(0);
     }
