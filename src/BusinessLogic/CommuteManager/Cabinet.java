@@ -1,10 +1,7 @@
 package BusinessLogic.CommuteManager;
 
-import BusinessLogic.CommuteManager.Enums.SeatTypes;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Each cabinet of train has 60 seats no matter the type.

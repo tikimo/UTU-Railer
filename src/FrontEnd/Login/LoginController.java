@@ -1,7 +1,6 @@
 package FrontEnd.Login;
 
 import BusinessLogic.DatabaseManager;
-import FrontEnd.Portal.PortalController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 public class LoginController {
     private static String authenticatedUser;
@@ -98,17 +96,25 @@ public class LoginController {
     }
 
     public void createAccount() {
-
-        if (dbmanager.userExists(emailField.getText())) {
-            System.err.println("[WARNING] Email is already associated with another account! Aborting registration...");
+        if (firstNameField.getText().equals("") ||
+                lastNameField.getText().equals("") ||
+                emailField.getText().equals("") ||
+                passwordField.getText().equals("")) {
+            System.err.println("[ERROR] All fields were not filled.");
             errorLabelCreateAccount.setTextFill(Color.RED);
-            errorLabelCreateAccount.setText("Email already exists!");
+            errorLabelCreateAccount.setText("Please fill all the fields!");
         } else {
-            // Crypting is handled in back-end
-            dbmanager.addNewUser(firstNameField.getText(), lastNameField.getText(), emailField.getText(), passwordField.getText());
-            System.err.println("New user added. You can login now.");
-            errorLabelCreateAccount.setTextFill(Color.GREEN);
-            errorLabelCreateAccount.setText("Account created! You can login now.");
+            if (dbmanager.userExists(emailField.getText())) {
+                System.err.println("[WARNING] Email is already associated with another account! Aborting registration...");
+                errorLabelCreateAccount.setTextFill(Color.RED);
+                errorLabelCreateAccount.setText("Email already exists!");
+            } else {
+                // Crypting is handled in back-end
+                dbmanager.addNewUser(firstNameField.getText(), lastNameField.getText(), emailField.getText(), passwordField.getText());
+                System.err.println("New user added. You can login now.");
+                errorLabelCreateAccount.setTextFill(Color.GREEN);
+                errorLabelCreateAccount.setText("Account created! You can login now.");
+            }
         }
     }
 
@@ -121,7 +127,6 @@ public class LoginController {
      * @param email email address (key value)
      * @param plaintextPass Password as plaintext. Crypting in backend
      * @return returns true if auth succeeded
-     * @throws NoSuchAlgorithmException Throws dbmanagers exception
      */
     private boolean authenticationSucceeded(String email, String plaintextPass)  {
         if (dbmanager.authenticate(email, plaintextPass)) { // rs.next() returns true if row exists
@@ -171,7 +176,7 @@ public class LoginController {
     }
 
     public void setAuthenticatedUser(String email) {
-        this.authenticatedUser = email;
+        authenticatedUser = email;
     }
 
     public static DatabaseManager getDbmanager() {

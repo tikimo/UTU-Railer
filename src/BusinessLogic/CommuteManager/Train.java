@@ -1,14 +1,8 @@
 package BusinessLogic.CommuteManager;
 
-import BusinessLogic.CommuteManager.Enums.Stations;
-
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Train implements Serializable{
     private ArrayList<Cabinet> cabinetList;
